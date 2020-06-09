@@ -1,5 +1,5 @@
-[**Documentation home**](./)  
-[**Introduction**](./A-mail-server's-101)
+- [**Documentation home**](./)
+- [**Newcomers: an introduction to mail servers**](./A-mail-server's-101)
 
 ---
 
