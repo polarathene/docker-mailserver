@@ -38,6 +38,7 @@
   - [AWS SES](./Configure-AWS-SES)
 - [Full-text search](./Full-text-search)
 - [Kubernetes](./Using-in-Kubernetes)
+- [IPv6](./IPv6)
 
 **Tutorials**
 - [FAQ](./FAQ-and-Tips)
