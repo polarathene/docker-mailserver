@@ -36,6 +36,7 @@
 - Email forwarding with: 
   - [Relay Hosts](./Configure-Relay-Hosts)
   - [AWS SES](./Configure-AWS-SES)
+- [Full-text search](./Full-text-search)
 - [Kubernetes](./Using-in-Kubernetes)
 
 **Tutorials**
