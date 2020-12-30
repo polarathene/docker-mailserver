@@ -43,3 +43,6 @@
 **Tutorials**
 - [FAQ](./FAQ-and-Tips)
 - [Installation examples](./Installation-examples)
+
+**Use Cases**
+- [Forward-Only mailserver with LDAP authentication](./Forward-Only-mailserver-with-LDAP-authentication)
