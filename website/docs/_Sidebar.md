@@ -4,7 +4,7 @@
 ---
 
 **Configuration**
-- Your best friend: [setup.sh](./Setup-docker-mailserver-using-the-script-setup.sh)
+- Your best friend: [setup.sh](./setup.sh)
 - Your users: 
   - [Accounts](./Configure-Accounts)
   - [Aliases](./Configure-aliases)
