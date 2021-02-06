@@ -26,7 +26,6 @@
 - [Optional config files & directories](./List-of-optional-config-files-&-directories)
 - Maintenance: 
   - [Update & cleanup](./Update-and-cleanup)
-  - [Logs reporting w/ ELK](https://github.com/tomav/docker-mailserver/wiki/Configure-ELK)
 - Override default config of: 
   - [Dovecot](./Override-Default-Dovecot-Configuration)
   - [Postfix](./Override-Default-Postfix-Configuration)
