@@ -9,7 +9,6 @@
 - User management
   - [Accounts](./Configure-Accounts)
   - [Aliases](./Configure-aliases)
-- Mail delivery with [POP3](./Configure-POP3)
 - Best practices
   - [DKIM](./Configure-DKIM)
   - [DMARC](./Configure-DMARC)
@@ -22,6 +21,7 @@
 - When something went wrong
   - [Debugging](./Debugging)
   - [FAQ](./FAQ-and-Tips)
+- [Mail delivery with POP3](./Configure-POP3)
 
 ---
 
