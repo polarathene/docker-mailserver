@@ -1,7 +1,7 @@
 module.exports = {
   title: 'Docker Mailserver',
   tagline: 'A fullstack but simple mail server (SMTP, IMAP, LDAP, Antispam, Antivirus, etc.) using Docker.',
-  url: 'https://your-docusaurus-test-site.com',
+  url: 'https://docker-mailserver-docs-demo.vercel.app',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -41,7 +41,7 @@ module.exports = {
             },
             {
               label: 'Second Doc',
-              to: 'docs/doc2/',
+              to: 'docs/',
             },
           ],
         },
