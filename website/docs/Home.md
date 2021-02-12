@@ -1,6 +1,7 @@
 ---
 id: home
 title: Home
+slug: /
 ---
 
 ### Welcome to the extended documentation for docker-mailserver!
