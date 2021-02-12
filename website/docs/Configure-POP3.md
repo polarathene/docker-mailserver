@@ -1,3 +1,8 @@
+---
+id: config-pop3
+title: Mail delivery with POP3
+---
+
 **We do not recommend using POP. Use IMAP instead.**
 
 If you really want to have POP3 running, add 3 lines to the docker-compose.yml :  

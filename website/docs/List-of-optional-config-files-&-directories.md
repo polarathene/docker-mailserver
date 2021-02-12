@@ -1,3 +1,8 @@
+---
+id: optional-configuration
+title: Optional Configuration
+---
+
 This is a list of all configuration files and directories which are optional or automatically generated in your `config` directory.
 
 ## Directories:

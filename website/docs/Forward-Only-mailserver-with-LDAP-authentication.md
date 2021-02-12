@@ -1,3 +1,7 @@
+---
+id: usecase-forwardonly-ldap-auth
+title: Forward-Only mailserver with LDAP authentication
+---
 
 ## Building a Forward-Only mailserver
 

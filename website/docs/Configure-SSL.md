@@ -1,3 +1,8 @@
+---
+id: config-ssl
+title: SSL/TLS
+---
+
 There are multiple options to enable SSL:
 
 * using [letsencrypt](#lets-encrypt-recommended) (recommended)

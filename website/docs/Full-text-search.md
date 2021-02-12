@@ -1,3 +1,8 @@
+---
+id: fulltext-search
+title: Full-text Search
+---
+
 ## Overview
 
 Full-text search allows all messages to be indexed, so that mail clients can quickly and efficiently search messages by their full text content.

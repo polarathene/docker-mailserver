@@ -1,3 +1,8 @@
+---
+id: config-dmarc
+title: Configure DMARC
+---
+
 DMARC Guide: https://github.com/internetstandards/toolbox-wiki/blob/master/DMARC-how-to.md
 
 ## Enabling DMARC
