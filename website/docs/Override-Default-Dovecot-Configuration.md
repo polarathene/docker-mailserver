@@ -1,3 +1,8 @@
+---
+id: override-dovecot
+title: Override the default config of Dovecot
+---
+
 # Add configuration
 
 The Dovecot default configuration can easily be extended providing a `config/dovecot.cf` file.

@@ -1,3 +1,8 @@
+---
+id: email-forward-relayhosts
+title: Email forwarding with Relay Hosts
+---
+
 # Introduction
 
 Rather than having Postfix deliver mail directly, you can configure Postfix to send mail via another mail relay (smarthost). Examples include [Mailgun](https://www.mailgun.com/), [Sendgrid](https://sendgrid.com/) and [AWS SES](https://aws.amazon.com/ses/).

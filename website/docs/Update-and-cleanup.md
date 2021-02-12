@@ -1,3 +1,8 @@
+---
+id: update-and-cleanup
+title: Update & Cleanup
+---
+
 ## Automatic update
 
 Docker images are handy but it can get a a hassle to keep them updated. Also when a repository is automated you want to get these images when they get out.

@@ -1,3 +1,8 @@
+---
+id: faq
+title: FAQ and Tips
+---
+
 ### What kind of database are you using?
 
 None! No database is required. Filesystem is the database.  
