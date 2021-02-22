@@ -1,0 +1,58 @@
+# As this is a forked repo, not upstream, workflows don't run by default, it'll need to be enabled:
+# https://docs.github.com/en/actions/reference/events-that-trigger-workflows#pull-request-events-for-forked-repositories
+name: Docs (Github Pages)
+
+# As this workflow lives on non-default/master/main branch, it only runs when receiving a commit on this branch? (then checks the default branch workflows?)
+# You can restrict to `push` and `pull_request` event triggers, with further restrictions to those commits being on a specific branch and/or matching a file path pattern:
+# https://docs.github.com/en/actions/reference/events-that-trigger-workflows#configuring-workflow-events
+# https://docs.github.com/en/actions/reference/events-that-trigger-workflows#pull_request
+on:
+  push:
+    branches:
+      - 'docs/docusaurus-demo'
+    paths:
+      - '.github/workflows/documentation-site.yml'
+      - 'website/**'
+  pull_request:
+    branches:
+      - 'docs/docusaurus-demo'
+    paths:
+      - '.github/workflows/documentation-site.yml'
+      - 'website/**'
+
+# Jobs will run shell commands from this subdirectory:
+defaults:
+  run:
+    working-directory: website
+
+jobs:
+  test-build:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      # First step for most actions, checkout the git repo/branch.
+      - uses: actions/checkout@v2
+
+      # Build Docs action - Custom "composite run steps" action, for re-use across jobs.
+      # https://docs.github.com/en/actions/creating-actions/about-actions#composite-run-steps-actions
+      # https://docs.github.com/en/actions/learn-github-actions/finding-and-customizing-actions#referencing-an-action-in-the-same-repository-where-a-workflow-file-uses-the-action
+      - uses: ./.github/actions/build-docs
+  deploy-docs:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/build-docs
+
+      # Popular action to deploy to gh-pages:
+      # https://github.com/peaceiris/actions-gh-pages
+      - name: Deploy docs to Github Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./website/build
+          # Assign the gh-pages branch commits to the official github-actions bot:
+          # https://github.com/actions/checkout/issues/13#issuecomment-724415212
+          # https://api.github.com/users/github-actions%5Bbot%5D
+          user_name: 'github-actions[bot]'
+          user_email: '41898282+github-actions[bot]@users.noreply.github.com'

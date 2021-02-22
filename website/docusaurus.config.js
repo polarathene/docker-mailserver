@@ -1,12 +1,12 @@
 module.exports = {
   title: 'Docker Mailserver',
   tagline: 'A fullstack but simple mail server (SMTP, IMAP, LDAP, Antispam, Antivirus, etc.) using Docker.',
-  url: 'https://docker-mailserver-docs-demo.vercel.app',
-  baseUrl: '/',
+  url: 'https://polarathene.github.io',
+  baseUrl: '/docker-mailserver/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
-  organizationName: 'docker-mailserver', // Usually your GitHub org/user name.
+  organizationName: 'polarathene', // Usually your GitHub org/user name.
   projectName: 'docker-mailserver', // Usually your repo name.
   themeConfig: {
     navbar: {
@@ -87,7 +87,7 @@ module.exports = {
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
           editUrl:
-            'https://github.com/polarathene/docker-mailserver/master/website/',
+            'https://github.com/polarathene/docker-mailserver/tree/docs/docusaurus-demo/website',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
