@@ -12,16 +12,10 @@ module.exports = {
     navbar: {
       title: 'Docker Mailserver',
       logo: {
-        alt: 'My Site Logo',
+        alt: 'Docker Mailserver Logo',
         src: 'img/logo.svg',
       },
       items: [
-        {
-          to: 'docs/',
-          activeBasePath: 'docs',
-          label: 'Docs',
-          position: 'left',
-        },
         {
           href: 'https://github.com/polarathene/docker-mailserver',
           label: 'GitHub',
@@ -30,53 +24,8 @@ module.exports = {
       ],
     },
     footer: {
-      style: 'dark',
-      links: [
-        {
-          title: 'Docs',
-          items: [
-            {
-              label: 'Wiki Example',
-              to: 'docs/',
-            },
-            {
-              label: 'Second Doc',
-              to: 'docs/',
-            },
-          ],
-        },
-        {
-          title: 'Community',
-          items: [
-            {
-              label: 'Stack Overflow',
-              href: 'https://stackoverflow.com/questions/tagged/docusaurus',
-            },
-            {
-              label: 'Discord',
-              href: 'https://discordapp.com/invite/docusaurus',
-            },
-            {
-              label: 'Twitter',
-              href: 'https://twitter.com/docusaurus',
-            },
-          ],
-        },
-        {
-          title: 'More',
-          items: [
-            {
-              label: 'Releases',
-              to: 'blog',
-            },
-            {
-              label: 'GitHub',
-              href: 'https://github.com/polarathene/docker-mailserver',
-            },
-          ],
-        },
-      ],
-      copyright: `Copyright © ${new Date().getFullYear()} [_Docker Mailserver Organization_](https://github.com/docker-mailserver). This project is licensed under the MIT license. Built with Docusaurus.`,
+      style: 'light',
+      copyright: `© <a href="https://github.com/docker-mailserver"><em>Docker Mailserver Organization</em></a><br/>This project is licensed under the MIT license.`,
     },
   },
   presets: [
@@ -85,7 +34,7 @@ module.exports = {
       {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
-          // Please change this to your repo.
+          routeBasePath: '/',
           editUrl:
             'https://github.com/polarathene/docker-mailserver/tree/docs/docusaurus-demo/website',
         },
