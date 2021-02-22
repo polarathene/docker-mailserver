@@ -33,16 +33,57 @@ jobs:
       # First step for most actions, checkout the git repo/branch.
       - uses: actions/checkout@v2
 
-      # Build Docs action - Custom "composite run steps" action, for re-use across jobs.
-      # https://docs.github.com/en/actions/creating-actions/about-actions#composite-run-steps-actions
-      # https://docs.github.com/en/actions/learn-github-actions/finding-and-customizing-actions#referencing-an-action-in-the-same-repository-where-a-workflow-file-uses-the-action
-      - uses: ./.github/actions/build-docs
+      # Installs v14 LTS of Node. Uses cached version that Github replaces bi-weekly with latest updates for that version of Node.
+      # https://github.com/actions/setup-node
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Get yarn cache
+        id: yarn-cache
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      # Cache the yarn cache dir to speed up builds if dependencies haven't changed:
+      # Caches are deleted if they've not been used in the past 7 days, or the total cache limit of 5GB is exceeded (oldest cache data is evicted first).
+      # https://github.com/actions/cache
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.yarn-cache.outputs.dir }}
+          key: ${{ runner.os }}-website-${{ hashFiles('**/yarn.lock') }}
+          # If cache key does not have a match, `restore-keys` will check for previous cache keys with the given prefix and choose the most recent cache:
+          # https://docs.github.com/en/actions/guides/caching-dependencies-to-speed-up-workflows#matching-a-cache-key
+          restore-keys: ${{ runner.os }}-website-
+
+      # Install project dependencies, then run the build script from `package.json`.
+      # Outputs static docs for hosting to `website/build/`
+      - run: yarn install --frozen-lockfile
+      - run: yarn build
   deploy-docs:
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: ./.github/actions/build-docs
+
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Get yarn cache
+        id: yarn-cache
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.yarn-cache.outputs.dir }}
+          key: ${{ runner.os }}-website-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: ${{ runner.os }}-website-
+
+      - run: yarn install --frozen-lockfile
+      - run: yarn build
 
       # Popular action to deploy to gh-pages:
       # https://github.com/peaceiris/actions-gh-pages
