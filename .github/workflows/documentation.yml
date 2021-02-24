@@ -20,7 +20,7 @@ jobs:
     - uses: actions/checkout@v2
     - name: mkdocs build --strict
       run: |
-        docker run --rm -v ${PWD}:/docs squidfunk/mkdocs-material build --strict
+        docker run --rm -v ${PWD}:/docs squidfunk/mkdocs-material build --strict --config-file docs/mkdocs.yml
   deploy:
     name: Deploy documentation to gh-pages
     runs-on: ubuntu-20.04
@@ -30,4 +30,4 @@ jobs:
     - uses: actions/checkout@v2
     - name: mkdocs gh-pages --force
       run: |
-        docker run --rm -v ${PWD}:/docs squidfunk/mkdocs-material gh-deploy --force
+        docker run --rm -v ${PWD}:/docs squidfunk/mkdocs-material gh-deploy --force --config-file docs/mkdocs.yml
