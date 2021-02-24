@@ -1,0 +1,33 @@
+name: Build documentation
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+    paths:
+      - 'docs/**'
+      - 'mkdocs.yml'
+   pull-request:
+    paths:
+      - 'docs/**'
+      - 'mkdocs.yml'
+
+jobs:
+  build:
+    name: Build documentation
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v2
+    - name: mkdocs build --strict
+      run: |
+        docker run --rm -v ${PWD}:/docs squidfunk/mkdocs-material build --strict
+  deploy:
+    name: Deploy documentation to gh-pages
+    runs-on: ubuntu-20.04
+    if: github.event_name != 'pull_request'
+    needs: build
+    steps:
+    - uses: actions/checkout@v2
+    - name: mkdocs gh-pages --force
+      run: |
+        docker run --rm -v ${PWD}:/docs squidfunk/mkdocs-material gh-deploy --force
