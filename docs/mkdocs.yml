@@ -1,0 +1,8 @@
+site_name: 'Documentation'
+docs_dir: 'content'
+site_author: 'docker-mailserver organization'
+repo_name: 'docker-mailserver/docker-mailserver'
+repo_url: 'https://github.com/docker-mailserver/docker-mailserver'
+theme:
+  name: 'material'
+  copyright: Copyright &copy <a href="https://github.com/docker-mailserver/docker-mailserver">docker-mailserver organizaiton</a>
