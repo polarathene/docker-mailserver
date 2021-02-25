@@ -1,4 +1,4 @@
-name: Build documentation
+name: Documentation
 on:
   workflow_dispatch:
   push:
@@ -14,7 +14,7 @@ on:
 
 jobs:
   build:
-    name: Build documentation
+    name: build
     runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v2
@@ -22,9 +22,9 @@ jobs:
       run: |
         docker run --rm -v ${PWD}:/docs squidfunk/mkdocs-material build --strict --config-file docs/mkdocs.yml
   deploy:
-    name: Deploy documentation to gh-pages
+    name: deploy
     runs-on: ubuntu-20.04
-    if: github.event_name != 'pull_request'
+    if: github.event_name != 'push'
     needs: build
     steps:
     - uses: actions/checkout@v2
