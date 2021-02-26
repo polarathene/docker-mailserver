@@ -1,3 +1,7 @@
+---
+title: 'Best Practices | DKIM'
+---
+
 DKIM is a security measure targeting email spoofing. It is greatly recommended one activates it. See [the Wikipedia page](https://en.wikipedia.org/wiki/DomainKeys_Identified_Mail) for more details on DKIM.
 
 #### Enabling DKIM signature

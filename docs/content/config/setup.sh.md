@@ -1,3 +1,9 @@
+---
+title: Your best friend setup.sh
+hide:
+  - toc # Hide Table of Contents for this page
+---
+
 [`setup.sh`](https://github.com/docker-mailserver/docker-mailserver/blob/master/setup.sh) is an administration script that helps with the most common tasks, including initial configuration. It is intented to be used from the host machine, _not_ from within your running container.
 
 The latest version of the script is included in the `docker-mailserver` repository. You may retrieve it at any time by running this command in your console:

@@ -1,3 +1,7 @@
+---
+title: 'Security | TLS (aka SSL)'
+---
+
 There are multiple options to enable SSL:
 
 * using [letsencrypt](#lets-encrypt-recommended) (recommended)

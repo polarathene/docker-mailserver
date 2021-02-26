@@ -1,3 +1,7 @@
+---
+title: 'Tutorials | Installation Examples'
+---
+
 ## Building a simple mailserver
 
 **WARNING**: Adding the docker network's gateway to the list of trusted hosts, e.g. using the `network` or `connected-networks` option, can create an [**open relay**](https://en.wikipedia.org/wiki/Open_mail_relay), [for instance](https://github.com/tomav/docker-mailserver/issues/1405#issuecomment-590106498) if IPv6 is enabled on the host machine but not in Docker. ([#1405](https://github.com/tomav/docker-mailserver/issues/1405))

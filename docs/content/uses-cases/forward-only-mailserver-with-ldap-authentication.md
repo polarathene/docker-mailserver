@@ -1,3 +1,6 @@
+---
+title: 'Use Cases | Forward-Only Mailserver with LDAP'
+---
 
 ## Building a Forward-Only mailserver
 

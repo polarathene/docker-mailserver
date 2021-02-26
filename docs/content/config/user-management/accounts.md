@@ -1,3 +1,9 @@
+---
+title: 'User Management | Accounts'
+hide:
+  - toc # Hide Table of Contents for this page
+---
+
 ## Adding a new account
 
 Users (email accounts) are managed in `/tmp/docker-mailserver/postfix-accounts.cf`. **_The best way to manage accounts is to use the reliable [setup.sh](https://github.com/docker-mailserver/docker-mailserver/wiki/Setup-docker-mailserver-using-the-script-setup.sh) script_**. Or you may directly add the _full_ email address and its encrypted password, separated by a pipe:

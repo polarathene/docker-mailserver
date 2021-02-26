@@ -1,3 +1,7 @@
+---
+title: 'Kubernetes'
+---
+
 ## Deployment example
 
 There is nothing much in deploying mailserver to Kubernetes itself. The things are pretty same as in [`docker-compose.yml`][1], but with Kubernetes syntax.
