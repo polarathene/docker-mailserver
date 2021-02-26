@@ -23,7 +23,7 @@ on:
 # Jobs will run shell commands from this subdirectory:
 defaults:
   run:
-    working-directory: docs/
+    working-directory: docs
 
 jobs:
   build:
@@ -48,6 +48,6 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: site/
+          publish_dir: ./docs/site
           user_name: 'github-actions[bot]'
           user_email: '41898282+github-actions[bot]@users.noreply.github.com'
