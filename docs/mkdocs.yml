@@ -1,8 +1,12 @@
-site_name: 'Documentation'
-docs_dir: 'content'
-site_author: 'docker-mailserver organization'
-repo_name: 'docker-mailserver/docker-mailserver'
+site_name: 'Docker Mailserver'
+site_description: 'A fullstack but simple mail server (SMTP, IMAP, LDAP, Antispam, Antivirus, etc.) using Docker.'
+site_author: 'docker-mailserver (Github Organization)'
+repo_name: 'docker-mailserver'
 repo_url: 'https://github.com/docker-mailserver/docker-mailserver'
+copyright: '<p>&copy <a href="https://github.com/docker-mailserver"><em>Docker Mailserver Organization</em></a><br/><span>This project is licensed under the MIT license.</span></p>'
+
+docs_dir: 'content/'
 theme:
   name: 'material'
-  copyright: Copyright &copy <a href="https://github.com/docker-mailserver/docker-mailserver">docker-mailserver organizaiton</a>
+  icon:
+   repo: fontawesome/brands/github
