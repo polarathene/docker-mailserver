@@ -1,33 +1,46 @@
-name: Documentation
+name: 'Documentation - Build and Deploy'
+
 on:
   workflow_dispatch:
   push:
     branches:
       - master
     paths:
+      - '.github/workflows/documentation.yml'
       - 'docs/**'
-      - 'mkdocs.yml'
   pull_request:
     paths:
+      - '.github/workflows/documentation.yml'
       - 'docs/**'
-      - 'mkdocs.yml'
+
+# Jobs will run shell commands from this subdirectory:
+defaults:
+  run:
+    working-directory: docs
 
 jobs:
   build:
-    name: build
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-20.04
     steps:
-    - uses: actions/checkout@v2
-    - name: mkdocs build --strict
-      run: |
-        docker run --rm -v ${PWD}:/docs squidfunk/mkdocs-material build --strict --config-file docs/mkdocs.yml
+      - uses: actions/checkout@v2
+
+      - name: Build with mkdocs-material via Docker
+        run: docker run --rm -v ${PWD}:/docs squidfunk/mkdocs-material build --strict
+
   deploy:
-    name: deploy
+    if: github.event_name == 'push'
     runs-on: ubuntu-20.04
-    if: github.event_name != 'push'
-    needs: build
     steps:
-    - uses: actions/checkout@v2
-    - name: mkdocs gh-pages --force
-      run: |
-        docker run --rm -v ${PWD}:/docs squidfunk/mkdocs-material gh-deploy --force --config-file docs/mkdocs.yml
+      - uses: actions/checkout@v2
+
+      - name: Build with mkdocs-material via Docker
+        run: docker run --rm -v ${PWD}:/docs squidfunk/mkdocs-material build --strict
+
+      - name: Deploy to Github Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/site
+          user_name: 'github-actions[bot]'
+          user_email: '41898282+github-actions[bot]@users.noreply.github.com'
