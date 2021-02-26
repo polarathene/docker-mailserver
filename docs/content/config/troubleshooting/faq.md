@@ -1,3 +1,7 @@
+---
+title: 'Troubleshooting | FAQ'
+---
+
 ### What kind of database are you using?
 
 None! No database is required. Filesystem is the database.  

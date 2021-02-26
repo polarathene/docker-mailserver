@@ -1,3 +1,7 @@
+---
+title: Home
+---
+
 ### Welcome to the extended documentation for docker-mailserver!
 
 Please first have a look at the [`README.md`](https://github.com/docker-mailserver/docker-mailserver/blob/master/README.md) to setup and configure this server. This wiki provides you with advanced configuration, detailed examples, hints - see navigation on the right side.

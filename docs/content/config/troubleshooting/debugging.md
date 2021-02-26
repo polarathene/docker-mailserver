@@ -1,3 +1,7 @@
+---
+title: 'Troubleshooting | Debugging'
+---
+
 ..todo..  - Please contribute more to help others debug this package
 
 ## Enable verbose debugging output

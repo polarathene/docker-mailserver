@@ -1,3 +1,7 @@
+---
+title: 'LDAP Authentication'
+---
+
 ### Introduction
 
 Getting started with ldap and this mailserver we need to take 3 parts in account:

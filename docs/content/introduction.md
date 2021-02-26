@@ -1,3 +1,7 @@
+---
+title: An Introduction to Mail Servers
+---
+
 What is a mail server and how does it perform its duty?  
 Here's an introduction to the field that covers everything you need to know to get started with `docker-mailserver`.
 
