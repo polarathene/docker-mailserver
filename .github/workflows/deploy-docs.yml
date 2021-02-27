@@ -1,4 +1,4 @@
-name: 'Documentation - Build and Deploy'
+name: 'Documentation'
 
 on:
   workflow_dispatch:
@@ -6,11 +6,7 @@ on:
     branches:
       - master
     paths:
-      - '.github/workflows/documentation.yml'
-      - 'docs/**'
-  pull_request:
-    paths:
-      - '.github/workflows/documentation.yml'
+      - '.github/workflows/deploy-docs.yml'
       - 'docs/**'
 
 # Jobs will run shell commands from this subdirectory:
@@ -19,25 +15,17 @@ defaults:
     working-directory: docs
 
 jobs:
-  build:
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Build with mkdocs-material via Docker
-        run: docker run --rm -v ${PWD}:/docs squidfunk/mkdocs-material build --strict
-
   deploy:
     if: github.event_name == 'push'
+    name: 'Deploy Docs'
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
 
-      - name: Build with mkdocs-material via Docker
+      - name: 'Build with mkdocs-material via Docker'
         run: docker run --rm -v ${PWD}:/docs squidfunk/mkdocs-material build --strict
 
-      - name: Deploy to Github Pages
+      - name: 'Deploy to Github Pages'
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
