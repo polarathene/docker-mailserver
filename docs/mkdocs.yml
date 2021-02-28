@@ -43,7 +43,7 @@ markdown_extensions:
 # If referencing a file more than once, the URLs will all point to the nav hierarchy of the final file.
 nav:
   - Home: index.md
-  - 'An Introduction to Mail Servers': introduction.md
+  - Introduction: introduction.md
   - Configuration:
       - 'Your Best Friend setup.sh': config/setup.sh.md
       - 'User Management':
