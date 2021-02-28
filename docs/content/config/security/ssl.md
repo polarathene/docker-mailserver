@@ -14,7 +14,7 @@ After installation, you can test your setup with:
 - [checktls.com](https://www.checktls.com/TestReceiver)
 - [testssl.sh](https://github.com/drwetter/testssl.sh)
 
-### Let's encrypt (recommended)
+## Let's Encrypt (Recommended)
 
 To enable Let's Encrypt on your mail server, you have to:
 
@@ -25,9 +25,8 @@ To enable Let's Encrypt on your mail server, you have to:
 
 You don't have anything else to do. Enjoy.
 
+### Example using Docker for Let's Encrypt
 
-
-#### Example using docker for letsencrypt
 Make a directory to store your letsencrypt logs and configs.
 
 In my case
@@ -48,7 +47,8 @@ To renew your certificate just run (this will need access to port 443 from the i
 docker run --rm -ti -v $PWD/log/:/var/log/letsencrypt/ -v $PWD/etc/:/etc/letsencrypt/ -p 80:80 -p 443:443 certbot/certbot renew
 ```
 
-#### Example using docker, nginx-proxy and letsencrypt-nginx-proxy-companion ####
+### Example using Docker, `nginx-proxy` and `letsencrypt-nginx-proxy-companion`
+
 If you are running a web server already, it is non-trivial to generate a Let's Encrypt certificate for your mail server using ```certbot```, because port 80 is already occupied. In the following example, we show how ```docker-mailserver``` can be run alongside the docker containers ```nginx-proxy``` and ```letsencrypt-nginx-proxy-companion```.
 
 There are several ways to start ```nginx-proxy``` and ```letsencrypt-nginx-proxy-companion```. Any method should be suitable here. For example start ```nginx-proxy``` as in the ```letsencrypt-nginx-proxy-companion``` [documentation](https://github.com/JrCs/docker-letsencrypt-nginx-proxy-companion):
@@ -107,7 +107,8 @@ Then
 
 
 
-#### Example using docker, nginx-proxy and letsencrypt-nginx-proxy-companion with docker-compose
+### Example using Docker, `nginx-proxy` and `letsencrypt-nginx-proxy-companion with docker-compose`
+
 The following docker-compose.yml is the basic setup you need for using letsencrypt-nginx-proxy-companion. It is mainly derived from its own wiki/documenation.
 
 ```YAML
@@ -206,8 +207,7 @@ networks:
 
 The mail container needs to have the letsencrypt certificate folder mounted as a volume. No further changes are needed. The second container is a dummy-sidecar we need, because the mail-container do not expose any web-ports. Set your ENV variables as you need. (VIRTUAL_HOST and LETSENCRYPT_HOST are mandandory, see documentation)
 
-
-#### Example using the letsencrypt certificates on a Synology NAS
+### Example using the Let's Encrypt Certificates on a Synology NAS
 
 Version 6.2 and later of the Synology NAS DSM OS now come with an interface to generate and renew letencrypt certificates. Navigation into your DSM control panel and go to Security, then click on the tab Certificate to generate and manage letsencrypt certificates. Amongst other things, you can use these to secure your mail server. DSM locates the generated certificates in a folder below ```/usr/syno/etc/certificate/_archive/```. Navigate to that folder and note the 6 character random folder name of the certificate you'd like to use. Then, add the following to your ```docker-compose.yml``` declaration file:
 
@@ -223,7 +223,7 @@ environment:
 ```
 DSM-generated letsencrypt certificates get auto-renewed every three months.
 
-### Caddy
+## Caddy
 
 If you are using Caddy to renew your certificates, please note that only RSA certificates work. Read [#1440][github-issue-1440] for details. In short for Caddy v1 the Caddyfile should look something like:
 
@@ -329,13 +329,13 @@ no peer certificate available
 No client certificate CA names sent
 ```
 
-### Traefik
+## Traefik
 
 [Traefik](https://github.com/containous/traefik) is an open-source Edge Router which handles ACME protocol using [lego](https://github.com/go-acme/lego).
 
 Traefik can request certificates for domains through the ACME protocol (see [Traefik's documentation about its ACME negotiation & storage mechanism](https://docs.traefik.io/https/acme/)). Traefik's router will take care of renewals, challenge negotiations, etc.
 
-##### Traefik v2
+### Traefik v2
 
 (For Traefik v1 see [next section](#traefik-v1))
 
@@ -388,13 +388,13 @@ services:
 
 This setup only comes with one caveat: The domain has to be configured on another service for traefik to actually request it from lets-encrypt (`whoami` in this case).
 
-##### Traefik V1
+### Traefik v1
 
 If you are using Traefik v1, you might want to _push_ your Traefik-managed certificates to the mailserver container, in order to reuse them. Not an easy task, but fortunately, [youtous/mailserver-traefik][youtous-mailtraefik] is a certificate renewal service for docker-mailserver.
 
 Depending of your Traefik configuration, certificates may be stored using a file or a KV Store (consul, etcd...) Either way, certificates will be renewed by Traefik, then automatically pushed to the mailserver thanks to the cert-renewer service. Finally, dovecot and postfix will be restarted.
 
-### Self-signed certificates (testing only)
+## Self-Signed Certificates (Testing Only)
 
 You can easily generate a self-signed SSL certificate by using the following command:
 
@@ -425,7 +425,7 @@ To use the certificate:
 * add `SSL_TYPE=self-signed` to your container environment variables
 * if a matching certificate (files listed above) is found in `config/ssl`, it will be automatically setup in postfix and dovecot. You just have to place them in `config/ssl` folder.
 
-### Custom certificate files
+## Custom Certificate Files
 
 You can also provide your own certificate files. Add these entries to your `docker-compose.yml`:
 
@@ -440,7 +440,7 @@ This will mount the path where your ssl certificates reside as read-only under `
 
 Please note that you may have to restart your mailserver once the certificates change.
 
-### Testing certificate
+## Testing a Certificate
 
 From your host:
 
@@ -460,7 +460,7 @@ In addition, to verify certificate dates:
     docker exec mail openssl s_client -connect 0.0.0.0:25 -starttls smtp -CApath /etc/ssl/certs/ 2>/dev/null | openssl x509 -noout  -dates
 
 
-### Plain text access
+## Plain-Text Access
 
 Not recommended for purposes other than testing.
 
@@ -477,7 +477,8 @@ These options in conjunction mean:
 ssl=yes and disable_plaintext_auth=no: SSL/TLS is offered to the client, but the client isn't required to use it. The client is allowed to login with plaintext authentication even when SSL/TLS isn't enabled on the connection. This is insecure, because the plaintext password is exposed to the internet.
 ```
 
-### Importing certificates obtained via another source
+## Importing Certificates Obtained via Another Source
+
 If you have another source for SSL/TLS certificates you can import them into the server via an external script. The external script can be found here: [external certificate import script][hanscees-renewcerts]
 
 The steps to follow are these:

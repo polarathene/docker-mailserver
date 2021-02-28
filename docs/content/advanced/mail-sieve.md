@@ -2,7 +2,7 @@
 title: 'Email Filtering with Sieve'
 ---
 
-### User-defined sieve filters
+### User-Defined Sieve Filters
 
 [Sieve](http://sieve.info/) allows to specify filtering rules for incoming emails that allow for example sorting mails into different folders depending on the title of an email.
 There are global and user specific filters which are filtering the incoming emails in the following order:

@@ -10,7 +10,7 @@ From [Wikipedia](https://en.wikipedia.org/wiki/Sender_Policy_Framework):
 
 For a more technical review: https://github.com/internetstandards/toolbox-wiki/blob/master/SPF-how-to.md
 
-## Add a SPF record
+## Add a SPF Record
 
 To add a SPF record in your DNS, insert the following line in your DNS zone:
 

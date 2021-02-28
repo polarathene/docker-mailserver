@@ -2,7 +2,7 @@
 title: 'Maintenance | Update and Cleanup'
 ---
 
-## Automatic update
+## Automatic Update
 
 Docker images are handy but it can get a a hassle to keep them updated. Also when a repository is automated you want to get these images when they get out.
 
@@ -20,7 +20,7 @@ services:
 
 For more details, see the [manual](https://containrrr.github.io/watchtower/)
 
-## Automatic cleanup
+## Automatic Cleanup
 
 When you are pulling new images in automatically, it would be nice to have them cleaned up as well. There is also a docker image for this: [spotify/docker-gc](https://hub.docker.com/r/spotify/docker-gc/).
 

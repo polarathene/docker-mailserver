@@ -5,7 +5,7 @@ title: An Introduction to Mail Servers
 What is a mail server and how does it perform its duty?  
 Here's an introduction to the field that covers everything you need to know to get started with `docker-mailserver`.
 
-## Anatomy of a mail server
+## Anatomy of a Mail Server
 
 A mail server is only a part of a [client-server relationship][wikipedia-clientserver] aimed at exchanging information in the form of [emails][wikipedia-email]. Exchanging emails requires using specific means (programs and protocols).
 
@@ -64,7 +64,7 @@ For instance, Postfix is both an SMTP server (accepting emails) and a relaying M
 
 The exact relationship between all the components and their respective (sometimes shared) responsibilities is beyond the scope of this document. Please explore this wiki & the web to get more insights about `docker-mailserver`'s toolchain.
 
-## About security & ports
+## About Security & Ports
 
 In the previous section, different components were outlined. Each one of those is responsible for a specific task, it has a specific purpose.
 

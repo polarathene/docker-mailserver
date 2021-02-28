@@ -2,7 +2,7 @@
 title: 'Use Cases | Forward-Only Mailserver with LDAP'
 ---
 
-## Building a Forward-Only mailserver
+## Building a Forward-Only Mailserver
 
 A **forward-only** mailserver does not have any local mailboxes. Instead, it has only aliases that forward emails to external email accounts (for example to a gmail account). You can also send email from the localhost (the computer where the mailserver is installed), using as sender any of the alias addresses.
 

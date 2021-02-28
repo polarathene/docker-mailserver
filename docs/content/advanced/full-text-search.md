@@ -54,7 +54,8 @@ docker-compose exec mailserver doveadm fts rescan -A
 ```
 
 
-## Further discussion
+## Further Discussion
+
 See [#905][github-issue-905]
 
 [github-issue-905]: https://github.com/docker-mailserver/docker-mailserver/issues/905

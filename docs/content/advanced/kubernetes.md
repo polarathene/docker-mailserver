@@ -2,7 +2,7 @@
 title: 'Kubernetes'
 ---
 
-## Deployment example
+## Deployment Example
 
 There is nothing much in deploying mailserver to Kubernetes itself. The things are pretty same as in [`docker-compose.yml`][github-file-compose], but with Kubernetes syntax.
 
@@ -237,10 +237,7 @@ Any sensitive data (keys, etc) should be deployed via [Secrets][k8s-config-secre
 __Note:__
 Make sure that [Pod][k8s-workload-pod] is [assigned][k8s-assign-pod-node] to specific [Node][k8s-nodes] in case you're using volume for data directly with `hostPath`. Otherwise Pod can be rescheduled on a different Node and previous data won't be found. Except the case when you're using some shared filesystem on your Nodes.
 
-
-
-
-## Exposing to outside world
+## Exposing to the Outside World
 
 The hard part with Kubernetes is to expose deployed mailserver to outside world. Kubernetes provides multiple ways for doing that. Each has its downsides and complexity.
 
@@ -276,7 +273,6 @@ metadata:
 # ...
 ```
 
-
 ### External IPs Service
 
 The simplest way is to expose mailserver as a [Service][k8s-network-service] with [external IPs][k8s-network-external-ip].
@@ -300,21 +296,19 @@ spec:
     - 80.11.12.10  
 ```
 
-##### Downsides
+**Downsides**
 
 - __Real client IP is not preserved__, so SPF check of incoming mail will fail.
 
 - Requirement to specify exposed IPs explicitly.
 
-
 ### Proxy port to Service
 
 The [Proxy Pod][k8s-proxy-service] helps to avoid necessity of specifying external IPs explicitly. This comes in price of complexity: you must deploy Proxy Pod on each [Node][k8s-nodes] you want to expose mailserver on.
 
-##### Downsides
+**Downsides**
 
 - __Real client IP is not preserved__, so SPF check of incoming mail will fail.
-
 
 ### Bind to concrete Node and use host network
 
@@ -344,17 +338,16 @@ metadata:
 # ...
 ```
 
-##### Downsides
+**Downsides**
 
 - Not possible to access mailserver via other cluster Nodes, only via the one mailserver deployed at.
 - Every Port within the Container is exposed on the Host side, regardless of what the `ports` section in the Configuration defines. 
 
-
-### Proxy port to Service via PROXY protocol
+### Proxy Port to Service via PROXY Protocol
 
 This way is ideologically the same as [using Proxy Pod](#proxy-port-to-service), but instead of a separate proxy pod, you configure your ingress to proxy TCP traffic to the mailserver pod using the PROXY protocol, which preserves the real client IP.
 
-#### Configure your ingress
+#### Configure your Ingress
 With an [NGINX ingress controller][k8s-nginx], set `externalTrafficPolicy: Local` for its service, and add the following to the TCP services config map (as described [here][k8s-nginx-expose]):
 ```yaml
 # ...
@@ -367,7 +360,8 @@ With an [NGINX ingress controller][k8s-nginx], set `externalTrafficPolicy: Local
 
 With [HAProxy][dockerhub-haproxy], the configuration should look similar to the above. If you know what it actually looks like, add an example here. :)
 
-#### Configure the mailserver
+#### Configure the Mailserver
+
 Then, configure both [Postfix][docs-postfix] and [Dovecot][docs-dovecot] to expect the PROXY protocol:
 ```yaml
 kind: ConfigMap
@@ -417,13 +411,11 @@ spec:
 # ...
 ```
 
-##### Downsides
+**Downsides**
 
 - Not possible to access mailserver via inner cluster Kubernetes DNS, as PROXY protocol is required for incoming connections.
 
-
-
-## Let's Encrypt certificates
+## Let's Encrypt Certificates
 
 [Kube-Lego][kube-lego] may be used for a role of Let's Encrypt client. It works with Kubernetes [Ingress Resources][k8s-network-ingress] and automatically issues/manages certificates/keys for exposed services via Ingresses.
 

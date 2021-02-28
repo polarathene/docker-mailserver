@@ -2,7 +2,7 @@
 title: 'Override the Default Configs | Dovecot'
 ---
 
-# Add configuration
+## Add Configuration
 
 The Dovecot default configuration can easily be extended providing a `config/dovecot.cf` file.
 [Dovecot documentation](https://wiki.dovecot.org) remains the best place to find configuration options.
@@ -26,7 +26,7 @@ mail_max_userip_connections = 100
 
 Another important option is the `default_process_limit` (defaults to `100`). If high-security mode is enabled you'll need to make sure this count is higher than the maximum number of users that can be logged in simultaneously. This limit is quickly reached if users connect to the mail server with multiple end devices.
 
-# Override configuration
+## Override Configuration
 
 For major configuration changes it’s best to override the `dovecot` configuration files. For each configuration file you want to override, add a list entry under the `volumes:` key.
 
@@ -43,7 +43,7 @@ services:
 
 ```
 
-# Debugging
+## Debugging
 
 To debug your dovecot configuration you can use this command:
 

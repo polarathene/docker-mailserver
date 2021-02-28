@@ -2,7 +2,7 @@
 title: 'Tutorials | Installation Examples'
 ---
 
-## Building a simple mailserver
+## Building a Simple Mailserver
 
 **WARNING**: Adding the docker network's gateway to the list of trusted hosts, e.g. using the `network` or `connected-networks` option, can create an [**open relay**](https://en.wikipedia.org/wiki/Open_mail_relay), for instance [if IPv6 is enabled on the host machine but not in Docker][github-issue-1405-comment].
 
@@ -160,8 +160,10 @@ We are going to use this docker based mailserver:
   - **SMTP username**: `info@example.org`
   - **SMTP password**: `passwd123`
 
-## Using docker-mailserver behind proxy
+## Using `docker-mailserver` behind a Proxy
+
 ### Information
+
 If you are hiding your container behind a proxy service you might have discovered that the proxied requests from now on contain the proxy IP as the request origin. Whilst this behavior is technical correct it produces certain problems on the containers behind the proxy as they cannot distinguish the real origin of the requests anymore.
 
 To solve this problem on TCP connections we can make use of the [proxy protocol](https://www.haproxy.org/download/1.8/doc/proxy-protocol.txt). Compared to other workarounds that exist (`X-Forwarded-For` which only works for HTTP requests or `Tproxy` that requires you to recompile your kernel) the proxy protocol:
@@ -173,7 +175,7 @@ The is only one condition: **both endpoints** of the connection MUST be compatib
 
 Luckily `dovecot` and `postfix` are both Proxy-Protocol ready softwares so it depends only on your used reverse-proxy/loadbalancer.
 
-### Configuration of the used proxy software
+### Configuration of the used Proxy Software
 
 The configuration depends on the used proxy system. I will provide the configuration examples of [traefik v2](https://traefik.io/) using IMAP and SMTP with implicit TLS. Feel free to add your configuration if you achived the same goal using different proxy software below:
 
@@ -243,7 +245,7 @@ Keep in mind that it is neccessary to use port `10993` here. More information be
 
 </details>
 
-### Configuration of the backend (`dovecot` and `postfix`)
+### Configuration of the Backend (`dovecot` and `postfix`)
 
 The following changes can be achived completely by adding the content to the appropriate files by using the projects [function to overwrite config files][docs-optionalconfig].
 

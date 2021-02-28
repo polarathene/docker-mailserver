@@ -6,7 +6,7 @@ title: 'Security | Understanding the Ports'
 
 Prefer Implicit TLS ports, they're more secure and if you use a Reverse Proxy, should be less hassle (although it's probably wiser to expose these ports directly to `docker-mailserver`).
 
-## Overview of email ports
+## Overview of Email Ports
 
 | Protocol | Explicit TLS<sup>1</sup> | Implicit TLS    | Purpose              |
 |----------|--------------------------|-----------------|----------------------|
@@ -19,7 +19,7 @@ Prefer Implicit TLS ports, they're more secure and if you use a Reverse Proxy, s
 2. Receives email, `docker-mailserver` additionally filters for spam and viruses. For submitting email to the server to be sent to third-parties, you should prefer the *submission* ports(465, 587) - which require authentication. Unless a relay host is configured(eg SendGrid), outgoing email will leave the server via port 25(thus outbound traffic must not be blocked by your provider or firewall).
 3. A *submission* port since 2018 ([RFC 8314][rfc-8314]). Previously a secure variant of port 25.
 
-### What ports should I use? (SMTP)
+### What Ports Should I Use? (SMTP)
 
 [![Best Practice - Ports (SMTP)][asset-external-mermaid-smtp]][ref-mermaid-live-smtp]
 
@@ -59,12 +59,13 @@ flowchart LR
 
 </details>
 
+#### Inbound Traffic (On the left)
 
-#### Inbound Traffic (On the left):
 - **Port 25:** Think of this like a physical mailbox, it is open to receive email from anyone who wants to. `docker-mailserver` will actively filter email delivered on this port for spam or viruses and refuse mail from known bad sources. While you could also use this port internally to send email outbound without requiring authentication, you really should prefer the *Submission* ports(587, 465).
 - **Port 465(*and 587*):** This is the equivalent of a post office box where you would send email to be delivered on your behalf(`docker-mailserver` is that metaphorical post office, aka the MTA). Unlike port 25, these two ports are known as the *Submission* ports and require a valid email account on the server with a password to be able to send email to anyone outside of the server(an MTA you do not control, eg Outlook or Gmail). Prefer port 465 which provides Implicit TLS.
 
-#### Outbound Traffic (On the Right):
+#### Outbound Traffic (On the Right)
+
 - **Port 25:** Send the email directly to the given email address MTA as possible. Like your own `docker-mailserver` port 25, this is the standard port for receiving email on, thus email will almost always arrive to the final MTA on this port. Note that, there may be additional MTAs further in the chain, but this would be the public facing one representing that email address.
 - **Port 465(*and 587*):** SMTP Relays are a popular choice to hand-off delivery of email through. Services like SendGrid are useful for bulk email(marketing) or when your webhost or ISP are preventing you from using standard ports like port 25 to send out email(which can be abused by spammers). 
   

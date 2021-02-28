@@ -2,7 +2,7 @@
 title: 'LDAP Authentication'
 ---
 
-### Introduction
+## Introduction
 
 Getting started with ldap and this mailserver we need to take 3 parts in account:
 
@@ -10,7 +10,7 @@ Getting started with ldap and this mailserver we need to take 3 parts in account
 * DOVECOT
 * SASLAUTHD (this can also be handled by dovecot above)
 
-### List with the variables to control the container provisioning
+## Variables to Control Provisioning by the Container
 
 __POSTFIX__:
 * `LDAP_QUERY_FILTER_USER`
@@ -29,7 +29,8 @@ __DOVECOT__:
 
 **NOTE**: This page will provide several use cases like recipes to show, how this project can be used with it's LDAP Features.
 
-### Ldap Setup - Kopano/Zarafa
+## LDAP Setup - Kopano / Zarafa
+
 ```yml
 ---
 version: '2'

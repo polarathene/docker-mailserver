@@ -4,12 +4,11 @@ title: 'Troubleshooting | Debugging'
 
 ..todo..  - Please contribute more to help others debug this package
 
-## Enable verbose debugging output
+## Enable Verbose Debugging Output
 
 You may find it useful to enable the [DMS_DEBUG][github-file-env-dmsdebug] environment variable.
 
-## Invalid username or Password
-
+## Invalid Username or Password
 
 1. Login Container
 
@@ -37,7 +36,9 @@ You can find the logs for startup of fetchmail, postfix and others here - they m
 sudo su
 docker exec -it <mycontainer> apt-get install -y vim
 ```
+
 ## Testing Connection
+
 I spent HOURS trying to debug "Connection Refused" and "Connection closed by foreign host" errors when trying to use telnet to troubleshoot my connection. I was also trying to connect from my email client (macOS mail) around the same time. Telnet had also worked earlier, so I was extremely confused as to why it suddenly stopped working. I stumbled upon fail2ban.log in my container. In short, when trying to get my macOS client working, I exceeded the number of failed login attempts and fail2ban put dovecot and postfix in jail! I got around it by whitelisting my ipaddresses (my ec2 instance and my local computer)
 
 ```bash

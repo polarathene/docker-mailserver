@@ -4,7 +4,7 @@ title: 'Best Practices | DKIM'
 
 DKIM is a security measure targeting email spoofing. It is greatly recommended one activates it. See [the Wikipedia page](https://en.wikipedia.org/wiki/DomainKeys_Identified_Mail) for more details on DKIM.
 
-#### Enabling DKIM signature
+## Enabling DKIM Signature
 
 To enable DKIM signature, **you must have created at least one email account**. Once its done, just run the following command to generate the signature:
 
@@ -33,7 +33,7 @@ $ dig mail._domainkey.domain.tld TXT
 mail._domainkey.<DOMAIN> 300 IN TXT    "v=DKIM1; k=rsa; p=AZERTYUIOPQSDFGHJKLMWXCVBN/AZERTYUIOPQSDFGHJKLMWXCVBN/AZERTYUIOPQSDFGHJKLMWXCVBN/AZERTYUIOPQSDFGHJKLMWXCVBN/AZERTYUIOPQSDFGHJKLMWXCVBN/AZERTYUIOPQSDFGHJKLMWXCVBN/AZERTYUIOPQSDFGHJKLMWXCVBN/AZERTYUIOPQSDFGHJKLMWXCVBN"
 ```
 
-#### Configuration using a web interface
+## Configuration using a Web Interface
 
 1. Generate a new record of the type `TXT`.
 2. Paste `mail._domainkey` the `Name` txt field.
@@ -54,7 +54,7 @@ mail._domainkey.<DOMAIN> 300 IN TXT    "v=DKIM1; k=rsa; "
 
 The target (or value) field must then have all the parts together: `v=DKIM1; k=rsa; p=AZERTYUIOPQSDF...asdfQWERTYUIOPQSDF...`
 
-#### Verify-only
+## Verify-Only
 
 If you want DKIM to only _verify_ incoming emails, the following version of /etc/opendkim.conf may be useful (right now there is no easy mechanism for installing it other than forking the repo):
 
@@ -74,7 +74,7 @@ SendReports             yes
 Mode                    v
 ```
 
-#### Debugging
+## Debugging
 
 - [DKIM-verifer](https://addons.mozilla.org/en-US/thunderbird/addon/dkim-verifier): A add-on for the mail client Thunderbird.
 - You can debug your TXT records with the `dig` tool.
@@ -102,6 +102,6 @@ mail._domainkey.domain.tld. 3600 IN TXT	"v=DKIM1; k=rsa; p=MIGfMA0GCSqGSIb3DQEBA
 ;; MSG SIZE  rcvd: 310
 ```
 
-#### Switch off DKIM
+## Switch Off DKIM
 
 Simply remove the DKIM key by recreating (not just relaunching) the mailserver container.

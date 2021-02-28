@@ -41,7 +41,7 @@ This can be solved by supporting IPv6 connections all the way to the `docker-mai
 +          gateway: fd00:0123:4567::1
 ```
 
-## Further discussion
+## Further Discussion
 
 See [#1438][github-issue-1438]
 

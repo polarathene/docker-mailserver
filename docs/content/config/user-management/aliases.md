@@ -19,7 +19,7 @@ alias1@domain.tld user1@domain.tld
 alias2@domain.tld external@gmail.com
 ```
 
-### Configuring regexp aliases
+## Configuring RegExp Aliases
 
 Additional regexp aliases can be configured by placing them into `config/postfix-regexp.cf`. The regexp aliases get evaluated after the virtual aliases (`/tmp/docker-mailserver/postfix-virtual.cf`). For example, the following `config/postfix-regexp.cf` causes all email to "test" users to be delivered to qa@example.com:
 
@@ -27,7 +27,7 @@ Additional regexp aliases can be configured by placing them into `config/postfix
 /^test[0-9][0-9]*@example.com/ qa@example.com
 ```
 
-### Address tags (extension delimiters) as an alternative to aliases
+## Address Tags (Extension Delimiters) an Alternative to Aliases
 
 Postfix supports so-called address tags, in the form of plus (+) tags - i.e. address+tag@example.com will end up at address@example.com. This is configured by default and the (configurable !) separator is set to `+`. For more info, see [How to use Address Tagging (user+tag@example.com) with Postfix](https://www.stevejenkins.com/blog/2011/03/how-to-use-address-tagging-usertagexample-com-with-postfix/) and the [official documentation](http://www.postfix.org/postconf.5.html#recipient_delimiter).
 

@@ -4,13 +4,15 @@ title: 'Optional Configuration'
 
 This is a list of all configuration files and directories which are optional or automatically generated in your `config` directory.
 
-## Directories:
+## Directories
+
 - **sieve-filter:** directory for sieve filter scripts. (Docs: [Sieve][docs-sieve])
 - **sieve-pipe:** directory for sieve pipe scripts. (Docs: [Sieve][docs-sieve])
 - **opendkim:** DKIM directory. Auto-configurable via [`setup.sh config dkim`][docs-setupsh]. (Docs: [DKIM][docs-dkim])
 - **ssl:** SSL Certificate directory. Auto-configurable via [`setup.sh config ssl`][docs-setupsh]. (Docs: [SSL][docs-ssl])
 
-## Files:
+## Files
+
 - **{user_email_address}.dovecot.sieve:** User specific Sieve filter file. (Docs: [Sieve][docs-sieve])
 - **before.dovecot.sieve:** Global Sieve filter file, applied prior to the ${login}.dovecot.sieve filter. (Docs: [Sieve][docs-sieve])
 - **after.dovecot.sieve**: Global Sieve filter file, applied after the ${login}.dovecot.sieve filter. (Docs: [Sieve][docs-sieve])
