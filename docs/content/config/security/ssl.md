@@ -19,7 +19,7 @@ After installation, you can test your setup with:
 To enable Let's Encrypt on your mail server, you have to:
 
 * get your certificate using [letsencrypt client](https://github.com/letsencrypt/letsencrypt)
-* add an environment variable `SSL_TYPE` with value `letsencrypt` (see `docker-compose.yml.dist`)
+* add an environment variable `SSL_TYPE` with value `letsencrypt` (see [`docker-compose.yml`][github-file-compose])
 * mount your whole `letsencrypt` folder to `/etc/letsencrypt`
 * the certs folder name located in `letsencrypt/live/` must be the `fqdn` of your container responding to the `hostname` command. The full qualified domain name (`fqdn`) inside the docker container is built combining the `hostname` and `domainname` values of the docker-compose file, e. g.: hostname: `mail`; domainname: `myserver.tld`; fqdn: `mail.myserver.tld`
 
@@ -225,7 +225,7 @@ DSM-generated letsencrypt certificates get auto-renewed every three months.
 
 ### Caddy
 
-If you are using Caddy to renew your certificates, please note that only RSA certificates work. Read [issue 1440](https://github.com/tomav/docker-mailserver/issues/1440) for details. In short for Caddy v1 the Caddyfile should look something like:
+If you are using Caddy to renew your certificates, please note that only RSA certificates work. Read [#1440][github-issue-1440] for details. In short for Caddy v1 the Caddyfile should look something like:
 
 ```
 https://mail.domain.com {
@@ -390,12 +390,9 @@ This setup only comes with one caveat: The domain has to be configured on anothe
 
 ##### Traefik V1
 
-If you are using Traefik v1, you might want to _push_ your Traefik-managed certificates to the mailserver container, in order to reuse them. Not an easy task, but fortunately, [youtous/mailserver-traefik](https://github.com/youtous/docker-mailserver-traefik) is a certificate renewal service for docker-mailserver.
+If you are using Traefik v1, you might want to _push_ your Traefik-managed certificates to the mailserver container, in order to reuse them. Not an easy task, but fortunately, [youtous/mailserver-traefik][youtous-mailtraefik] is a certificate renewal service for docker-mailserver.
 
 Depending of your Traefik configuration, certificates may be stored using a file or a KV Store (consul, etcd...) Either way, certificates will be renewed by Traefik, then automatically pushed to the mailserver thanks to the cert-renewer service. Finally, dovecot and postfix will be restarted.
-
-Documentation: https://github.com/youtous/docker-mailserver-traefik
-
 
 ### Self-signed certificates (testing only)
 
@@ -481,7 +478,7 @@ ssl=yes and disable_plaintext_auth=no: SSL/TLS is offered to the client, but the
 ```
 
 ### Importing certificates obtained via another source
-If you have another source for SSL/TLS certificates you can import them into the server via an external script. The external script can be found here: [external certificate import script](https://github.com/hanscees/dockerscripts/blob/master/scripts/tomav-renew-certs)
+If you have another source for SSL/TLS certificates you can import them into the server via an external script. The external script can be found here: [external certificate import script][hanscees-renewcerts]
 
 The steps to follow are these:
 1. Transport the new certificates to ./config/sll (/tmp/ssl in the container)
@@ -570,16 +567,7 @@ fi
 
 ```
 
-
-
-
- 
-
-
-
-
-
-
-  
-
-
+[github-file-compose]: https://github.com/docker-mailserver/docker-mailserver/blob/master/docker-compose.yml
+[github-issue-1440]: https://github.com/docker-mailserver/docker-mailserver/issues/1440
+[hanscees-renewcerts]: https://github.com/hanscees/dockerscripts/blob/master/scripts/tomav-renew-certs
+[youtous-mailtraefik]: https://github.com/youtous/docker-mailserver-traefik

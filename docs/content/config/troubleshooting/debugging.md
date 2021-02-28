@@ -6,7 +6,7 @@ title: 'Troubleshooting | Debugging'
 
 ## Enable verbose debugging output
 
-You may find it useful to enable the [DMS_DEBUG](https://github.com/tomav/docker-mailserver#dms_debug) environment variable.
+You may find it useful to enable the [DMS_DEBUG][github-file-env-dmsdebug] environment variable.
 
 ## Invalid username or Password
 
@@ -64,3 +64,5 @@ Some hosting provides have a stealth block on port 25. Make sure to check with y
 Common hosting providers known to have this issue:
 - [Azure](https://docs.microsoft.com/en-us/azure/virtual-network/troubleshoot-outbound-smtp-connectivity)
 - [AWS EC2](https://aws.amazon.com/premiumsupport/knowledge-center/ec2-port-25-throttle/)
+
+[github-file-env-dmsdebug]: https://github.com/docker-mailserver/docker-mailserver/blob/master/ENVIRONMENT.md#dms_debug

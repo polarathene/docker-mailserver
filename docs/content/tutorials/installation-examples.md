@@ -4,7 +4,7 @@ title: 'Tutorials | Installation Examples'
 
 ## Building a simple mailserver
 
-**WARNING**: Adding the docker network's gateway to the list of trusted hosts, e.g. using the `network` or `connected-networks` option, can create an [**open relay**](https://en.wikipedia.org/wiki/Open_mail_relay), [for instance](https://github.com/tomav/docker-mailserver/issues/1405#issuecomment-590106498) if IPv6 is enabled on the host machine but not in Docker. ([#1405](https://github.com/tomav/docker-mailserver/issues/1405))
+**WARNING**: Adding the docker network's gateway to the list of trusted hosts, e.g. using the `network` or `connected-networks` option, can create an [**open relay**](https://en.wikipedia.org/wiki/Open_mail_relay), for instance [if IPv6 is enabled on the host machine but not in Docker][github-issue-1405-comment].
 
 We are going to use this docker based mailserver:
 
@@ -14,7 +14,7 @@ We are going to use this docker based mailserver:
   cd /var/ds/mail.example.org/
 
   curl -o setup.sh \
-      https://raw.githubusercontent.com/tomav/docker-mailserver/master/setup.sh
+      https://raw.githubusercontent.com/docker-mailserver/docker-mailserver/master/setup.sh
   chmod a+x ./setup.sh
   ```
 
@@ -55,8 +55,8 @@ We are going to use this docker based mailserver:
   
   For more details about the environment variables that can be used,
   and their meaning and possible values, check also these:
-  - https://github.com/tomav/docker-mailserver#environment-variables
-  - https://github.com/tomav/docker-mailserver/blob/master/.env.dist
+  - [Environtment Variables][github-file-env]
+  - [`mailserver.env` file][github-file-dotenv]
   
   Make sure to set the proper `domainname` that you will use for the
   emails. We forward only SMTP ports (not POP3 and IMAP) because we
@@ -245,7 +245,7 @@ Keep in mind that it is neccessary to use port `10993` here. More information be
 
 ### Configuration of the backend (`dovecot` and `postfix`)
 
-The following changes can be achived completely by adding the content to the appropriate files by using the projects [function to overwrite config files](https://github.com/docker-mailserver/docker-mailserver/wiki/List-of-optional-config-files-&-directories).
+The following changes can be achived completely by adding the content to the appropriate files by using the projects [function to overwrite config files][docs-optionalconfig].
 
 Changes for `postfix` can be applied by adding the following content to `config/postfix-main.cf`:
 ```
@@ -271,3 +271,8 @@ service imap-login {
 }
 ```
 Note that port `10993` is used here to avoid conflicts with internal systems like `postscreen` and `amavis` as they will exchange messages on the default port and obviously have a different origin then compared to the proxy.
+
+[docs-optionalconfig]: ../../advanced/optional-config.md
+[github-file-env]: https://github.com/docker-mailserver/docker-mailserver/blob/master/ENVIRONMENT.md
+[github-file-dotenv]: https://github.com/docker-mailserver/docker-mailserver/blob/master/mailserver.env
+[github-issue-1405-comment]: https://github.com/docker-mailserver/docker-mailserver/issues/1405#issuecomment-590106498

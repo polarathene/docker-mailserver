@@ -43,4 +43,6 @@ This can be solved by supporting IPv6 connections all the way to the `docker-mai
 
 ## Further discussion
 
-See [issue #1438](https://github.com/tomav/docker-mailserver/issues/1438)
+See [#1438][github-issue-1438]
+
+[github-issue-1438]: https://github.com/docker-mailserver/docker-mailserver/issues/1438

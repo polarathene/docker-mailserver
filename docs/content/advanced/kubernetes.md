@@ -4,7 +4,7 @@ title: 'Kubernetes'
 
 ## Deployment example
 
-There is nothing much in deploying mailserver to Kubernetes itself. The things are pretty same as in [`docker-compose.yml`][1], but with Kubernetes syntax.
+There is nothing much in deploying mailserver to Kubernetes itself. The things are pretty same as in [`docker-compose.yml`][github-file-compose], but with Kubernetes syntax.
 
 ```yaml
 apiVersion: v1
@@ -232,10 +232,10 @@ spec:
 ```
 
 __Note:__
-Any sensitive data (keys, etc) should be deployed via [Secrets][50]. Other configuration just fits well into [ConfigMaps][51].
+Any sensitive data (keys, etc) should be deployed via [Secrets][k8s-config-secret]. Other configuration just fits well into [ConfigMaps][k8s-config-pod].
 
 __Note:__
-Make sure that [Pod][52] is [assigned][59] to specific [Node][53] in case you're using volume for data directly with `hostPath`. Otherwise Pod can be rescheduled on a different Node and previous data won't be found. Except the case when you're using some shared filesystem on your Nodes.
+Make sure that [Pod][k8s-workload-pod] is [assigned][k8s-assign-pod-node] to specific [Node][k8s-nodes] in case you're using volume for data directly with `hostPath`. Otherwise Pod can be rescheduled on a different Node and previous data won't be found. Except the case when you're using some shared filesystem on your Nodes.
 
 
 
@@ -244,11 +244,11 @@ Make sure that [Pod][52] is [assigned][59] to specific [Node][53] in case you're
 
 The hard part with Kubernetes is to expose deployed mailserver to outside world. Kubernetes provides multiple ways for doing that. Each has its downsides and complexity.
 
-The major problem with exposing mailserver to outside world in Kubernetes is to [preserve real client IP][57]. Real client IP is required by mailserver for performing IP-based SPF checks and spam checks.
+The major problem with exposing mailserver to outside world in Kubernetes is to [preserve real client IP][k8s-service-source-ip]. Real client IP is required by mailserver for performing IP-based SPF checks and spam checks.
 
-Preserving real client IP is relatively [non-trivial in Kubernetes][57] and most exposing ways do not provide it. So, it's up to you to decide which exposing way suits better your needs in a price of complexity.
+Preserving real client IP is relatively [non-trivial in Kubernetes][k8s-service-source-ip] and most exposing ways do not provide it. So, it's up to you to decide which exposing way suits better your needs in a price of complexity.
 
-If you do not require SPF checks for incoming mails you may disable them in [Postfix configuration][2] by dropping following line (which removes `check_policy_service unix:private/policyd-spf` option):
+If you do not require SPF checks for incoming mails you may disable them in [Postfix configuration][docs-postfix] by dropping following line (which removes `check_policy_service unix:private/policyd-spf` option):
 ```yaml
 kind: ConfigMap
 apiVersion: v1
@@ -279,7 +279,7 @@ metadata:
 
 ### External IPs Service
 
-The simplest way is to expose mailserver as a [Service][55] with [external IPs][56].
+The simplest way is to expose mailserver as a [Service][k8s-network-service] with [external IPs][k8s-network-external-ip].
 
 ```yaml
 kind: Service
@@ -309,7 +309,7 @@ spec:
 
 ### Proxy port to Service
 
-The [Proxy Pod][58] helps to avoid necessity of specifying external IPs explicitly. This comes in price of complexity: you must deploy Proxy Pod on each [Node][53] you want to expose mailserver on.
+The [Proxy Pod][k8s-proxy-service] helps to avoid necessity of specifying external IPs explicitly. This comes in price of complexity: you must deploy Proxy Pod on each [Node][k8s-nodes] you want to expose mailserver on.
 
 ##### Downsides
 
@@ -318,7 +318,7 @@ The [Proxy Pod][58] helps to avoid necessity of specifying external IPs explicit
 
 ### Bind to concrete Node and use host network
 
-The simplest way to preserve real client IP is to use `hostPort` and `hostNetwork: true` in the mailserver [Pod][52]. This comes in price of availability: you can talk to mailserver from outside world only via IPs of [Node][53] where mailserver is deployed.
+The simplest way to preserve real client IP is to use `hostPort` and `hostNetwork: true` in the mailserver [Pod][k8s-workload-pod]. This comes in price of availability: you can talk to mailserver from outside world only via IPs of [Node][k8s-nodes] where mailserver is deployed.
 
 ```yaml
 kind: Deployment
@@ -355,7 +355,7 @@ metadata:
 This way is ideologically the same as [using Proxy Pod](#proxy-port-to-service), but instead of a separate proxy pod, you configure your ingress to proxy TCP traffic to the mailserver pod using the PROXY protocol, which preserves the real client IP.
 
 #### Configure your ingress
-With an [NGINX ingress controller][12], set `externalTrafficPolicy: Local` for its service, and add the following to the TCP services config map (as described [here][13]):
+With an [NGINX ingress controller][k8s-nginx], set `externalTrafficPolicy: Local` for its service, and add the following to the TCP services config map (as described [here][k8s-nginx-expose]):
 ```yaml
 # ...
   25:  "mailserver/mailserver:25::PROXY"
@@ -365,10 +365,10 @@ With an [NGINX ingress controller][12], set `externalTrafficPolicy: Local` for i
 # ...
 ```
 
-With [HAProxy][11], the configuration should look similar to the above. If you know what it actually looks like, add an example here. :)
+With [HAProxy][dockerhub-haproxy], the configuration should look similar to the above. If you know what it actually looks like, add an example here. :)
 
 #### Configure the mailserver
-Then, configure both [Postfix][2] and [Dovecot][3] to expect the PROXY protocol:
+Then, configure both [Postfix][docs-postfix] and [Dovecot][docs-dovecot] to expect the PROXY protocol:
 ```yaml
 kind: ConfigMap
 apiVersion: v1
@@ -425,7 +425,7 @@ spec:
 
 ## Let's Encrypt certificates
 
-[Kube-Lego][10] may be used for a role of Let's Encrypt client. It works with Kubernetes [Ingress Resources][54] and automatically issues/manages certificates/keys for exposed services via Ingresses.
+[Kube-Lego][kube-lego] may be used for a role of Let's Encrypt client. It works with Kubernetes [Ingress Resources][k8s-network-ingress] and automatically issues/manages certificates/keys for exposed services via Ingresses.
 
 ```yaml
 kind: Ingress
@@ -451,8 +451,8 @@ spec:
         - example.com
 ```
 
-Now, you can use Let's Encrypt cert and key from `mailserver.tls` [Secret][50]
-in your [Pod][52] spec.
+Now, you can use Let's Encrypt cert and key from `mailserver.tls` [Secret][k8s-config-secret]
+in your [Pod][k8s-workload-pod] spec.
 
 ```yaml
 # ...
@@ -476,24 +476,20 @@ in your [Pod][52] spec.
 # ...
 ```
 
-
-
-
-
-[1]: https://github.com/tomav/docker-mailserver/blob/master/docker-compose.yml.dist
-[2]: https://github.com/tomav/docker-mailserver/wiki/Overwrite-Default-Postfix-Configuration
-[3]: https://github.com/tomav/docker-mailserver/wiki/Override-Default-Dovecot-Configuration
-[10]: https://github.com/jetstack/kube-lego
-[11]: https://hub.docker.com/_/haproxy
-[12]: https://kubernetes.github.io/ingress-nginx/
-[13]: https://kubernetes.github.io/ingress-nginx/user-guide/exposing-tcp-udp-services/
-[50]: https://kubernetes.io/docs/concepts/configuration/secret
-[51]: https://kubernetes.io/docs/tasks/configure-pod-container/configmap
-[52]: https://kubernetes.io/docs/concepts/workloads/pods/pod
-[53]: https://kubernetes.io/docs/concepts/architecture/nodes
-[54]: https://kubernetes.io/docs/concepts/services-networking/ingress
-[55]: https://kubernetes.io/docs/concepts/services-networking/service
-[56]: https://kubernetes.io/docs/concepts/services-networking/service/#external-ips
-[57]: https://kubernetes.io/docs/tutorials/services/source-ip
-[58]: https://github.com/kubernetes/contrib/tree/master/for-demos/proxy-to-service
-[59]: https://kubernetes.io/docs/concepts/configuration/assign-pod-node
+[docs-dovecot]: ./override-defaults/dovecot.md
+[docs-postfix]: ./override-defaults/postfix.md
+[github-file-compose]: https://github.com/docker-mailserver/docker-mailserver/blob/master/docker-compose.yml
+[dockerhub-haproxy]: https://hub.docker.com/_/haproxy
+[kube-lego]: https://github.com/jetstack/kube-lego
+[k8s-assign-pod-node]: https://kubernetes.io/docs/concepts/configuration/assign-pod-node
+[k8s-config-pod]: https://kubernetes.io/docs/tasks/configure-pod-container/configmap
+[k8s-config-secret]: https://kubernetes.io/docs/concepts/configuration/secret
+[k8s-nginx]: https://kubernetes.github.io/ingress-nginx
+[k8s-nginx-expose]: https://kubernetes.github.io/ingress-nginx/user-guide/exposing-tcp-udp-services
+[k8s-network-ingress]: https://kubernetes.io/docs/concepts/services-networking/ingress
+[k8s-network-service]: https://kubernetes.io/docs/concepts/services-networking/service
+[k8s-network-external-ip]: https://kubernetes.io/docs/concepts/services-networking/service/#external-ips
+[k8s-nodes]: https://kubernetes.io/docs/concepts/architecture/nodes
+[k8s-proxy-service]: https://github.com/kubernetes/contrib/tree/master/for-demos/proxy-to-service
+[k8s-service-source-ip]: https://kubernetes.io/docs/tutorials/services/source-ip
+[k8s-workload-pod]: https://kubernetes.io/docs/concepts/workloads/pods/pod

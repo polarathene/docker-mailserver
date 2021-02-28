@@ -23,13 +23,13 @@ To add a SPF record in your DNS, insert the following line in your DNS zone:
 This enables the _Softfail_ mode for SPF. You could first add this SPF record with a very low TTL.  
 _SoftFail_ is a good setting for getting started and testing, as it lets all email through, with spams tagged as such in the mailbox.
 
-After verification, you _might_ want to change your SPF record to `v=spf1 mx -all` so as to enforce the _HardFail_ policy. See http://www.open-spf.org/SPF_Record_Syntax/ for more details about SPF policies.
+After verification, you _might_ want to change your SPF record to `v=spf1 mx -all` so as to enforce the _HardFail_ policy. See http://www.open-spf.org/SPF_Record_Syntax for more details about SPF policies.
 
 In any case, increment the SPF record's TTL to its final value.
 
 ## Backup MX, Secondary MX
 
-For whitelisting a IP-Address from the SPF test, you can create a config file (see [policyd-spf.conf](http://www.linuxcertif.com/man/5/policyd-spf.conf/)) and mount that file into `/etc/postfix-policyd-spf-python/policyd-spf.conf`.
+For whitelisting a IP-Address from the SPF test, you can create a config file (see [policyd-spf.conf](https://www.linuxcertif.com/man/5/policyd-spf.conf)) and mount that file into `/etc/postfix-policyd-spf-python/policyd-spf.conf`.
 
 **Example:**
 

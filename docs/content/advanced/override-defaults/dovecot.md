@@ -5,7 +5,7 @@ title: 'Override the Default Configs | Dovecot'
 # Add configuration
 
 The Dovecot default configuration can easily be extended providing a `config/dovecot.cf` file.
-[Dovecot documentation](http://wiki.dovecot.org/FrontPage) remains the best place to find configuration options.
+[Dovecot documentation](https://wiki.dovecot.org) remains the best place to find configuration options.
 
 Your `docker-mailserver` folder should look like this example:
 
@@ -51,7 +51,7 @@ To debug your dovecot configuration you can use this command:
 ./setup.sh debug login doveconf | grep <some-keyword>
 ```
 
-[setup.sh](https://github.com/tomav/docker-mailserver/blob/master/setup.sh) is included in the `docker-mailserver` repository.
+[setup.sh][github-file-setupsh] is included in the `docker-mailserver` repository.
 
 or
 
@@ -64,3 +64,5 @@ The  `config/dovecot.cf` is copied to `/etc/dovecot/local.conf`. To check this f
 ```sh
 docker exec -ti <your-container-name> cat /etc/dovecot/local.conf
 ```
+
+[github-file-setupsh]: https://github.com/docker-mailserver/docker-mailserver/blob/master/setup.sh

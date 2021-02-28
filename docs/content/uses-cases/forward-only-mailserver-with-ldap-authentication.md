@@ -27,7 +27,7 @@ We can create aliases with `./setup.sh`, like this:
 
 ## Authenticating with LDAP
 
-If you want to send emails from outside the mailserver you have to authenticate somehow (with a username and password). One way of doing it is described in [this discussion](https://github.com/tomav/docker-mailserver/issues/1247). However if there are many user accounts, it is better to use authentication with LDAP. The settings for this on `mailserver.env` are:
+If you want to send emails from outside the mailserver you have to authenticate somehow (with a username and password). One way of doing it is described in [this discussion][github-issue-1247]. However if there are many user accounts, it is better to use authentication with LDAP. The settings for this on `mailserver.env` are:
 
 ```console
 ENABLE_LDAP=1
@@ -60,7 +60,7 @@ userPassword: {SSHA}abcdefghi123456789
 email: real-email-address@external-domain.com
 ```
 
-This structure is different from what is expected/assumed from the configuration scripts of the mailserver, so it doesn't work just by using the `LDAP_QUERY_FILTER_...` settings. Instead, I had to do [custom configuration](https://github.com/tomav/docker-mailserver#custom-user-changes--patches). I created the script `config/user-patches.sh`, with a content like this:
+This structure is different from what is expected/assumed from the configuration scripts of the mailserver, so it doesn't work just by using the `LDAP_QUERY_FILTER_...` settings. Instead, I had to do [custom configuration][github-file-readme-patches]. I created the script `config/user-patches.sh`, with a content like this:
 
 ```bash
 #!/bin/bash
@@ -100,3 +100,6 @@ You see that besides `query_filter`, I had to customize as well `result_attribut
 For more details about using LDAP see: [LDAP managed mail server with Postfix and Dovecot for multiple domains](https://www.vennedey.net/resources/2-LDAP-managed-mail-server-with-Postfix-and-Dovecot-for-multiple-domains)
 
 Another solution that serves as a forward-only mailserver is this: https://gitlab.com/docker-scripts/postfix
+
+[github-file-readme-patches]: https://github.com/docker-mailserver/docker-mailserver/blob/master/README.md#custom-user-changes--patches
+[github-issue-1247]: https://github.com/docker-mailserver/docker-mailserver/issues/1247

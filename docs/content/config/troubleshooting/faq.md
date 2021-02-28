@@ -21,7 +21,7 @@ In order to do so, you'll probably want to push your config updates to your serv
 See [supervisorctl's documentation](http://supervisord.org/running.html#running-supervisorctl).
 
 Tips: to add/update/delete an email account, there is no need to restart postfix/dovecot service inside the container after using setup.sh script.
-For more information, see [issues/1639](https://github.com/tomav/docker-mailserver/issues/1639)
+For more information, see [#1639][github-issue-1639]
 
 ### How can I sync container with host date/time? Timezone?
 
@@ -260,7 +260,7 @@ The only thing is that we provide a `self-signed` certificate tool and a `letsen
 
 ### I just moved from my old mail server but "it doesn't work".
 If this migration implies a DNS modification, be sure to wait for DNS propagation before opening an issue.
-Few examples of symptoms can be found [here](https://github.com/tomav/docker-mailserver/issues/95) or [here](https://github.com/tomav/docker-mailserver/issues/97).  
+Few examples of symptoms can be found [here][github-issue-95] or [here][github-issue-97].  
 This could be related to a modification of your `MX` record, or the IP mapped to `mail.my-domain.tld`. Additionally, [validate your DNS configuration](https://intodns.com/). 
 
 If everything is OK regarding DNS, please provide [formatted logs](https://guides.github.com/features/mastering-markdown/) and config files. This will allow us to help you.
@@ -277,11 +277,11 @@ Please note that clamav can consume a lot of memory, as it reads the entire sign
 
 Yes, by Adding the Environment Variable `PERMIT_DOCKER: network`.
 
-**WARNING**: Adding the docker network's gateway to the list of trusted hosts, e.g. using the `network` or `connected-networks` option, can create an [**open relay**](https://en.wikipedia.org/wiki/Open_mail_relay), [for instance](https://github.com/tomav/docker-mailserver/issues/1405#issuecomment-590106498) if IPv6 is enabled on the host machine but not in Docker. ([#1405](https://github.com/tomav/docker-mailserver/issues/1405))
+**WARNING**: Adding the docker network's gateway to the list of trusted hosts, e.g. using the `network` or `connected-networks` option, can create an [**open relay**](https://en.wikipedia.org/wiki/Open_mail_relay), for instance [if IPv6 is enabled on the host machine but not in Docker][github-issue-1405-comment].
 
 ### How can I authenticate users with SMTP_ONLY?
 
-See https://github.com/tomav/docker-mailserver/issues/1247 for an example.
+See [#1247][github-issue-1247] for an example.
 
 *ToDo: Write a HowTo/UseCase/Tutorial about authentication with SMTP_ONLY.*
 
@@ -314,7 +314,7 @@ proxy_interfaces = X.X.X.X (your public IP)
 ### What about updates
 
 You can of course use a own script or every now and then pull && stop && rm && start the images but there are tools available for this.
-There is a page in the [Update and cleanup](Update-and-cleanup) wiki page that explains how to use it the docker way.
+There is a page in the [Update and Cleanup][docs-maintenance] wiki page that explains how to use it the docker way.
 
 
 ### Howto adjust settings with the user-patches.sh script
@@ -346,7 +346,7 @@ If you want to test it you can move into the running container, run it and see i
 
 `exit`
 
-You can do a lot of things with such a script. You can find an example user-patches.sh script here: [example user-patches.sh script](https://github.com/hanscees/dockerscripts/blob/master/scripts/tomav-user-patches.sh)
+You can do a lot of things with such a script. You can find an example user-patches.sh script here: [example user-patches.sh script][hanscees-userpatches]
 
 #### Special case patching supervisord config
 It seems worth noting, that the `user-patches.sh` gets executed trough supervisord. If you need to patch some supervisord config (e.g. `/etc/supervisor/conf.d/saslauth.conf`), the patching happens too late.
@@ -357,12 +357,10 @@ sed -i 's/rimap -r/rimap/' /etc/supervisor/conf.d/saslauth.conf
 supervisorctl update
 ```
 
-
-
-
-
-
-
-
-
-
+[docs-maintenance]: ../../advanced/maintenance/update-and-cleanup.md
+[github-issue-95]: https://github.com/docker-mailserver/docker-mailserver/issues/95
+[github-issue-97]: https://github.com/docker-mailserver/docker-mailserver/issues/97
+[github-issue-1247]: https://github.com/docker-mailserver/docker-mailserver/issues/1247
+[github-issue-1405-comment]: https://github.com/docker-mailserver/docker-mailserver/issues/1405#issuecomment-590106498
+[github-issue-1639]: https://github.com/docker-mailserver/docker-mailserver/issues/1639
+[hanscees-userpatches]: https://github.com/hanscees/dockerscripts/blob/master/scripts/tomav-user-patches.sh
