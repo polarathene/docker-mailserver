@@ -23,10 +23,10 @@ This is a list of all configuration files and directories which are optional or 
 - **postfix-sasl-password.cf:** listing of relayed domains with their respective username:password. Modify via `setup.sh relay add-auth <domain> <username> [<password>]`. (Docs: [Relay-Hosts Auth][docs-relayhosts-senderauth])
 - **postfix-relaymap.cf:** domain-specific relays and exclusions Modify via `setup.sh relay add-domain` and `setup.sh relay exclude-domain`. (Docs: [Relay-Hosts Senders][docs-relayhosts-senderhost])
 - **postfix-regexp.cf:** Regular expression alias file. (Docs: [Aliases][docs-aliases-regex])
-- **ldap-users.cf:** Configuration for the virtual user mapping (virtual_mailbox_maps). See the [`start-mailserver.sh`][github-commit-startmailserver-L583] script.
-- **ldap-groups.cf:** Configuration for the virtual alias mapping (virtual_alias_maps). See the [`start-mailserver.sh`][github-commit-startmailserver-L583] script.
-- **ldap-aliases.cf:** Configuration for the virtual alias mapping (virtual_alias_maps). See the [`start-mailserver.sh`][github-commit-startmailserver-L583] script.
-- **ldap-domains.cf:** Configuration for the virtual domain mapping (virtual_mailbox_domains). See the [`start-mailserver.sh`][github-commit-startmailserver-L583] script.
+- **ldap-users.cf:** Configuration for the virtual user mapping (virtual_mailbox_maps). See the [`setup-stack.sh`][github-commit-setup-stack.sh-L411] script.
+- **ldap-groups.cf:** Configuration for the virtual alias mapping (virtual_alias_maps). See the [`setup-stack.sh`][github-commit-setup-stack.sh-L411] script.
+- **ldap-aliases.cf:** Configuration for the virtual alias mapping (virtual_alias_maps). See the [`setup-stack.sh`][github-commit-setup-stack.sh-L411] script.
+- **ldap-domains.cf:** Configuration for the virtual domain mapping (virtual_mailbox_domains). See the [`setup-stack.sh`][github-commit-setup-stack.sh-L411] script.
 - **whitelist_clients.local:** Whitelisted domains, not considered by postgrey. Enter one host or domain per line.
 - **spamassassin-rules.cf:** Antispam rules for Spamassassin. (Docs: [FAQ - SpamAssassin Rules][docs-faq-spamrules])
 - **fail2ban-fail2ban.cf:** Additional config options for fail2ban.cf. (Docs: [Fail2Ban][docs-fail2ban])
@@ -47,4 +47,4 @@ This is a list of all configuration files and directories which are optional or 
 [docs-sieve]: ./mail-sieve.md
 [docs-setupsh]: ../config/setup.sh.md
 [docs-ssl]: ../config/security/ssl.md
-[github-commit-startmailserver-L583]: https://github.com/docker-mailserver/docker-mailserver/blob/a564cca0e55feba40e273a5419d4c9a864460bf6/target/start-mailserver.sh#L583
+[github-commit-setup-stack.sh-L411]: https://github.com/docker-mailserver/docker-mailserver/blob/941e7acdaebe271eaf3d296b36d4d81df4c54b90/target/scripts/startup/setup-stack.sh#L411
