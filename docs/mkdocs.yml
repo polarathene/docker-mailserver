@@ -83,3 +83,4 @@ nav:
   - Use Cases:
       - 'Forward-Only Mailserver with LDAP': uses-cases/forward-only-mailserver-with-ldap-authentication.md
   - DockerHub: https://hub.docker.com/repository/docker/mailserver/docker-mailserver
+  - GHCR: https://github.com/orgs/docker-mailserver/packages/container/package/docker-mailserver
