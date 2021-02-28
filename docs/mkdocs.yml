@@ -10,7 +10,31 @@ theme:
   name: 'material'
   icon:
     repo: fontawesome/brands/github
+  features:
+    - navigation.tabs
+    - navigation.expand
 
+markdown_extensions:
+  - toc:
+      permalink: ⚓︎
+  - abbr
+  - attr_list
+  - admonition
+  - pymdownx.highlight:
+      extend_pygments_lang:
+        - name: yml
+          lang: yaml
+        - name: cf
+          lang: cfg
+        - name: conf
+          lang: cfg
+  - pymdownx.superfences
+  - pymdownx.magiclink
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+
+# If referencing a file more than once, the URLs will all point to the nav hierarchy of the final file.
 nav:
   - Home: index.md
   - 'An Introduction to Mail Servers': introduction.md
@@ -49,7 +73,6 @@ nav:
       - Kubernetes: advanced/kubernetes.md
       - IPv6: advanced/ipv6.md
   - Tutorials:
-      - FAQ: config/troubleshooting/faq.md
       - 'Installation Examples': tutorials/installation-examples.md
   - Use Cases:
       - 'Forward-Only Mailserver with LDAP': uses-cases/forward-only-mailserver-with-ldap-authentication.md
