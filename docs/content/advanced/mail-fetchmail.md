@@ -5,16 +5,14 @@ title: 'Email Gathering with Fetchmail'
 To enable the [fetchmail][fetchmail-website] service to retrieve e-mails set the environment variable `ENABLE_FETCHMAIL` to `1`. Your `docker-compose.yml` file should look like following snippet:
 
 ```yaml
-...
 environment:
   - ENABLE_FETCHMAIL=1
   - FETCHMAIL_POLL=300
-...
 ```
 
 Generate a file called `fetchmail.cf` and place it in the `config` folder. Your `docker-mailserver` folder should look like this example:
 
-```
+```txt
 ├── config
 │   ├── dovecot.cf
 │   ├── fetchmail.cf
@@ -30,7 +28,7 @@ A detailed description of the configuration options can be found in the [online 
 
 ### Example IMAP Configuration
 
-```
+```txt
 poll 'imap.example.com' proto imap
 	user 'username'
 	pass 'secret'
@@ -40,7 +38,7 @@ poll 'imap.example.com' proto imap
 
 ### Example POP3 Configuration
 
-```
+```txt
 poll 'pop3.example.com' proto pop3
 	user 'username'
 	pass 'secret'
@@ -57,15 +55,17 @@ More details how to configure fetchmail can be found in the [fetchmail man page 
 By default the fetchmail service searches every 5 minutes for new mails on your external mail accounts. You can override this default value by changing the ENV variable `FETCHMAIL_POLL`.
 
 ```yaml
+environment:
   - FETCHMAIL_POLL=60
 ```
+
 You must specify a numeric argument which is a polling interval in seconds. The example above polls every minute for new mails.
 
 ## Debugging
 
 To debug your `fetchmail.cf` configuration run this command:
 
-```
+```sh
 ./setup.sh debug fetchmail
 ```
 
@@ -73,7 +73,7 @@ For more informations about the configuration script `setup.sh` [read the corres
 
 Here a sample output of `./setup.sh debug fetchmail`:
 
-```
+```console
 fetchmail: 6.3.26 querying outlook.office365.com (protocol POP3) at Mon Aug 29 22:11:09 2016: poll started
 Trying to connect to 132.245.48.18/995...connected.
 fetchmail: Server certificate:

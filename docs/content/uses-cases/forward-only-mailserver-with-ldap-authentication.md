@@ -8,7 +8,7 @@ A **forward-only** mailserver does not have any local mailboxes. Instead, it has
 
 The important settings for this setup (on `mailserver.env`) are these:
 
-```console
+```sh
 PERMIT_DOCKER=host
 ENABLE_POP3=
 ENABLE_CLAMAV=0
@@ -21,7 +21,7 @@ Since there are no local mailboxes, we use `SMTP_ONLY=1` to disable `dovecot`. W
 
 We can create aliases with `./setup.sh`, like this:
 
-```bash
+```sh
 ./setup.sh alias add <alias-address> <external-email-account>
 ```
 

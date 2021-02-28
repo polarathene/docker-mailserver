@@ -27,13 +27,13 @@ Note for users of the previous AWS_SES_* variables: please update your configura
 
 Sender dependent authentication is done in `config/postfix-sasl-password.cf`. You can create this file manually, or use 
 
-```bash
+```sh
 setup.sh relay add-auth <domain> <username> [<password>]
 ```
 
 An example configuration file looks like this:
 
-```
+```txt
 @domain1.com           relay_user_1:password_1
 @domain2.com           relay_user_2:password_2
 ```
@@ -46,13 +46,13 @@ If there is no other configuration, this will cause Postfix to deliver email thr
 
 Sender dependent relay hosts are configured in `config/postfix-relaymap.cf`. You can create this file manually, or use
 
-```bash
+```sh
 setup.sh relay add-domain <domain> <host> [<port>]
 ```
 
 An example configuration file looks like this:
 
-```
+```txt
 @domain1.com        [relay1.org]:587
 @domain2.com        [relay2.org]:2525
 ```
@@ -64,13 +64,13 @@ Combined with the previous configuration in `config/postfix-sasl-password.cf`, t
 
 If you want mail sent from some domains to be delivered directly, you can exclude them from being delivered via the default relay by adding them to `config/postfix-relaymap.cf` with no destination. You can also do this via 
 
-```bash
+```sh
 setup.sh relay exclude-domain <domain>
 ```
 
 Extending the configuration file from above:
 
-```
+```txt
 @domain1.com        [relay1.org]:587
 @domain2.com        [relay2.org]:2525
 @domain3.com

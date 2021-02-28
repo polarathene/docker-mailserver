@@ -9,7 +9,7 @@ The Dovecot default configuration can easily be extended providing a `config/dov
 
 Your `docker-mailserver` folder should look like this example:
 
-```
+```txt
 ├── config
 │   ├── dovecot.cf
 │   ├── postfix-accounts.cf
@@ -20,7 +20,7 @@ Your `docker-mailserver` folder should look like this example:
 
 One common option to change is the maximum number of connections per user:
 
-```
+```cf
 mail_max_userip_connections = 100
 ```
 
@@ -28,7 +28,7 @@ Another important option is the `default_process_limit` (defaults to `100`). If 
 
 ## Override Configuration
 
-For major configuration changes it’s best to override the `dovecot` configuration files. For each configuration file you want to override, add a list entry under the `volumes:` key.
+For major configuration changes it’s best to override the dovecot configuration files. For each configuration file you want to override, add a list entry under the `volumes` key.
 
 ```yaml
 version: '2'
@@ -40,7 +40,6 @@ services:
       - maildata:/var/mail
       ...
       - ./config/dovecot/10-master.conf:/etc/dovecot/conf.d/10-master.conf
-
 ```
 
 ## Debugging
@@ -59,7 +58,7 @@ or
 docker exec -ti <your-container-name> doveconf | grep <some-keyword>
 ```
 
-The  `config/dovecot.cf` is copied to `/etc/dovecot/local.conf`. To check this file run:
+The `config/dovecot.cf` is copied to `/etc/dovecot/local.conf`. To check this file run:
 
 ```sh
 docker exec -ti <your-container-name> cat /etc/dovecot/local.conf

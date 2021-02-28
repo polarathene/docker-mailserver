@@ -6,7 +6,7 @@ title: 'Troubleshooting | Debugging'
 
 ## Enable Verbose Debugging Output
 
-You may find it useful to enable the [DMS_DEBUG][github-file-env-dmsdebug] environment variable.
+You may find it useful to enable the [`DMS_DEBUG`][github-file-env-dmsdebug] environment variable.
 
 ## Invalid Username or Password
 

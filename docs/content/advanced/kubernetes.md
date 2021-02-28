@@ -11,7 +11,7 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: mailserver
----  
+---
 kind: ConfigMap
 apiVersion: v1
 metadata:
@@ -66,7 +66,7 @@ data:
   TrustedHosts: |
     127.0.0.1
     localhost
- 
+
   #user-patches.sh: |
   #  #!/bin/bash
 
@@ -228,7 +228,6 @@ spec:
             claimName: mail-storage
         - name: tmp-files
           emptyDir: {}
-
 ```
 
 __Note:__
@@ -246,6 +245,7 @@ The major problem with exposing mailserver to outside world in Kubernetes is to 
 Preserving real client IP is relatively [non-trivial in Kubernetes][k8s-service-source-ip] and most exposing ways do not provide it. So, it's up to you to decide which exposing way suits better your needs in a price of complexity.
 
 If you do not require SPF checks for incoming mails you may disable them in [Postfix configuration][docs-postfix] by dropping following line (which removes `check_policy_service unix:private/policyd-spf` option):
+
 ```yaml
 kind: ConfigMap
 apiVersion: v1
@@ -265,12 +265,11 @@ apiVersion: extensions/v1beta1
 metadata:
   name: mailserver
 # ...
-          volumeMounts:
-            - name: config
-              subPath: postfix-main.cf
-              mountPath: /tmp/docker-mailserver/postfix-main.cf
-              readOnly: true
-# ...
+    volumeMounts:
+      - name: config
+        subPath: postfix-main.cf
+        mountPath: /tmp/docker-mailserver/postfix-main.cf
+        readOnly: true
 ```
 
 ### External IPs Service
@@ -292,8 +291,8 @@ spec:
       port: 25
       targetPort: smtp
 # ...
-  externalIPs: 
-    - 80.11.12.10  
+  externalIPs:
+    - 80.11.12.10
 ```
 
 **Downsides**
@@ -324,7 +323,7 @@ metadata:
       hostNetwork: true
 # ...
       containers:
-# ...      
+# ...
           ports:
             - name: smtp
               containerPort: 25
@@ -348,21 +347,22 @@ metadata:
 This way is ideologically the same as [using Proxy Pod](#proxy-port-to-service), but instead of a separate proxy pod, you configure your ingress to proxy TCP traffic to the mailserver pod using the PROXY protocol, which preserves the real client IP.
 
 #### Configure your Ingress
+
 With an [NGINX ingress controller][k8s-nginx], set `externalTrafficPolicy: Local` for its service, and add the following to the TCP services config map (as described [here][k8s-nginx-expose]):
+
 ```yaml
-# ...
-  25:  "mailserver/mailserver:25::PROXY"
-  465: "mailserver/mailserver:465::PROXY"
-  587: "mailserver/mailserver:587::PROXY"
-  993: "mailserver/mailserver:993::PROXY"
-# ...
+25:  "mailserver/mailserver:25::PROXY"
+465: "mailserver/mailserver:465::PROXY"
+587: "mailserver/mailserver:587::PROXY"
+993: "mailserver/mailserver:993::PROXY"
 ```
 
-With [HAProxy][dockerhub-haproxy], the configuration should look similar to the above. If you know what it actually looks like, add an example here. :)
+With [HAProxy][dockerhub-haproxy], the configuration should look similar to the above. If you know what it actually looks like, add an example here. :smiley:
 
 #### Configure the Mailserver
 
 Then, configure both [Postfix][docs-postfix] and [Dovecot][docs-dovecot] to expect the PROXY protocol:
+
 ```yaml
 kind: ConfigMap
 apiVersion: v1
@@ -377,7 +377,8 @@ data:
     submission/inet/smtpd_upstream_proxy_protocol=haproxy
     smtps/inet/smtpd_upstream_proxy_protocol=haproxy
   dovecot.cf: |
-    haproxy_trusted_networks = 10.0.0.0/8, 127.0.0.0/8   # Assuming your ingress controller is bound to 10.0.0.0/8
+    # Assuming your ingress controller is bound to 10.0.0.0/8
+    haproxy_trusted_networks = 10.0.0.0/8, 127.0.0.0/8
     service imap-login {
       inet_listener imaps {
         haproxy = yes
@@ -408,7 +409,6 @@ spec:
               subPath: dovecot.cf
               mountPath: /tmp/docker-mailserver/dovecot.cf
               readOnly: true
-# ...
 ```
 
 **Downsides**
@@ -448,24 +448,23 @@ in your [Pod][k8s-workload-pod] spec.
 
 ```yaml
 # ...
-          env:
-            - name: SSL_TYPE
-              value: 'manual'
-            - name: SSL_CERT_PATH
-              value: '/etc/ssl/mailserver/tls.crt'
-            - name: SSL_KEY_PATH
-              value: '/etc/ssl/mailserver/tls.key'
+env:
+  - name: SSL_TYPE
+    value: 'manual'
+  - name: SSL_CERT_PATH
+    value: '/etc/ssl/mailserver/tls.crt'
+  - name: SSL_KEY_PATH
+    value: '/etc/ssl/mailserver/tls.key'
 # ...
-          volumeMounts:
-            - name: tls
-              mountPath: /etc/ssl/mailserver
-              readOnly: true
+volumeMounts:
+  - name: tls
+    mountPath: /etc/ssl/mailserver
+    readOnly: true
 # ...
-      volumes:
-        - name: tls
-          secret:
-            secretName: mailserver.tls
-# ...
+volumes:
+  - name: tls
+    secret:
+      secretName: mailserver.tls
 ```
 
 [docs-dovecot]: ./override-defaults/dovecot.md
