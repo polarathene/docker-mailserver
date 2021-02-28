@@ -13,6 +13,7 @@ Getting started with ldap and this mailserver we need to take 3 parts in account
 ## Variables to Control Provisioning by the Container
 
 __POSTFIX__:
+
 * `LDAP_QUERY_FILTER_USER`
 * `LDAP_QUERY_FILTER_GROUP`
 * `LDAP_QUERY_FILTER_ALIAS`
@@ -23,6 +24,7 @@ __SASLAUTHD__:
 * `SASLAUTHD_LDAP_FILTER`
 
 __DOVECOT__:
+
 * `DOVECOT_USER_FILTER`
 * `DOVECOT_PASS_FILTER`
 
