@@ -274,7 +274,7 @@ service imap-login {
 ```
 Note that port `10993` is used here to avoid conflicts with internal systems like `postscreen` and `amavis` as they will exchange messages on the default port and obviously have a different origin then compared to the proxy.
 
-[docs-optionalconfig]: ../../advanced/optional-config.md
+[docs-optionalconfig]: ../advanced/optional-config.md
 [github-file-env]: https://github.com/docker-mailserver/docker-mailserver/blob/master/ENVIRONMENT.md
 [github-file-dotenv]: https://github.com/docker-mailserver/docker-mailserver/blob/master/mailserver.env
 [github-issue-1405-comment]: https://github.com/docker-mailserver/docker-mailserver/issues/1405#issuecomment-590106498
