@@ -71,7 +71,6 @@ nav:
         - 'Fail2Ban': config/security/fail2ban.md
      - 'Troubleshooting':
         - 'Debugging': config/troubleshooting/debugging.md
-        - 'FAQ': config/troubleshooting/faq.md
         - 'Mail Delivery with POP3': config/pop3.md
      - 'Advanced Configuration':
           - 'Optional Configuration': config/advanced/optional-config.md
@@ -93,5 +92,6 @@ nav:
       - 'Installation Examples': tutorials/installation-examples.md
   - 'Use Cases':
       - 'Forward-Only Mailserver with LDAP': uses-cases/forward-only-mailserver-with-ldap-authentication.md
+  - 'FAQ' : faq/faq.md
   - 'DockerHub': https://hub.docker.com/repository/docker/mailserver/docker-mailserver
   - 'GHCR': https://github.com/orgs/docker-mailserver/packages/container/package/docker-mailserver
