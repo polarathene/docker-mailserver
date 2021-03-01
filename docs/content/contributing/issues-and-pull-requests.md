@@ -2,6 +2,8 @@
 title: 'Contributing | Issues and Pull Requests'
 ---
 
+This project is Open Source. That means that you can contribute on enhancements, bug fixing or improving the documentation.
+
 ## Opening an Issue
 
 **Before opening an issue**, read the [`README`][github-file-readme] carefully, use the [Wiki][wiki], the Postfix/Dovecot documentation and your search engine you trust. The issue tracker is not meant to be used for unrelated questions! When opening an issue, please provide details use case to let the community reproduce your problem. Please start the mail server with env `DMS_DEBUG=1` and paste the output into the issue. **Use the issue templates** to provide the necessary information. Issues which do not use these templates are not worked on and closed. By raising issues, I agree to these terms and I understand, that the rules set for the issue tracker will help both maintainers as well as everyone to find a solution.
