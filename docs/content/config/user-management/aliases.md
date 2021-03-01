@@ -4,7 +4,7 @@ title: 'User Management | Aliases'
 
 Please read the [Postfix documentation on virtual aliases](http://www.postfix.org/VIRTUAL_README.html#virtual_alias) first.
 
-You can use [`setup.sh`](https://github.com/docker-mailserver/docker-mailserver/wiki/Setup-docker-mailserver-using-the-script-setup.sh#alias) instead of creating and editing files manually. Aliases are managed in `/tmp/docker-mailserver/postfix-virtual.cf`. An alias is a _full_ email address that will either be:
+You can use [`setup.sh`][docs-setupsh] instead of creating and editing files manually. Aliases are managed in `/tmp/docker-mailserver/postfix-virtual.cf`. An alias is a _full_ email address that will either be:
 
 * delivered to an existing account registered in `/tmp/docker-mailserver/postfix-accounts.cf`
 * redirected to one or more other email addresses
@@ -36,3 +36,5 @@ Note that if you do decide to change the configurable separator, you must add th
 ```cf
 recipient_delimiter = -
 ```
+
+[docs-setupsh]: ../setup.sh.md

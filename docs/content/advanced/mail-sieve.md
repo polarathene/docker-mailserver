@@ -2,7 +2,7 @@
 title: 'Email Filtering with Sieve'
 ---
 
-### User-Defined Sieve Filters
+## User-Defined Sieve Filters
 
 [Sieve](http://sieve.info/) allows to specify filtering rules for incoming emails that allow for example sorting mails into different folders depending on the title of an email.
 There are global and user specific filters which are filtering the incoming emails in the following order:
@@ -54,7 +54,7 @@ pipe "external-program";
 
 For more examples or a detailed description of the Sieve language have a look at [the official site](http://sieve.info/examplescripts). Other resources are available on the internet where you can find several [examples](https://support.tigertech.net/sieve#sieve-example-rules-jmp).
 
-### Manage Sieve
+## Manage Sieve
 
 The [Manage Sieve](https://doc.dovecot.org/admin_manual/pigeonhole_managesieve_server/) extension allows users to modify their Sieve script by themselves. The authentication mechanisms are the same as for the main dovecot service. ManageSieve runs on port `4190` and needs to be enabled using the `ENABLE_MANAGESIEVE=1` environment variable.
 

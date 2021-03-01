@@ -4,7 +4,8 @@ title: An Introduction to Mail Servers
 
 # An Introduction to Mail Servers
 
-What is a mail server and how does it perform its duty?  
+What is a mail server and how does it perform its duty?
+
 Here's an introduction to the field that covers everything you need to know to get started with `docker-mailserver`.
 
 ## Anatomy of a Mail Server
@@ -205,6 +206,7 @@ The best practice as of 2020 would be [POP3S][wikipedia-pop3s] on port 995, rath
 As a _batteries included_ Docker image, `docker-mailserver` provides you with all the required components and a default configuration, to run a decent and secure mail server.
 
 One may then customize all aspects of its internal components.
+
 - Simple customization is supported through [docker-compose configuration][github-file-compose] and the [env-mailserver][github-file-envmailserver] configuration file.
 - Advanced customization is supported through providing "monkey-patching" configuration files and/or [deriving your own image][github-file-dockerfile] from `docker-mailserver`'s upstream, for a complete control over how things run.
 
@@ -244,6 +246,7 @@ The [README][github-file-readme] is the best starting point in configuring and r
 [wikipedia-pop3s]: https://en.wikipedia.org/wiki/POP3S
 [wikipedia-smtp]: https://en.wikipedia.org/wiki/SMTPS
 [wikipedia-smtp]: https://en.wikipedia.org/wiki/Simple_Mail_Transfer_Protocol
+[wikipedia-smtps]: https://en.wikipedia.org/wiki/SMTPS
 [wikipedia-starttls]: https://en.wikipedia.org/wiki/Opportunistic_TLS
 [wikipedia-tcp]: https://en.wikipedia.org/wiki/Transmission_Control_Protocol
 [wikipedia-tls]: https://en.wikipedia.org/wiki/Transport_Layer_Security

@@ -75,10 +75,7 @@ We are going to use this docker based mailserver:
   ```
   On your server you may have to do it differently.
 
-- Pull the docker image:
-  ```
-  docker pull tvial/docker-mailserver:latest
-  ```
+- Pull the docker image: `docker pull tvial/docker-mailserver:latest`
 
 - Now generate the DKIM keys with `./setup.sh config dkim` and copy the content of the file `config/opendkim/keys/domain.tld/mail.txt` on the domain zone configuration at the DNS server. I use [bind9](https://github.com/docker-scripts/bind9) for managing my domains, so I just paste it on `example.org.db`:
 
@@ -104,7 +101,7 @@ We are going to use this docker based mailserver:
 
 - Get an SSL certificate from letsencrypt. I use [wsproxy](https://github.com/docker-scripts/wsproxy) for managing SSL letsencrypt certificates of my domains:
 
-    ```console
+    ```sh
     cd /var/ds/wsproxy
     ds domains-add mail mail.example.org
     ds get-ssl-cert myemail@gmail.com mail.example.org --test
@@ -115,14 +112,14 @@ We are going to use this docker based mailserver:
 
 - Start the mailserver and check for any errors:
 
-    ```console
+    ```sh
     apt install docker-compose
     docker-compose up mail
     ```
 
 - Create email accounts and aliases with `SPOOF_PROTECTION=0`:
 
-    ```console
+    ```sh
     ./setup.sh email add admin@example.org passwd123
     ./setup.sh email add info@example.org passwd123
     ./setup.sh alias add admin@example.org myemail@gmail.com
@@ -135,7 +132,7 @@ We are going to use this docker based mailserver:
 
 - Or create email accounts and aliases with `SPOOF_PROTECTION=1`:
 
-    ```console
+    ```sh
     ./setup.sh email add admin.gmail@example.org passwd123
     ./setup.sh email add info.gmail@example.org passwd123
     ./setup.sh alias add admin@example.org admin.gmail@example.org
@@ -150,12 +147,12 @@ We are going to use this docker based mailserver:
 
 - Send some test emails to these addresses and make other tests. Then stop the container with `ctrl+c` and start it again as a daemon: `docker-compose up -d mail`.
 
-- Now save on Moodle configuration the SMTP settings and test by
-  trying to send some messages to other users:
-  - **SMTP hosts**: `mail.example.org:465`
-  - **SMTP security**: `SSL`
-  - **SMTP username**: `info@example.org`
-  - **SMTP password**: `passwd123`
+- Now save on Moodle configuration the SMTP settings and test by trying to send some messages to other users:
+
+    - **SMTP hosts**: `mail.example.org:465`
+    - **SMTP security**: `SSL`
+    - **SMTP username**: `info@example.org`
+    - **SMTP password**: `passwd123`
 
 ## Using `docker-mailserver` behind a Proxy
 
@@ -164,17 +161,19 @@ We are going to use this docker based mailserver:
 If you are hiding your container behind a proxy service you might have discovered that the proxied requests from now on contain the proxy IP as the request origin. Whilst this behavior is technical correct it produces certain problems on the containers behind the proxy as they cannot distinguish the real origin of the requests anymore.
 
 To solve this problem on TCP connections we can make use of the [proxy protocol](https://www.haproxy.org/download/1.8/doc/proxy-protocol.txt). Compared to other workarounds that exist (`X-Forwarded-For` which only works for HTTP requests or `Tproxy` that requires you to recompile your kernel) the proxy protocol:
-- it is protocol agnostic (can work with any layer 7 protocols, even when encrypted).
-- it does not require any infrastructure changes
-- nat-ing firewalls have no impact it
-- it is scalable
-The is only one condition: **both endpoints** of the connection MUST be compatible with proxy protocol.
 
-Luckily `dovecot` and `postfix` are both Proxy-Protocol ready softwares so it depends only on your used reverse-proxy/loadbalancer.
+- It is protocol agnostic (can work with any layer 7 protocols, even when encrypted).
+- It does not require any infrastructure changes.
+- NAT-ing firewalls have no impact it.
+- It is scalable.
+
+There is only one condition: **both endpoints** of the connection MUST be compatible with proxy protocol.
+
+Luckily `dovecot` and `postfix` are both Proxy-Protocol ready softwares so it depends only on your used reverse-proxy / loadbalancer.
 
 ### Configuration of the used Proxy Software
 
-The configuration depends on the used proxy system. I will provide the configuration examples of [traefik v2](https://traefik.io/) using IMAP and SMTP with implicit TLS. Feel free to add your configuration if you achived the same goal using different proxy software below:
+The configuration depends on the used proxy system. I will provide the configuration examples of [traefik v2](https://traefik.io/) using IMAP and SMTP with implicit TLS.
 
 <details>
 <summary>traefik v2</summary>

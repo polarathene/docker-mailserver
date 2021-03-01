@@ -4,24 +4,25 @@ title: 'Security | TLS (aka SSL)'
 
 There are multiple options to enable SSL:
 
-* using [letsencrypt](#lets-encrypt-recommended) (recommended)
-* using [Caddy](#caddy)
-* using [Traefik](#traefik)
-* using [self-signed certificates](#self-signed-certificates-testing-only) with the provided tool
-* using [your own certificates](#custom-certificate-files)
+- Using [letsencrypt](#lets-encrypt-recommended) (recommended)
+- Using [Caddy](#caddy)
+- Using [Traefik](#traefik)
+- Using [self-signed certificates](#self-signed-certificates-testing-only) with the provided tool
+- Using [your own certificates](#custom-certificate-files)
 
 After installation, you can test your setup with:
-- [checktls.com](https://www.checktls.com/TestReceiver)
-- [testssl.sh](https://github.com/drwetter/testssl.sh)
+
+- [`checktls.com`](https://www.checktls.com/TestReceiver)
+- [`testssl.sh`](https://github.com/drwetter/testssl.sh)
 
 ## Let's Encrypt (Recommended)
 
 To enable Let's Encrypt on your mail server, you have to:
 
-* Get your certificate using [letsencrypt client](https://github.com/letsencrypt/letsencrypt)
-* Add an environment variable `SSL_TYPE` with value `letsencrypt` (see [`docker-compose.yml`][github-file-compose])
-* Mount your whole `letsencrypt` folder to `/etc/letsencrypt`
-* The certs folder name located in `letsencrypt/live/` must be the `fqdn` of your container responding to the `hostname` command. The `fqdn` (full qualified domain name) inside the docker container is built combining the `hostname` and `domainname` values of the `docker-compose` file, eg:
+- Get your certificate using [letsencrypt client](https://github.com/letsencrypt/letsencrypt)
+- Add an environment variable `SSL_TYPE` with value `letsencrypt` (see [`docker-compose.yml`][github-file-compose])
+- Mount your whole `letsencrypt` folder to `/etc/letsencrypt`
+- The certs folder name located in `letsencrypt/live/` must be the `fqdn` of your container responding to the `hostname` command. The `fqdn` (full qualified domain name) inside the docker container is built combining the `hostname` and `domainname` values of the `docker-compose` file, eg:
 
     ```yaml
     services:
@@ -238,7 +239,7 @@ Navigate to that folder and note the 6 character random folder name of the certi
 
 ```yaml
 volumes:
-  - /usr/syno/etc/certificate/_archive/YOUR_FOLDER/:/tmp/ssl
+  - /usr/syno/etc/certificate/_archive/<your-folder>/:/tmp/ssl
 environment:
   - SSL_TYPE=manual
   - SSL_CERT_PATH=/tmp/ssl/fullchain.pem
@@ -417,7 +418,7 @@ This setup only comes with one caveat: The domain has to be configured on anothe
 
 ### Traefik v1
 
-If you are using Traefik v1, you might want to _push_ your Traefik-managed certificates to the mailserver container, in order to reuse them. Not an easy task, but fortunately, [youtous/mailserver-traefik][youtous-mailtraefik] is a certificate renewal service for docker-mailserver.
+If you are using Traefik v1, you might want to _push_ your Traefik-managed certificates to the mailserver container, in order to reuse them. Not an easy task, but fortunately, [`youtous/mailserver-traefik`][youtous-mailtraefik] is a certificate renewal service for `docker-mailserver`.
 
 Depending of your Traefik configuration, certificates may be stored using a file or a KV Store (consul, etcd...) Either way, certificates will be renewed by Traefik, then automatically pushed to the mailserver thanks to the `cert-renewer` service. Finally, dovecot and postfix will be restarted.
 
@@ -450,8 +451,8 @@ Note that the certificate will be generate for the container `fqdn`, that is pas
 
 To use the certificate:
 
-* add `SSL_TYPE=self-signed` to your container environment variables
-* if a matching certificate (files listed above) is found in `config/ssl`, it will be automatically setup in postfix and dovecot. You just have to place them in `config/ssl` folder.
+- Add `SSL_TYPE=self-signed` to your container environment variables
+- If a matching certificate (files listed above) is found in `config/ssl`, it will be automatically setup in postfix and dovecot. You just have to place them in `config/ssl` folder.
 
 ## Custom Certificate Files
 
@@ -472,12 +473,35 @@ Please note that you may have to restart your mailserver once the certificates c
 
 ## Testing a Certificate is Valid
 
-- From your host: `docker exec mail openssl s_client -connect 0.0.0.0:25 -starttls smtp -CApath /etc/ssl/certs/`
-- Or: `docker exec mail openssl s_client -connect 0.0.0.0:143 -starttls imap -CApath /etc/ssl/certs/`
+- From your host:
+
+    ```sh
+    docker exec mail openssl s_client \
+      -connect 0.0.0.0:25 \
+      -starttls smtp \
+      -CApath /etc/ssl/certs/
+    ```
+
+- Or:
+
+    ```sh
+    docker exec mail openssl s_client \
+      -connect 0.0.0.0:143 \
+      -starttls imap \
+      -CApath /etc/ssl/certs/
+    ```
 
 And you should see the certificate chain, the server certificate and: `Verify return code: 0 (ok)`
 
-In addition, to verify certificate dates: `docker exec mail openssl s_client -connect 0.0.0.0:25 -starttls smtp -CApath /etc/ssl/certs/ 2>/dev/null | openssl x509 -noout -dates`
+In addition, to verify certificate dates:
+
+```sh
+docker exec mail openssl s_client \
+  -connect 0.0.0.0:25 \
+  -starttls smtp \
+  -CApath /etc/ssl/certs/ \
+  2>/dev/null | openssl x509 -noout -dates
+```
 
 ## Plain-Text Access
 
@@ -498,7 +522,7 @@ These options in conjunction mean:
 
 ## Importing Certificates Obtained via Another Source
 
-If you have another source for SSL/TLS certificates you can import them into the server via an external script. The external script can be found here: [external certificate import script][hanscees-renewcerts]
+If you have another source for SSL/TLS certificates you can import them into the server via an external script. The external script can be found here: [external certificate import script][hanscees-renewcerts].
 
 The steps to follow are these:
 
@@ -513,11 +537,17 @@ If an error occurs the script will inform you. If not you will see both postfix 
 After the certificates have been loaded you can check the certificate:
 
 ```sh
-openssl s_client -servername mail.mydomain.net -connect 192.168.0.72:465 2>/dev/null | openssl x509
+openssl s_client \
+  -servername mail.mydomain.net \
+  -connect 192.168.0.72:465 \
+  2>/dev/null | openssl x509
 
 # or
 
-openssl s_client -servername mail.mydomain.net -connect mail.mydomain.net:465 2>/dev/null | openssl x509
+openssl s_client \
+  -servername mail.mydomain.net \
+  -connect mail.mydomain.net:465 \
+  2>/dev/null | openssl x509
 ```
 
 Or you can check how long the new certificate is valid with commands like:
@@ -544,12 +574,13 @@ certcheck_2weeks=`openssl s_client -connect ${SITE_IP_URL}:${SITE_SSL_PORT} \
 ```
 
 What does the script that imports the certificates do:
-1. Check if there are new certs in the `/tmp/ssl` folder
-2. check with the ssl cert fingerprint if they differ from the current certificates
-3. if so it will copy the certs to the right places
-4. and restart postfix and dovecot 
 
-You can ofcourse run the script by cron once a week or something. In that way you could automate cert renewal. If you do so it is probably wise to run an automated check on certificate expiry as well. Such a check could look something like this:
+1. Check if there are new certs in the `/tmp/ssl` folder.
+2. Check with the ssl cert fingerprint if they differ from the current certificates.
+3. If so it will copy the certs to the right places.
+4. And restart postfix and dovecot.
+
+You can of course run the script by cron once a week or something. In that way you could automate cert renewal. If you do so it is probably wise to run an automated check on certificate expiry as well. Such a check could look something like this:
 
 ```sh
 ## code below will alert if certificate expires in less than two weeks

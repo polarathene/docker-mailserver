@@ -6,7 +6,7 @@ hide:
 
 ## Adding a New Account
 
-Users (email accounts) are managed in `/tmp/docker-mailserver/postfix-accounts.cf`. **_The best way to manage accounts is to use the reliable [`setup.sh`](https://github.com/docker-mailserver/docker-mailserver/wiki/Setup-docker-mailserver-using-the-script-setup.sh) script_**. Or you may directly add the _full_ email address and its encrypted password, separated by a pipe:
+Users (email accounts) are managed in `/tmp/docker-mailserver/postfix-accounts.cf`. **_The best way to manage accounts is to use the reliable [`setup.sh`][docs-setupsh] script_**. Or you may directly add the _full_ email address and its encrypted password, separated by a pipe:
 
 ```cf
 user1@domain.tld|{SHA512-CRYPT}$6$2YpW1nYtPBs2yLYS$z.5PGH1OEzsHHNhl3gJrc3D.YMZkvKw/vp.r5WIiwya6z7P/CQ9GDEJDr2G2V0cAfjDFeAQPUoopsuWPXLk3u1
@@ -25,7 +25,7 @@ docker run --rm \
 
 You will then be asked for a password, and be given back the data for a new account entry, as text. To actually _add_ this new account, just copy all the output text in `config/postfix-accounts.cf` file of your running container. Please note the `doveadm pw` command lets you choose between several encryption schemes for the password. Use doveadm pw -l to get a list of the currently supported encryption schemes.
 
-**Note**: Changes to the accounts list require a restart of the container, using `supervisord`. See [#552](https://github.com/docker-mailserver/docker-mailserver/issues/552).
+**Note**: Changes to the accounts list require a restart of the container, using `supervisord`. See [#552][github-issue-552].
 
 ---
 
@@ -34,3 +34,6 @@ You will then be asked for a password, and be given back the data for a new acco
 - `imap-quota` is enabled and allow clients to query their mailbox usage.
 - When the mailbox is deleted, the quota directive is deleted as well.
 - Dovecot quotas support LDAP, **but it's not implemented** (_PR are welcome!_).
+
+[docs-setupsh]: ../setup.sh.md
+[github-issue-552]: https://github.com/docker-mailserver/docker-mailserver/issues/552

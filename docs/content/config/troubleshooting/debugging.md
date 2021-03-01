@@ -41,13 +41,13 @@ docker exec -ti mail bash
 cd /var/log
 cat fail2ban.log | grep dovecot
 
-# Whitelist ip addresses:
+# Whitelist IP addresses:
 fail2ban-client set dovecot addignoreip <server ip>  # Server
 fail2ban-client set postfix addignoreip <server ip>
 fail2ban-client set dovecot addignoreip <client ip>  # Client
 fail2ban-client set postfix addignoreip <client ip>
 
-# this will delete the jails entirely - nuclear option
+# This will delete the jails entirely - nuclear option
 fail2ban-client stop dovecot
 fail2ban-client stop postfix
 ```

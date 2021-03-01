@@ -116,4 +116,4 @@ fetchmail: normal termination, status 1
 [docs-setup]: ../config/setup.sh.md
 [fetchmail-website]: https://www.fetchmail.info
 [fetchmail-docs]: https://www.fetchmail.info/fetchmail-man.html
-[fetchmail-docs-run]: https://www.fetchmail.info/fetchmail-man.html
+[fetchmail-docs-run]: https://www.fetchmail.info/fetchmail-man.html#31
