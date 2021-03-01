@@ -187,7 +187,7 @@ Then with plain `docker-compose`:
 ```yaml
 services:
   mail:
-    image: tvial/docker-mailserver:latest
+    image: mailserver/docker-mailserver:latest
     volumes:
       - ./cron/sa-learn:/etc/cron.d/sa-learn
 ```
@@ -199,7 +199,7 @@ version: "3.3"
 
 services:
   mail:
-    image: tvial/docker-mailserver:latest
+    image: mailserver/docker-mailserver:latest
     # ...
     configs:
       - source: my_sa_crontab
