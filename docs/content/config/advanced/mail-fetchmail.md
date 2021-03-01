@@ -114,7 +114,7 @@ fetchmail: 6.3.26 querying outlook.office365.com (protocol POP3) at Mon Aug 29 2
 fetchmail: normal termination, status 1
 ```
 
-[docs-setup]: ../config/setup.sh.md
+[docs-setup]: ../../config/setup.sh.md
 [fetchmail-website]: https://www.fetchmail.info
 [fetchmail-docs]: https://www.fetchmail.info/fetchmail-man.html
 [fetchmail-docs-run]: https://www.fetchmail.info/fetchmail-man.html#31

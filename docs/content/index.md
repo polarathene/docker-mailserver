@@ -18,8 +18,8 @@ This wiki provides you with advanced configuration, detailed examples, and hints
 !!! tip
     See the [FAQ][docs-faq] for some more tips!
 
-[docs-faq]: ./config/troubleshooting/faq.md
-[docs-optionalconfig]: ./advanced/optional-config.md
+[docs-faq]: ./faq/faq.md
+[docs-optionalconfig]: ./config/advanced/optional-config.md
 [docs-setupsh]: ./config/setup.sh.md
 [github-file-readme]: https://github.com/docker-mailserver/docker-mailserver/blob/master/README.md
 [github-file-env]: https://github.com/docker-mailserver/docker-mailserver/blob/master/ENVIRONMENT.md
