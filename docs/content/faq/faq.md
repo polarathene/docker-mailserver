@@ -1,5 +1,5 @@
 ---
-title: 'Troubleshooting | FAQ'
+title: 'FAQ'
 ---
 
 ### What kind of database are you using?

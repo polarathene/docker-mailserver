@@ -1,5 +1,5 @@
 ---
-title: 'Optional Configuration'
+title: 'Advanced | Optional Configuration'
 hide:
   - toc # Hide Table of Contents for this page
 ---
