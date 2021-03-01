@@ -46,7 +46,8 @@ poll 'pop3.example.com' proto pop3
   ssl
 ```
 
-__IMPORTANT__: Don’t forget the last line: eg: `is 'user1@domain.tld'`. After `is` you have to specify one email address from the configuration file `config/postfix-accounts.cf`.
+!!! caution
+    Don’t forget the last line: eg: `is 'user1@domain.tld'`. After `is` you have to specify one email address from the configuration file `config/postfix-accounts.cf`.
 
 More details how to configure fetchmail can be found in the [fetchmail man page in the chapter “The run control file”][fetchmail-docs-run].
 

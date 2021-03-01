@@ -8,12 +8,15 @@ Fail2Ban is installed automatically and bans IP addresses for 3 hours after 3 fa
 
 You can do the same with the values from `fail2ban.conf`, e.g `dbpurgeage`. In that case you need to edit [`config/fail2ban-fail2ban.cf`][github-file-f2bconfig].
 
-__Important__: The mail container must be launched with the `NET_ADMIN` capability in order to be able to install the iptable rules that actually ban IP addresses. Thus either include `--cap-add=NET_ADMIN` in the docker run commandline or the equivalent `docker-compose.yml`:
+!!! attention
+    The mail container must be launched with the `NET_ADMIN` capability in order to be able to install the iptable rules that actually ban IP addresses.
 
-```yaml
-cap_add:
-  - NET_ADMIN
-```
+    Thus either include `--cap-add=NET_ADMIN` in the docker run commandline or the equivalent `docker-compose.yml`:
+
+    ```yaml
+    cap_add:
+      - NET_ADMIN
+    ```
 
 If you don't you will see errors the form of:
 

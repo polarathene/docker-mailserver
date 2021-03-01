@@ -26,6 +26,7 @@ submission/inet/smtpd_reject_unlisted_recipient=no
 
 Run `postconf -P` in the container without arguments to see the active master options.
 
-Note! There should be no space between the parameter and the value.
+!!! note
+    There should be no space between the parameter and the value.
 
 Have a look at the code for more information.

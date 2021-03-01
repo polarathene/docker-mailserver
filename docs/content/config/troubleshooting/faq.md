@@ -23,8 +23,10 @@ In order to do so, you'll probably want to push your config updates to your serv
 
 See [supervisorctl's documentation](http://supervisord.org/running.html#running-supervisorctl).
 
-Tips: to add/update/delete an email account, there is no need to restart postfix/dovecot service inside the container after using setup.sh script.
-For more information, see [#1639][github-issue-1639]
+!!! tip
+    To add, update or delete an email account; there is no need to restart postfix / dovecot service inside the container after using `setup.sh` script.
+
+    For more information, see [#1639][github-issue-1639].
 
 ### How can I sync container with host date/time? Timezone?
 
@@ -35,13 +37,14 @@ volumes:
   - /etc/localtime:/etc/localtime:ro
 ```
 
-(optional) Add one line to `.env` or `env-mailserver` to set timetzone for container, for example:
+!!! help "Optional"
+    Add one line to `.env` or `env-mailserver` to set timetzone for container, for example:
 
-```env
-TZ=Europe/Berlin
-```
+    ```env
+    TZ=Europe/Berlin
+    ```
 
-Check here for [`tz name list`](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
+    Check here for the [`tz name list`](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
 
 ### What is the file format?
 
@@ -299,19 +302,24 @@ If we're blind, we won't be able to do anything.
 1 core and 1GB of RAM + swap partition is recommended to run `docker-mailserver` with clamav.
 Otherwise, it could work with 512M of RAM.
 
-Please note that clamav can consume a lot of memory, as it reads the entire signature database into RAM. Current figure is about 850M and growing. If you get errors about clamav or amavis failing to allocate memory you need more RAM or more swap and of course docker must be allowed to use swap (not always the case). If you can't use swap at all you may need 3G RAM.
+!!! note
+    Clamav can consume a lot of memory, as it reads the entire signature database into RAM.
+
+    Current figure is about 850M and growing. If you get errors about clamav or amavis failing to allocate memory you need more RAM or more swap and of course docker must be allowed to use swap (not always the case). If you can't use swap at all you may need 3G RAM.
 
 ### Can `docker-mailserver` run in a [Rancher Environment](http://rancher.com/rancher/)?
 
 Yes, by adding the environment variable `PERMIT_DOCKER: network`.
 
-**WARNING**: Adding the docker network's gateway to the list of trusted hosts, e.g. using the `network` or `connected-networks` option, can create an [**open relay**](https://en.wikipedia.org/wiki/Open_mail_relay), for instance [if IPv6 is enabled on the host machine but not in Docker][github-issue-1405-comment].
+!!! warning
+    Adding the docker network's gateway to the list of trusted hosts, e.g. using the `network` or `connected-networks` option, can create an [**open relay**](https://en.wikipedia.org/wiki/Open_mail_relay), for instance [if IPv6 is enabled on the host machine but not in Docker][github-issue-1405-comment].
 
 ### How can I Authenticate Users with `SMTP_ONLY`?
 
 See [#1247][github-issue-1247] for an example.
 
-*ToDo: Write a HowTo/UseCase/Tutorial about authentication with SMTP_ONLY.*
+!!! todo
+    Write a How-to / Use-Case / Tutorial about authentication with `SMTP_ONLY`.
 
 ### Common Errors
 

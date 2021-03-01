@@ -2,7 +2,8 @@
 title: 'Troubleshooting | Debugging'
 ---
 
-..todo..  - Please contribute more to help others debug this package
+!!! info "Contributions Welcome!"
+    Please contribute your solutions to help the community :heart:
 
 ## Enable Verbose Debugging Output
 

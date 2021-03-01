@@ -41,7 +41,8 @@ mail._domainkey.<DOMAIN> 300 IN TXT    "v=DKIM1; k=rsa; p=AZERTYUIOPQSDFGHJKLMWX
 4. In `TTL` (time to live): Time span in seconds. How long the DNS server should cache the `TXT` record.
 5. Save.
 
-**Note**: Sometimes the key in `config/opendkim/keys/domain.tld/mail.txt` can be on multiple lines. If so then you need to concatenate the values in the TXT record:
+!!! note
+    Sometimes the key in `config/opendkim/keys/domain.tld/mail.txt` can be on multiple lines. If so then you need to concatenate the values in the TXT record:
 
 ```console
 $ dig mail._domainkey.domain.tld TXT

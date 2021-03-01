@@ -23,9 +23,15 @@ docker run --rm \
   /bin/sh -c 'echo "$MAIL_USER|$(doveadm pw -s SHA512-CRYPT -u $MAIL_USER -p $MAIL_PASS)"' >> config/postfix-accounts.cf
 ```
 
-You will then be asked for a password, and be given back the data for a new account entry, as text. To actually _add_ this new account, just copy all the output text in `config/postfix-accounts.cf` file of your running container. Please note the `doveadm pw` command lets you choose between several encryption schemes for the password. Use doveadm pw -l to get a list of the currently supported encryption schemes.
+You will then be asked for a password, and be given back the data for a new account entry, as text. To actually _add_ this new account, just copy all the output text in `config/postfix-accounts.cf` file of your running container.
 
-**Note**: Changes to the accounts list require a restart of the container, using `supervisord`. See [#552][github-issue-552].
+!!! note
+    `doveadm pw` command lets you choose between several encryption schemes for the password.
+
+    Use `doveadm pw -l` to get a list of the currently supported encryption schemes.
+
+!!! note
+    Changes to the accounts list require a restart of the container, using `supervisord`. See [#552][github-issue-552].
 
 ---
 

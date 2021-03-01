@@ -447,7 +447,10 @@ docker run -it --rm -v "$(pwd)"/config/ssl:/tmp/docker-mailserver/ssl -h mail.my
 # config/ssl/demoCA/cacert.pem (certificate authority)
 ```
 
-Note that the certificate will be generate for the container `fqdn`, that is passed as `-h` argument. Check the following page for more information regarding [postfix and SSL/TLS configuration](http://www.mad-hacking.net/documentation/linux/applications/mail/using-ssl-tls-postfix-courier.xml).
+!!! note
+    The certificate will be generate for the container `fqdn`, that is passed as `-h` argument.
+
+    Check the following page for more information regarding [postfix and SSL/TLS configuration](http://www.mad-hacking.net/documentation/linux/applications/mail/using-ssl-tls-postfix-courier.xml).
 
 To use the certificate:
 
@@ -469,7 +472,8 @@ environment:
 
 This will mount the path where your ssl certificates reside as read-only under `/tmp/ssl`. Then all you have to do is to specify the location of your private key and the certificate.
 
-Please note that you may have to restart your mailserver once the certificates change.
+!!! note
+    You may have to restart your mailserver once the certificates change.
 
 ## Testing a Certificate is Valid
 

@@ -14,7 +14,9 @@ This wiki provides you with advanced configuration, detailed examples, and hints
 2. Be aware that advanced tasks may still require tweaking environment variables, reading through documentation and sometimes inspecting your running container for debugging purposes. After all, a mail server is a complex arrangement of various programs.
 3. A list of all configuration options is provided in [`ENVIRONMENT.md`][github-file-env]. The [`README.md`][github-file-readme] is a good starting point to understand what this image is capable of.
 4. A list of all optional and automatically created configuration files and directories is available [on the dedicated page][docs-optionalconfig].
-5. See the [FAQ][docs-faq] for some more tips!
+
+!!! tip
+    See the [FAQ][docs-faq] for some more tips!
 
 [docs-faq]: ./config/troubleshooting/faq.md
 [docs-optionalconfig]: ./advanced/optional-config.md

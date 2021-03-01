@@ -230,11 +230,11 @@ spec:
           emptyDir: {}
 ```
 
-__Note:__
-Any sensitive data (keys, etc) should be deployed via [Secrets][k8s-config-secret]. Other configuration just fits well into [ConfigMaps][k8s-config-pod].
+!!! note
+    Any sensitive data (keys, etc) should be deployed via [Secrets][k8s-config-secret]. Other configuration just fits well into [ConfigMaps][k8s-config-pod].
 
-__Note:__
-Make sure that [Pod][k8s-workload-pod] is [assigned][k8s-assign-pod-node] to specific [Node][k8s-nodes] in case you're using volume for data directly with `hostPath`. Otherwise Pod can be rescheduled on a different Node and previous data won't be found. Except the case when you're using some shared filesystem on your Nodes.
+!!! note
+    Make sure that [Pod][k8s-workload-pod] is [assigned][k8s-assign-pod-node] to specific [Node][k8s-nodes] in case you're using volume for data directly with `hostPath`. Otherwise Pod can be rescheduled on a different Node and previous data won't be found. Except the case when you're using some shared filesystem on your Nodes.
 
 ## Exposing to the Outside World
 

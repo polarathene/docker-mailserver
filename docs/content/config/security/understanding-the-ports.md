@@ -23,41 +23,38 @@ Prefer Implicit TLS ports, they're more secure and if you use a Reverse Proxy, s
 
 [![Best Practice - Ports (SMTP)][asset-external-mermaid-smtp]][ref-mermaid-live-smtp]
 
-<details>
-<summary>Flowchart - Mermaid.js source:</summary>
+??? "Flowchart - Mermaid.js source:"
 
-View in the [Live Editor][ref-mermaid-live-smtp].
+    View in the [Live Editor][ref-mermaid-live-smtp].
 
-```
-flowchart LR
-    subgraph your-server ["Your Server"]
-        in_25(25) --> server
-        in_465(465) --> server
-        server(("docker-mailserver<br/>hello@world.com"))
-        server --- out_25(25)
-        server --- out_465(465)
-    end
+    ```mermaid
+    flowchart LR
+        subgraph your-server ["Your Server"]
+            in_25(25) --> server
+            in_465(465) --> server
+            server(("docker-mailserver<br/>hello@world.com"))
+            server --- out_25(25)
+            server --- out_465(465)
+        end
 
-    third-party("Third-party<br/>(sending you email)") ---|"Receive email for<br/>hello@world.com"| in_25
+        third-party("Third-party<br/>(sending you email)") ---|"Receive email for<br/>hello@world.com"| in_25
 
-    subgraph clients ["Clients (MUA)"]
-        mua-client(Thunderbird,<br/>Webmail,<br/>Mutt,<br/>etc)
-        mua-service(Backend software<br/>on another server)
-    end
-    clients ---|"Send email as<br/>hello@world.com"| in_465
+        subgraph clients ["Clients (MUA)"]
+            mua-client(Thunderbird,<br/>Webmail,<br/>Mutt,<br/>etc)
+            mua-service(Backend software<br/>on another server)
+        end
+        clients ---|"Send email as<br/>hello@world.com"| in_465
 
-    out_25(25) -->|"Direct<br/>Delivery"| tin_25
-    out_465(465) --> relay("MTA<br/>Relay Server") --> tin_25(25)
+        out_25(25) -->|"Direct<br/>Delivery"| tin_25
+        out_465(465) --> relay("MTA<br/>Relay Server") --> tin_25(25)
 
-    subgraph third-party-server["Third-party Server"]
-        third-party-mta("MTA<br/>friend@example.com")
-        tin_25(25) --> third-party-mta
-    end
-```
+        subgraph third-party-server["Third-party Server"]
+            third-party-mta("MTA<br/>friend@example.com")
+            tin_25(25) --> third-party-mta
+        end
+    ```
 
 ---
-
-</details>
 
 #### Inbound Traffic (On the left)
 
@@ -91,9 +88,11 @@ Additionally, referring to port 465 as *SMTPS* would be incorrect, as it is a su
 
 ## Security
 
-**TODO:** *This section should provide any related configuration advice, and probably expand on and link to resources about DANE, DNSSEC, MTA-STS and STARTTLS Policy list, with advice on how to configure/setup these added security layers.*
+!!! todo
+    This section should provide any related configuration advice, and probably expand on and link to resources about DANE, DNSSEC, MTA-STS and STARTTLS Policy list, with advice on how to configure/setup these added security layers.
 
-**TODO:** *A related section or page on ciphers used may be useful, although less important for users to be concerned about.*
+!!! todo
+    A related section or page on ciphers used may be useful, although less important for users to be concerned about.
 
 ### TLS connections on mail servers, compared to web browsers
 

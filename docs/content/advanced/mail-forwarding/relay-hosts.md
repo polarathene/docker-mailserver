@@ -19,7 +19,8 @@ Basic configuration is done via environment variables:
 
 Setting these environment variables will cause mail for all sender domains to be routed via the specified host, authenticating with the user/password combination.
 
-Note for users of the previous `AWS_SES_*` variables: please update your configuration to use these new variables, no other configuration is required.
+!!! note
+    For users of the previous `AWS_SES_*` variables: please update your configuration to use these new variables, no other configuration is required.
 
 ## Advanced Configuration
 
@@ -40,7 +41,8 @@ An example configuration file looks like this:
 
 If there is no other configuration, this will cause Postfix to deliver email throught the relay specified in `RELAY_HOST` env variable, authenticating as `relay_user_1` when sent from `domain1.com` and authenticating as `relay_user_2` when sending from domain2.com.
 
-**NOTE** to activate the configuration you must either restart the container, or you can also trigger an update by modifying a mail account.
+!!! note
+    To activate the configuration you must either restart the container, or you can also trigger an update by modifying a mail account.
 
 ### Sender-dependent Relay Host
 
@@ -58,7 +60,9 @@ An example configuration file looks like this:
 ```
 
 Combined with the previous configuration in `config/postfix-sasl-password.cf`, this will cause Postfix to deliver mail sent from domain1.com via `relay1.org:587`, authenticating as `relay_user_1`, and mail sent from domain2.com via `relay2.org:2525` authenticating as `relay_user_2`.
-**NOTE** You still have to define RELAY_HOST to activate the feature
+
+!!! note
+    You still have to define `RELAY_HOST` to activate the feature
 
 ### Excluding Sender Domains
 

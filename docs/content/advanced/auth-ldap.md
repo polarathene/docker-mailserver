@@ -28,8 +28,8 @@ __DOVECOT__:
 * `DOVECOT_USER_FILTER`
 * `DOVECOT_PASS_FILTER`
 
-
-**NOTE**: This page will provide several use cases like recipes to show, how this project can be used with it's LDAP Features.
+!!! note
+    This page will provide several use cases like recipes to show, how this project can be used with it's LDAP Features.
 
 ## LDAP Setup - Kopano / Zarafa
 

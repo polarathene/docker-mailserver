@@ -145,7 +145,8 @@ The best practice as of 2020 when it comes to securing Outward Submission is to 
 - [ESMTP][wikipedia-esmtp] is [SMTP][wikipedia-smtp] + extensions. It's the version of the SMTP protocol that most mail servers speak nowadays. For the purpose of this documentation, ESMTP and SMTP are synonymous.
 - Port 465 is the reserved TCP port for Implicit TLS Submission (since 2018). There is actually a boisterous history to that ports usage, but let's keep it simple.
 
-> Note: This Submission setup is sometimes refered to as [SMTPS][wikipedia-smtps]. Long story short: this is incorrect and should be avoided.
+!!! note
+    This Submission setup is sometimes refered to as [SMTPS][wikipedia-smtps]. Long story short: this is incorrect and should be avoided.
 
 Although a very satisfactory setup, Implicit TLS on port 465 is somewhat "cutting edge". There exists another well established mail Submission setup that must be supported as well, SMTP+STARTTLS on port 587. It uses Explicit TLS: the client starts with a cleartext connection, then the server informs a TLS-encrypted "upgraded" connection may be established, and the client _may_ eventually decide to establish it prior to the Submission. Basically it's an opportunistic, opt-in TLS upgrade of the connection between the client and the server, at the client's discretion, using a mechanism known as [STARTTLS][wikipedia-starttls] that both ends need to implement.
 
@@ -244,7 +245,6 @@ The [README][github-file-readme] is the best starting point in configuring and r
 [wikipedia-mua]: https://en.wikipedia.org/wiki/Email_client
 [wikipedia-pop3]: https://en.wikipedia.org/wiki/POP3
 [wikipedia-pop3s]: https://en.wikipedia.org/wiki/POP3S
-[wikipedia-smtp]: https://en.wikipedia.org/wiki/SMTPS
 [wikipedia-smtp]: https://en.wikipedia.org/wiki/Simple_Mail_Transfer_Protocol
 [wikipedia-smtps]: https://en.wikipedia.org/wiki/SMTPS
 [wikipedia-starttls]: https://en.wikipedia.org/wiki/Opportunistic_TLS

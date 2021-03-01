@@ -29,7 +29,8 @@ if address :contains ["From"] "spam@spam.com" {
 }
 ```
 
-***Note:*** that folders have to exist beforehand if sieve should move them.
+!!! note
+    That folders have to exist beforehand if sieve should move them.
 
 Another example of a sieve filter that forward mails to a different address:
 
@@ -68,7 +69,8 @@ environment:
 
 All user defined sieve scripts that are managed by ManageSieve are stored in the user's home folder in `/var/mail/domain.com/user1/sieve`. Just one sieve script might be active for a user and is sym-linked to `/var/mail/domain.com/user1/.dovecot.sieve` automatically.
 
-***Note:*** ManageSieve makes sure to not overwrite an existing `.dovecot.sieve` file. If a user activates a new sieve script the old one is backuped and moved to the `sieve` folder.
+!!! note
+    ManageSieve makes sure to not overwrite an existing `.dovecot.sieve` file. If a user activates a new sieve script the old one is backuped and moved to the `sieve` folder.
 
 The extension is known to work with the following ManageSieve clients:
 * **Sieve Editor**  a portable standalone application based on the former Thunderbird plugin (https://github.com/thsmi/sieve).

@@ -4,76 +4,77 @@ title: 'Tutorials | Installation Examples'
 
 ## Building a Simple Mailserver
 
-**WARNING**: Adding the docker network's gateway to the list of trusted hosts, e.g. using the `network` or `connected-networks` option, can create an [**open relay**](https://en.wikipedia.org/wiki/Open_mail_relay), for instance [if IPv6 is enabled on the host machine but not in Docker][github-issue-1405-comment].
+!!! warning
+    Adding the docker network's gateway to the list of trusted hosts, e.g. using the `network` or `connected-networks` option, can create an [**open relay**](https://en.wikipedia.org/wiki/Open_mail_relay), for instance [if IPv6 is enabled on the host machine but not in Docker][github-issue-1405-comment].
 
 We are going to use this docker based mailserver:
 
 - First create a directory for the mailserver and get the setup script:
-  ```
-  mkdir -p /var/ds/mail.example.org
-  cd /var/ds/mail.example.org/
 
-  curl -o setup.sh \
-      https://raw.githubusercontent.com/docker-mailserver/docker-mailserver/master/setup.sh
-  chmod a+x ./setup.sh
-  ```
+    ```sh
+    mkdir -p /var/ds/mail.example.org
+    cd /var/ds/mail.example.org/
+
+    curl -o setup.sh \
+        https://raw.githubusercontent.com/docker-mailserver/docker-mailserver/master/setup.sh
+    chmod a+x ./setup.sh
+    ```
 
 - Create the file `docker-compose.yml` with a content like this:
-  ```
-  version: '2'
 
-  services:
-    mail:
-      image: tvial/docker-mailserver:latest
-      hostname: mail
-      domainname: example.org
-      container_name: mail
-      ports:
-      - "25:25"
-      - "587:587"
-      - "465:465"
-      volumes:
-      - ./data/:/var/mail/
-      - ./state/:/var/mail-state/
-      - ./config/:/tmp/docker-mailserver/
-      - /var/ds/wsproxy/letsencrypt/:/etc/letsencrypt/
-      environment:
-      - PERMIT_DOCKER=network
-      - SSL_TYPE=letsencrypt
-      - ONE_DIR=1
-      - DMS_DEBUG=1
-      - SPOOF_PROTECTION=0
-      - REPORT_RECIPIENT=1
-      - ENABLE_SPAMASSASSIN=0
-      - ENABLE_CLAMAV=0
-      - ENABLE_FAIL2BAN=1
-      - ENABLE_POSTGREY=0
-      cap_add:
-      - NET_ADMIN
-      - SYS_PTRACE
-  ```
-  
-  For more details about the environment variables that can be used,
-  and their meaning and possible values, check also these:
-  - [Environtment Variables][github-file-env]
-  - [`mailserver.env` file][github-file-dotenv]
-  
-  Make sure to set the proper `domainname` that you will use for the
-  emails. We forward only SMTP ports (not POP3 and IMAP) because we
-  are not interested in accessing the mailserver directly (from a
-  client).  We also use these settings:
-  - `PERMIT_DOCKER=network` because we want to send emails from other
-    docker containers.
-  - `SSL_TYPE=letsencrypt` because we will manage SSL certificates
-    with letsencrypt.
+    ```yaml
+    version: '2'
 
-- We need to open these ports on the firewall: `25`, `587`, `465`
-  ```
-  ufw allow 25
-  ufw allow 587
-  ufw allow 465
-  ```
-  On your server you may have to do it differently.
+    services:
+      mail:
+        image: tvial/docker-mailserver:latest
+        hostname: mail
+        domainname: example.org
+        container_name: mail
+        ports:
+        - "25:25"
+        - "587:587"
+        - "465:465"
+        volumes:
+        - ./data/:/var/mail/
+        - ./state/:/var/mail-state/
+        - ./config/:/tmp/docker-mailserver/
+        - /var/ds/wsproxy/letsencrypt/:/etc/letsencrypt/
+        environment:
+        - PERMIT_DOCKER=network
+        - SSL_TYPE=letsencrypt
+        - ONE_DIR=1
+        - DMS_DEBUG=1
+        - SPOOF_PROTECTION=0
+        - REPORT_RECIPIENT=1
+        - ENABLE_SPAMASSASSIN=0
+        - ENABLE_CLAMAV=0
+        - ENABLE_FAIL2BAN=1
+        - ENABLE_POSTGREY=0
+        cap_add:
+        - NET_ADMIN
+        - SYS_PTRACE
+    ```
+
+    For more details about the environment variables that can be used, and their meaning and possible values, check also these:
+
+    - [Environtment Variables][github-file-env]
+    - [`mailserver.env` file][github-file-dotenv]
+
+    Make sure to set the proper `domainname` that you will use for the emails. We forward only SMTP ports (not POP3 and IMAP) because we are not interested in accessing the mailserver directly (from a client).  We also use these settings:
+
+    - `PERMIT_DOCKER=network` because we want to send emails from other docker containers.
+    - `SSL_TYPE=letsencrypt` because we will manage SSL certificates with letsencrypt.
+
+- We need to open ports `25`, `587` and `465` on the firewall:
+
+    ```sh
+    ufw allow 25
+    ufw allow 587
+    ufw allow 465
+    ```
+
+    On your server you may have to do it differently.
 
 - Pull the docker image: `docker pull tvial/docker-mailserver:latest`
 
@@ -175,73 +176,72 @@ Luckily `dovecot` and `postfix` are both Proxy-Protocol ready softwares so it de
 
 The configuration depends on the used proxy system. I will provide the configuration examples of [traefik v2](https://traefik.io/) using IMAP and SMTP with implicit TLS.
 
-<details>
-<summary>traefik v2</summary>
+Feel free to add your configuration if you achived the same goal using different proxy software below:
 
-Truncated configuration of traefik itself:
+??? "Traefik v2"
 
-```yaml
-version: '3.7'
-services:
-  reverse-proxy:
-    image: traefik:v2.4
-    container_name: docker-traefik
-    restart: always
-    command:
-      - "--providers.docker"
-      - "--providers.docker.exposedbydefault=false"
-      - "--providers.docker.network=proxy"
-      - "--entrypoints.web.address=:80"
-      - "--entryPoints.websecure.address=:443"
-      - "--entryPoints.smtp.address=:25"
-      - "--entryPoints.smtp-ssl.address=:465"
-      - "--entryPoints.imap-ssl.address=:993"
-      - "--entryPoints.sieve.address=:4190"
-    ports:
-      - "25:25"
-      - "465:465"
-      - "993:993"
-      - "4190:4190"
-[...]
-```
+    Truncated configuration of traefik itself:
 
-Truncated list of neccessary labels on the mailserver container:
+    ```yaml
+    version: '3.7'
+    services:
+      reverse-proxy:
+        image: traefik:v2.4
+        container_name: docker-traefik
+        restart: always
+        command:
+          - "--providers.docker"
+          - "--providers.docker.exposedbydefault=false"
+          - "--providers.docker.network=proxy"
+          - "--entrypoints.web.address=:80"
+          - "--entryPoints.websecure.address=:443"
+          - "--entryPoints.smtp.address=:25"
+          - "--entryPoints.smtp-ssl.address=:465"
+          - "--entryPoints.imap-ssl.address=:993"
+          - "--entryPoints.sieve.address=:4190"
+        ports:
+          - "25:25"
+          - "465:465"
+          - "993:993"
+          - "4190:4190"
+    [...]
+    ```
 
-```yaml
-version: '2'
-services:
-  mail:
-    image: tvial/docker-mailserver:release-v7.2.0
-    restart: always
-    networks:
-      - proxy
-    labels:
-      - "traefik.enable=true"
-      - "traefik.tcp.routers.smtp.rule=HostSNI(`*`)"
-      - "traefik.tcp.routers.smtp.entrypoints=smtp"
-      - "traefik.tcp.routers.smtp.service=smtp"
-      - "traefik.tcp.services.smtp.loadbalancer.server.port=25"
-      - "traefik.tcp.services.smtp.loadbalancer.proxyProtocol.version=1"
-      - "traefik.tcp.routers.smtp-ssl.rule=HostSNI(`*`)"
-      - "traefik.tcp.routers.smtp-ssl.entrypoints=smtp-ssl"
-      - "traefik.tcp.routers.smtp-ssl.service=smtp-ssl"
-      - "traefik.tcp.services.smtp-ssl.loadbalancer.server.port=465"
-      - "traefik.tcp.services.smtp-ssl.loadbalancer.proxyProtocol.version=1"
-      - "traefik.tcp.routers.imap-ssl.rule=HostSNI(`*`)"
-      - "traefik.tcp.routers.imap-ssl.entrypoints=imap-ssl"
-      - "traefik.tcp.routers.imap-ssl.service=imap-ssl"
-      - "traefik.tcp.services.imap-ssl.loadbalancer.server.port=10993"
-      - "traefik.tcp.services.imap-ssl.loadbalancer.proxyProtocol.version=2"
-      - "traefik.tcp.routers.sieve.rule=HostSNI(`*`)"
-      - "traefik.tcp.routers.sieve.entrypoints=sieve"
-      - "traefik.tcp.routers.sieve.service=sieve"
-      - "traefik.tcp.services.sieve.loadbalancer.server.port=4190"
-[...]
-```
+    Truncated list of neccessary labels on the mailserver container:
 
-Keep in mind that it is neccessary to use port `10993` here. More information below at `dovecot` configuration.
+    ```yaml
+    version: '2'
+    services:
+      mail:
+        image: tvial/docker-mailserver:release-v7.2.0
+        restart: always
+        networks:
+          - proxy
+        labels:
+          - "traefik.enable=true"
+          - "traefik.tcp.routers.smtp.rule=HostSNI(`*`)"
+          - "traefik.tcp.routers.smtp.entrypoints=smtp"
+          - "traefik.tcp.routers.smtp.service=smtp"
+          - "traefik.tcp.services.smtp.loadbalancer.server.port=25"
+          - "traefik.tcp.services.smtp.loadbalancer.proxyProtocol.version=1"
+          - "traefik.tcp.routers.smtp-ssl.rule=HostSNI(`*`)"
+          - "traefik.tcp.routers.smtp-ssl.entrypoints=smtp-ssl"
+          - "traefik.tcp.routers.smtp-ssl.service=smtp-ssl"
+          - "traefik.tcp.services.smtp-ssl.loadbalancer.server.port=465"
+          - "traefik.tcp.services.smtp-ssl.loadbalancer.proxyProtocol.version=1"
+          - "traefik.tcp.routers.imap-ssl.rule=HostSNI(`*`)"
+          - "traefik.tcp.routers.imap-ssl.entrypoints=imap-ssl"
+          - "traefik.tcp.routers.imap-ssl.service=imap-ssl"
+          - "traefik.tcp.services.imap-ssl.loadbalancer.server.port=10993"
+          - "traefik.tcp.services.imap-ssl.loadbalancer.proxyProtocol.version=2"
+          - "traefik.tcp.routers.sieve.rule=HostSNI(`*`)"
+          - "traefik.tcp.routers.sieve.entrypoints=sieve"
+          - "traefik.tcp.routers.sieve.service=sieve"
+          - "traefik.tcp.services.sieve.loadbalancer.server.port=4190"
+    [...]
+    ```
 
-</details>
+    Keep in mind that it is neccessary to use port `10993` here. More information below at `dovecot` configuration.
 
 ### Configuration of the Backend (`dovecot` and `postfix`)
 
@@ -274,7 +274,8 @@ service imap-login {
 }
 ```
 
-Note that port `10993` is used here to avoid conflicts with internal systems like `postscreen` and `amavis` as they will exchange messages on the default port and obviously have a different origin then compared to the proxy.
+!!! note
+    Port `10993` is used here to avoid conflicts with internal systems like `postscreen` and `amavis` as they will exchange messages on the default port and obviously have a different origin then compared to the proxy.
 
 [docs-optionalconfig]: ../advanced/optional-config.md
 [github-file-env]: https://github.com/docker-mailserver/docker-mailserver/blob/master/ENVIRONMENT.md
