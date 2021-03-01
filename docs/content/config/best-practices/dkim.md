@@ -56,9 +56,9 @@ The target (or value) field must then have all the parts together: `v=DKIM1; k=r
 
 ## Verify-Only
 
-If you want DKIM to only _verify_ incoming emails, the following version of /etc/opendkim.conf may be useful (right now there is no easy mechanism for installing it other than forking the repo):
+If you want DKIM to only _verify_ incoming emails, the following version of `/etc/opendkim.conf` may be useful (right now there is no easy mechanism for installing it other than forking the repo):
 
-```txt
+```conf
 # This is a simple config file verifying messages only
 
 #LogWhy                 yes

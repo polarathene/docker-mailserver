@@ -443,8 +443,7 @@ spec:
         - example.com
 ```
 
-Now, you can use Let's Encrypt cert and key from `mailserver.tls` [Secret][k8s-config-secret]
-in your [Pod][k8s-workload-pod] spec.
+Now, you can use Let's Encrypt cert and key from `mailserver.tls` [Secret][k8s-config-secret] in your [Pod][k8s-workload-pod] spec:
 
 ```yaml
 # ...

@@ -9,12 +9,15 @@ This image is based on config files that can be persisted using Docker volumes, 
 
 ### Where are emails stored?
 
-Mails are stored in `/var/mail/${domain}/${username}`.  
-You should use a [data volume container](https://medium.com/@ramangupta/why-docker-data-containers-are-good-589b3c6c749e#.uxyrp7xpu) for `/var/mail` to persist data. Otherwise, your data may be lost.
+Mails are stored in `/var/mail/${domain}/${username}`.
+
+You should use a [data volume container](https://medium.com/@ramangupta/why-docker-data-containers-are-good-589b3c6c749e#.uxyrp7xpu) for `/var/mail` to persist data.
+
+Otherwise, your data may be lost.
 
 ### How to alter the running mailserver instance _without_ relaunching the container?
 
-docker-mailserver aggregates multiple "sub-services", such as Postfix, Dovecot, Fail2ban, SpamAssasin, etc.  In many cases, on may edit a sub-service's config and reload that very sub-service, without stopping and relaunching the whole mail server.
+`docker-mailserver` aggregates multiple "sub-services", such as Postfix, Dovecot, Fail2ban, SpamAssasin, etc. In many cases, one may edit a sub-service's config and reload that very sub-service, without stopping and relaunching the whole mail server.
 
 In order to do so, you'll probably want to push your config updates to your server through a Docker volume, then restart the sub-service to apply your changes, using `supervisorctl`. For instance, after editing fail2ban's config: `supervisorctl restart fail2ban`.
 
@@ -25,35 +28,38 @@ For more information, see [#1639][github-issue-1639]
 
 ### How can I sync container with host date/time? Timezone?
 
-Share the host's [`/etc/localtime`](https://www.freedesktop.org/software/systemd/man/localtime.html) with the docker-mailserver container, using a Docker volume:  
+Share the host's [`/etc/localtime`](https://www.freedesktop.org/software/systemd/man/localtime.html) with the `docker-mailserver` container, using a Docker volume:  
 
-```
+```yaml
 volumes:
   - /etc/localtime:/etc/localtime:ro
 ```
 
 (optional) Add one line to `.env` or `env-mailserver` to set timetzone for container, for example:
-```
+
+```env
 TZ=Europe/Berlin
 ```
-check here for [`tz name list`](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
+
+Check here for [`tz name list`](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
 
 ### What is the file format?
 
 All files are using the Unix format with `LF` line endings.
+
 Please do not use `CRLF`.
 
 ### What about backups?
 
 Assuming that you use `docker-compose` and a data volumes, you can backup your user mails like this:
 
-```
+```sh
 docker run --rm -ti \
   -v maildata:/var/mail \
   -v mailstate:/var/mail-state \
   -v /backup/mail:/backup \
   alpine:3.2 \
-  tar czf /backup/mail-`date +%y%m%d-%H%M%S`.tgz /var/mail /var/mail-state
+  tar czf "/backup/mail-$(date +%y%m%d-%H%M%S).tgz" /var/mail /var/mail-state
 
 find /backup/mail -type f -mtime +30 -exec rm -f {} \;
 ```
@@ -65,23 +71,26 @@ Example of data folder persisted: lib-amavis, lib-clamav, lib-fail2ban, lib-post
 
 ### How can I configure my email client?
 
-Login are full email address (`user@domain.com`).  
+Login are full email address (`user@domain.com`).
 
-    # imap
-    username:           <user1@domain.tld>
-    password:           <mypassword>
-    server:             <mail.domain.tld>
-    imap port:          143 or 993 with ssl (recommended)
-    imap path prefix:   INBOX
+```properties
+# imap
+username:           <user1@domain.tld>
+password:           <mypassword>
+server:             <mail.domain.tld>
+imap port:          143 or 993 with ssl (recommended)
+imap path prefix:   INBOX
 
-    # smtp
-    smtp port:          25 or 587 with ssl (recommended)
-    username:           <user1@domain.tld>
-    password:           <mypassword>
+# smtp
+smtp port:          25 or 587 with ssl (recommended)
+username:           <user1@domain.tld>
+password:           <mypassword>
+```
 
 Please use `STARTTLS`.
 
 ### How can I manage my custom Spamassassin rules?
+
 Antispam rules are managed in `config/spamassassin-rules.cf`.
 
 ### What are acceptable `SA_SPAM_SUBJECT` values?
@@ -90,37 +99,40 @@ For no subject set `SA_SPAM_SUBJECT=undef`.
 
 For a trailing white-space subject one can define the whole variable with quotes in `docker-compose.yml`:
 
-```docker-compose
-    environment:
-      - "SA_SPAM_SUBJECT=[SPAM] "
+```yaml
+environment:
+  - "SA_SPAM_SUBJECT=[SPAM] "
 ```
 
 ### Can I use naked/bare domains (no host name)?
 
-Yes, but not without some configuration changes. Normally it is assumed that docker-mailserver runs on a host with a name, so the fully qualified host name might be `mail.example.com` with the domain `example.com`. The MX records point to `mail.example.com`. To use a bare domain where the host name is `example.com` and the domain is also `example.com`, change mydestination from:
+Yes, but not without some configuration changes. Normally it is assumed that `docker-mailserver` runs on a host with a name, so the fully qualified host name might be `mail.example.com` with the domain `example.com`. The MX records point to `mail.example.com`.
 
-`mydestination = $myhostname, localhost.$mydomain, localhost`
+To use a bare domain where the host name is `example.com` and the domain is also `example.com`, change `mydestination`:
 
-To:
+- From: `mydestination = $myhostname, localhost.$mydomain, localhost`
+- To: `mydestination = localhost.$mydomain, localhost`
 
-`mydestination = localhost.$mydomain, localhost`
+Add the latter line to `config/postfix-main.cf`. That should work. Without that change there will be warnings in the logs like:
 
-Add the latter line to config/postfix-main.cf. That should work. Without that change there will be warnings in the logs like:
-
-`warning: do not list domain example.com in BOTH mydestination and virtual_mailbox_domains`
+```log
+warning: do not list domain example.com in BOTH mydestination and virtual_mailbox_domains
+```
 
 Plus of course mail delivery fails.
 
 ### Why are Spamassassin `x-headers` not inserted into my `sample.domain.com` subdomain emails?
 
-In the default setup, amavis only applies Spamassassin x-headers into domains matching the template listed in the config  file 05-domain_id (in the amavis defaults). The default setup @local_domains_acl = ( ".$mydomain" ); does not match subdomains. To match subdomains, you can override the @local_domains_acl directive in the amavis user config file 50-user with @local_domains_maps = ("."); to match any sort of domain template. 
+In the default setup, amavis only applies Spamassassin x-headers into domains matching the template listed in the config file (`05-domain_id` in the amavis defaults).
+
+The default setup `@local_domains_acl = ( ".$mydomain" );` does not match subdomains. To match subdomains, you can override the `@local_domains_acl` directive in the amavis user config file `50-user` with `@local_domains_maps = (".");` to match any sort of domain template.
 
 ### How can I make SpamAssassin better recognize spam?
 
 Put received spams in `.Junk/` imap folder using `SPAMASSASSIN_SPAM_TO_INBOX=1` and `MOVE_SPAM_TO_JUNK=1` and add a _user_ cron like the following:
 
-```
-# This assumes you're having `environment: ONE_DIR=1` in the env-mailserver,
+```conf
+# This assumes you're having `environment: ONE_DIR=1` in the `mailserver.env`,
 # with a consolidated config in `/var/mail-state`
 #
 # m h dom mon dow command
@@ -128,11 +140,12 @@ Put received spams in `.Junk/` imap folder using `SPAMASSASSIN_SPAM_TO_INBOX=1` 
 0 2 * * * docker exec mail sa-learn --spam /var/mail/domain.com/username/.Junk --dbpath /var/mail-state/lib-amavis/.spamassassin
 ```
 
-If you run the server with docker-compose, you can leverage on docker configs and the mailserver's own cron. This is less problematic than the simple solution shown above, because it decouples the learning from the host on which the mailserver is running and avoids errors if the server is not running. 
+If you run the server with `docker-compose`, you can leverage on docker configs and the mailserver's own cron. This is less problematic than the simple solution shown above, because it decouples the learning from the host on which the mailserver is running and avoids errors if the server is not running.
 
 The following configuration works nicely:
 
-create a _system_ cron file:
+Create a _system_ cron file:
+
 ```sh
 # in the docker-compose.yml root directory
 mkdir cron
@@ -141,8 +154,9 @@ chown root:root cron/sa-learn
 chmod 0644 cron/sa-learn
 ```
 
-edit the system cron file `nano cron/sa-learn`, and set an appropriate configuration:
-```
+Edit the system cron file `nano cron/sa-learn`, and set an appropriate configuration:
+
+```conf
 # This assumes you're having `environment: ONE_DIR=1` in the env-mailserver,
 # with a consolidated config in `/var/mail-state`
 #
@@ -165,20 +179,19 @@ edit the system cron file `nano cron/sa-learn`, and set an appropriate configura
 30 3 * * * root  sa-learn --ham /var/mail/otherdomain.com/*/cur* --dbpath /var/mail-state/lib-amavis/.spamassassin
 ```
 
-with plain docker-compose:
-```docker-compose
-version: "2"
+Then with plain `docker-compose`:
 
+```yaml
 services:
   mail:
     image: tvial/docker-mailserver:latest
-    # ...
     volumes:
       - ./cron/sa-learn:/etc/cron.d/sa-learn
 ```
 
-with [docker swarm](https://docs.docker.com/engine/swarm/configs/):
-```docker-compose
+Or with [docker swarm](https://docs.docker.com/engine/swarm/configs/):
+
+```yaml
 version: "3.3"
 
 services:
@@ -199,19 +212,23 @@ With the default settings, Spamassassin will require 200 mails trained for spam 
 ### How can I configure a catch-all?
 
 Considering you want to redirect all incoming e-mails for the domain `domain.tld` to `user1@domain.tld`, add the following line to `config/postfix-virtual.cf`:
-```
+
+```cf
 @domain.tld user1@domain.tld
 ```
 
 ### How can I delete all the emails for a specific user?
 
 First of all, create a special alias named `devnull` by editing `config/postfix-aliases.cf`:
+
+```cf
+devnull: /dev/null
 ```
-devnull:	/dev/null
-```
+
 Considering you want to delete all the e-mails received for `baduser@domain.tld`, add the following line to `config/postfix-virtual.cf`:
-```
-baduser@domain.tld	devnull
+
+```cf
+baduser@domain.tld devnull
 ```
 
 ### How do I have more control about what SPAMASSASIN is filtering?
@@ -219,24 +236,26 @@ baduser@domain.tld	devnull
 By default, SPAM and INFECTED emails are put to a quarantine which is not very straight forward to access. Several config settings are affecting this behavior:
 
 First, make sure you have the proper thresholds set:
-```
+
+```conf
 SA_TAG=-100000.0
 SA_TAG2=3.75
 SA_KILL=100000.0
-``` 
-
-The very negative vaue in `SA_TAG` makes sure, that all emails have the Spamassasin headers included.
-`SA_TAG2` is the actual threshold to set the YES/NO flag for spam detection. 
-`SA_KILL` needs to be very high, to make sure nothing is bounced at all (`SA_KILL` superseeds `SPAMASSASSIN_SPAM_TO_INBOX`)
-
-Make sure everything (including SPAM) is delivered to the inbox and not quarantined.
 ```
+
+- The very negative vaue in `SA_TAG` makes sure, that all emails have the Spamassasin headers included.
+- `SA_TAG2` is the actual threshold to set the YES/NO flag for spam detection.
+- `SA_KILL` needs to be very high, to make sure nothing is bounced at all (`SA_KILL` superseeds `SPAMASSASSIN_SPAM_TO_INBOX`)
+
+Make sure everything (including SPAM) is delivered to the inbox and not quarantined:
+
+```conf
 SPAMASSASSIN_SPAM_TO_INBOX=1
 ```
 
-Use `MOVE_SPAM_TO_JUNK=1` or create a sieve script which puts spam to the Junk folder.
+Use `MOVE_SPAM_TO_JUNK=1` or create a sieve script which puts spam to the Junk folder:
 
-```
+```sieve
 require ["comparator-i;ascii-numeric","relational","fileinto"];
 
 if header :contains "X-Spam-Flag" "YES" {
@@ -249,25 +268,27 @@ if header :contains "X-Spam-Flag" "YES" {
 ```
 
 Create a dedicated mailbox for emails which are infected/bad header and everything amavis is blocking by default and put its address into `config/amavis.cf`
-```
+
+```cf
 $clean_quarantine_to      = "amavis\@domain.com";
 $virus_quarantine_to      = "amavis\@domain.com";
 $banned_quarantine_to     = "amavis\@domain.com";
 $bad_header_quarantine_to = "amavis\@domain.com";
 $spam_quarantine_to       = "amavis\@domain.com";
-
 ```
 
 ### What kind of SSL certificates can I use?
 
-You can use the same certificates you use with another mail server.  
+You can use the same certificates you use with another mail server.
+
 The only thing is that we provide a `self-signed` certificate tool and a `letsencrypt` certificate loader.
 
 ### I just moved from my old mail server, but "it doesn't work"?
 
 If this migration implies a DNS modification, be sure to wait for DNS propagation before opening an issue.
-Few examples of symptoms can be found [here][github-issue-95] or [here][github-issue-97].  
-This could be related to a modification of your `MX` record, or the IP mapped to `mail.my-domain.tld`. Additionally, [validate your DNS configuration](https://intodns.com/). 
+Few examples of symptoms can be found [here][github-issue-95] or [here][github-issue-97].
+
+This could be related to a modification of your `MX` record, or the IP mapped to `mail.my-domain.tld`. Additionally, [validate your DNS configuration](https://intodns.com/).
 
 If everything is OK regarding DNS, please provide [formatted logs](https://guides.github.com/features/mastering-markdown/) and config files. This will allow us to help you.
 
@@ -282,7 +303,7 @@ Please note that clamav can consume a lot of memory, as it reads the entire sign
 
 ### Can `docker-mailserver` run in a [Rancher Environment](http://rancher.com/rancher/)?
 
-Yes, by Adding the Environment Variable `PERMIT_DOCKER: network`.
+Yes, by adding the environment variable `PERMIT_DOCKER: network`.
 
 **WARNING**: Adding the docker network's gateway to the list of trusted hosts, e.g. using the `network` or `connected-networks` option, can create an [**open relay**](https://en.wikipedia.org/wiki/Open_mail_relay), for instance [if IPv6 is enabled on the host machine but not in Docker][github-issue-1405-comment].
 
@@ -294,7 +315,7 @@ See [#1247][github-issue-1247] for an example.
 
 ### Common Errors
 
-```
+```log
 warning: connect to Milter service inet:localhost:8893: Connection refused
 # DMARC not running
 # => /etc/init.d/opendmarc restart
@@ -314,10 +335,9 @@ mail amavis[1459]: (01459-01) (!!)AV: ALL VIRUS SCANNERS FAILED
 ### How to use when behind a Proxy
 
 Add to `/etc/postfix/main.cf` :
-```
- 
-proxy_interfaces = X.X.X.X (your public IP) 
 
+```cf
+proxy_interfaces = X.X.X.X (your public IP)
 ```
 
 ### What About Updates
@@ -331,36 +351,42 @@ Suppose you want to change a number of settings that are not listed as variables
 
 This docker-container has a built-in way to do post-install processes. If you place a script called **user-patches.sh** in the config directory it will be run after all configuration files are set up, but before the postfix, amavis and other daemons are started.
 
-The config file I am talking about is this volume in the yml file: 
- 
-`- ./config/:/tmp/docker-mailserver/`
+The config file I am talking about is this volume in the yml file: `./config/:/tmp/docker-mailserver/`
 
 To place such a script you can just make it in the config dir, for instance like this:
 
-`cd ./config`
+```sh
+cd ./config
+touch user-patches.sh
+chmod +x user-patches.sh
+```
 
-`touch user-patches.sh`
-
-`chmod +x  user-patches.sh`
-
-and then fill it with suitable code. 
+Then fill `user-patches.sh` with suitable code.
 
 If you want to test it you can move into the running container, run it and see if it does what you want. For instance:
 
-`./setup.sh debug login    # start shell in container`
+```sh
+# start shell in container
+./setup.sh debug login
 
-`cat /tmp/docker-mailserver/user-patches.sh  #check the file`
+# check the file
+cat /tmp/docker-mailserver/user-patches.sh
 
-`/tmp/docker-mailserver/user-patches.sh  ## run the script`
+# run the script
+/tmp/docker-mailserver/user-patches.sh
 
-`exit`
+# exit the container shell back to the host shell
+exit
+```
 
-You can do a lot of things with such a script. You can find an example user-patches.sh script here: [example user-patches.sh script][hanscees-userpatches]
+You can do a lot of things with such a script. You can find an example `user-patches.sh` script here: [example `user-patches.sh` script][hanscees-userpatches]
 
 #### Special use-case - Patching the `supervisord` config
 
 It seems worth noting, that the `user-patches.sh` gets executed trough supervisord. If you need to patch some supervisord config (e.g. `/etc/supervisor/conf.d/saslauth.conf`), the patching happens too late.
+
 An easy workaround is to make the `user-patches.sh` reload the supervisord config after patching it:
+
 ```bash
 #!/bin/bash
 sed -i 's/rimap -r/rimap/' /etc/supervisor/conf.d/saslauth.conf

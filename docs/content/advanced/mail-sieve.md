@@ -23,9 +23,9 @@ An example of a sieve filter that moves mails to a folder `INBOX/spam` depending
 require ["fileinto", "reject"];
 
 if address :contains ["From"] "spam@spam.com" {
-   fileinto "INBOX.spam";
+  fileinto "INBOX.spam";
 } else {
-     keep;
+  keep;
 }
 ```
 
@@ -61,9 +61,9 @@ The [Manage Sieve](https://doc.dovecot.org/admin_manual/pigeonhole_managesieve_s
 ```yaml
 # docker-compose.yml
 ports:
- - "4190:4190"
+  - "4190:4190"
 environment:
- - ENABLE_MANAGESIEVE=1
+  - ENABLE_MANAGESIEVE=1
 ```
 
 All user defined sieve scripts that are managed by ManageSieve are stored in the user's home folder in `/var/mail/domain.com/user1/sieve`. Just one sieve script might be active for a user and is sym-linked to `/var/mail/domain.com/user1/.dovecot.sieve` automatically.

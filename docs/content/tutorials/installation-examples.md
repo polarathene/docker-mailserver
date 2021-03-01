@@ -80,78 +80,75 @@ We are going to use this docker based mailserver:
   docker pull tvial/docker-mailserver:latest
   ```
 
-- Now generate the DKIM keys with `./setup.sh config dkim` and copy
-  the content of the file `config/opendkim/keys/domain.tld/mail.txt`
-  on the domain zone configuration at the DNS server. I use
-  [bind9](https://github.com/docker-scripts/bind9) for managing my
-  domains, so I just paste it on `example.org.db`:
-  ```
-  mail._domainkey IN      TXT     ( "v=DKIM1; h=sha256; k=rsa; "
-          "p=MIIBIjANBgkqhkiG9w0BAQEFACAQ8AMIIBCgKCAQEAaH5KuPYPSF3Ppkt466BDMAFGOA4mgqn4oPjZ5BbFlYA9l5jU3bgzRj3l6/Q1n5a9lQs5fNZ7A/HtY0aMvs3nGE4oi+LTejt1jblMhV/OfJyRCunQBIGp0s8G9kIUBzyKJpDayk2+KJSJt/lxL9Iiy0DE5hIv62ZPP6AaTdHBAsJosLFeAzuLFHQ6USyQRojefqFQtgYqWQ2JiZQ3"
-          "iqq3bD/BVlwKRp5gH6TEYEmx8EBJUuDxrJhkWRUk2VDl1fqhVBy8A9O7Ah+85nMrlOHIFsTaYo9o6+cDJ6t1i6G1gu+bZD0d3/3bqGLPBQV9LyEL1Rona5V7TJBGg099NQkTz1IwIDAQAB" )  ; ----- DKIM key mail for example.org
+- Now generate the DKIM keys with `./setup.sh config dkim` and copy the content of the file `config/opendkim/keys/domain.tld/mail.txt` on the domain zone configuration at the DNS server. I use [bind9](https://github.com/docker-scripts/bind9) for managing my domains, so I just paste it on `example.org.db`:
 
-  ```
+    ```txt
+    mail._domainkey IN      TXT     ( "v=DKIM1; h=sha256; k=rsa; "
+            "p=MIIBIjANBgkqhkiG9w0BAQEFACAQ8AMIIBCgKCAQEAaH5KuPYPSF3Ppkt466BDMAFGOA4mgqn4oPjZ5BbFlYA9l5jU3bgzRj3l6/Q1n5a9lQs5fNZ7A/HtY0aMvs3nGE4oi+LTejt1jblMhV/OfJyRCunQBIGp0s8G9kIUBzyKJpDayk2+KJSJt/lxL9Iiy0DE5hIv62ZPP6AaTdHBAsJosLFeAzuLFHQ6USyQRojefqFQtgYqWQ2JiZQ3"
+            "iqq3bD/BVlwKRp5gH6TEYEmx8EBJUuDxrJhkWRUk2VDl1fqhVBy8A9O7Ah+85nMrlOHIFsTaYo9o6+cDJ6t1i6G1gu+bZD0d3/3bqGLPBQV9LyEL1Rona5V7TJBGg099NQkTz1IwIDAQAB" )  ; ----- DKIM key mail for example.org
+    ```
 
 - Add these configurations as well on the same file on the DNS server:
-  ```
-  mail      IN  A   10.11.12.13
-  
-  ; mailservers for example.org
-      3600  IN  MX  1  mail.example.org.
-  
-  ; Add SPF record
-            IN TXT "v=spf1 mx ~all"
-  ```
-  Then don't forget to change the serial number and to restart the service.
 
-- Get an SSL certificate from letsencrypt. I use
-  [wsproxy](https://github.com/docker-scripts/wsproxy) for managing
-  SSL letsencrypt certificates of my domains:
-  ```
-  cd /var/ds/wsproxy
-  ds domains-add mail mail.example.org
-  ds get-ssl-cert myemail@gmail.com mail.example.org --test
-  ds get-ssl-cert myemail@gmail.com mail.example.org
-  ```
-  Now the certificates will be available on
-  `/var/ds/wsproxy/letsencrypt/live/mail.example.org`.
+    ```txt
+    mail      IN  A   10.11.12.13
+
+    ; mailservers for example.org
+        3600  IN  MX  1  mail.example.org.
+
+    ; Add SPF record
+              IN TXT "v=spf1 mx ~all"
+    ```
+
+    Then don't forget to change the serial number and to restart the service.
+
+- Get an SSL certificate from letsencrypt. I use [wsproxy](https://github.com/docker-scripts/wsproxy) for managing SSL letsencrypt certificates of my domains:
+
+    ```console
+    cd /var/ds/wsproxy
+    ds domains-add mail mail.example.org
+    ds get-ssl-cert myemail@gmail.com mail.example.org --test
+    ds get-ssl-cert myemail@gmail.com mail.example.org
+    ```
+
+    Now the certificates will be available on `/var/ds/wsproxy/letsencrypt/live/mail.example.org`.
 
 - Start the mailserver and check for any errors:
-  ```
-  apt install docker-compose
-  docker-compose up mail
-  ```
+
+    ```console
+    apt install docker-compose
+    docker-compose up mail
+    ```
 
 - Create email accounts and aliases with `SPOOF_PROTECTION=0`:
-  ```
-  ./setup.sh email add admin@example.org passwd123
-  ./setup.sh email add info@example.org passwd123
-  ./setup.sh alias add admin@example.org myemail@gmail.com
-  ./setup.sh alias add info@example.org myemail@gmail.com
-  ./setup.sh email list
-  ./setup.sh alias list
-  ```
-  Aliases make sure that any email that comes to these accounts is
-  forwarded to my real email address, so that I don't need to use
-  POP3/IMAP in order to get these messages. Also no anti-spam and
-  anti-virus software is needed, making the mailserver lighter.
+
+    ```console
+    ./setup.sh email add admin@example.org passwd123
+    ./setup.sh email add info@example.org passwd123
+    ./setup.sh alias add admin@example.org myemail@gmail.com
+    ./setup.sh alias add info@example.org myemail@gmail.com
+    ./setup.sh email list
+    ./setup.sh alias list
+    ```
+
+    Aliases make sure that any email that comes to these accounts is forwarded to my real email address, so that I don't need to use POP3/IMAP in order to get these messages. Also no anti-spam and anti-virus software is needed, making the mailserver lighter.
 
 - Or create email accounts and aliases with `SPOOF_PROTECTION=1`:
-  ```
-  ./setup.sh email add admin.gmail@example.org passwd123
-  ./setup.sh email add info.gmail@example.org passwd123
-  ./setup.sh alias add admin@example.org admin.gmail@example.org
-  ./setup.sh alias add info@example.org info.gmail@example.org
-  ./setup.sh alias add admin.gmail@example.org myemail@gmail.com
-  ./setup.sh alias add info.gmail@example.org myemail@gmail.com
-  ./setup.sh email list
-  ./setup.sh alias list
-  ```
-  This extra step is required to avoid the `553 5.7.1 Sender address rejected: not owned by user` error (the account used for setting up gmail is `admin.gmail@example.org` and `info.gmail@example.org` )
-  
-- Send some test emails to these addresses and make other tests. Then
-  stop the container with `Ctrl+c` and start it again as a daemon:
-  `docker-compose up -d mail`.
+
+    ```console
+    ./setup.sh email add admin.gmail@example.org passwd123
+    ./setup.sh email add info.gmail@example.org passwd123
+    ./setup.sh alias add admin@example.org admin.gmail@example.org
+    ./setup.sh alias add info@example.org info.gmail@example.org
+    ./setup.sh alias add admin.gmail@example.org myemail@gmail.com
+    ./setup.sh alias add info.gmail@example.org myemail@gmail.com
+    ./setup.sh email list
+    ./setup.sh alias list
+    ```
+
+    This extra step is required to avoid the `553 5.7.1 Sender address rejected: not owned by user` error (the account used for setting up gmail is `admin.gmail@example.org` and `info.gmail@example.org` )
+
+- Send some test emails to these addresses and make other tests. Then stop the container with `ctrl+c` and start it again as a daemon: `docker-compose up -d mail`.
 
 - Now save on Moodle configuration the SMTP settings and test by
   trying to send some messages to other users:
@@ -180,10 +177,11 @@ Luckily `dovecot` and `postfix` are both Proxy-Protocol ready softwares so it de
 The configuration depends on the used proxy system. I will provide the configuration examples of [traefik v2](https://traefik.io/) using IMAP and SMTP with implicit TLS. Feel free to add your configuration if you achived the same goal using different proxy software below:
 
 <details>
-  <summary>traefik v2</summary>
+<summary>traefik v2</summary>
 
-  Truncated configuration of traefik itself:
-```
+Truncated configuration of traefik itself:
+
+```yaml
 version: '3.7'
 services:
   reverse-proxy:
@@ -210,7 +208,7 @@ services:
 
 Truncated list of neccessary labels on the mailserver container:
 
-```
+```yaml
 version: '2'
 services:
   mail:
@@ -241,6 +239,7 @@ services:
       - "traefik.tcp.services.sieve.loadbalancer.server.port=4190"
 [...]
 ```
+
 Keep in mind that it is neccessary to use port `10993` here. More information below at `dovecot` configuration.
 
 </details>
@@ -250,18 +249,21 @@ Keep in mind that it is neccessary to use port `10993` here. More information be
 The following changes can be achived completely by adding the content to the appropriate files by using the projects [function to overwrite config files][docs-optionalconfig].
 
 Changes for `postfix` can be applied by adding the following content to `config/postfix-main.cf`:
-```
+
+```cf
 postscreen_upstream_proxy_protocol = haproxy
 ```
 
-and to `config/postfix-master.cd`:
-```
+and to `config/postfix-master.cf`:
+
+```cf
 submission/inet/smtpd_upstream_proxy_protocol=haproxy
 smtps/inet/smtpd_upstream_proxy_protocol=haproxy
 ```
 
 Changes for `dovecot` can be applied by adding the following content to `config/dovecot.cf`:
-```
+
+```cf
 haproxy_trusted_networks = <your-proxy-ip>, <optional-cidr-notation>
 haproxy_timeout = 3 secs
 service imap-login {
@@ -272,6 +274,7 @@ service imap-login {
   }
 }
 ```
+
 Note that port `10993` is used here to avoid conflicts with internal systems like `postscreen` and `amavis` as they will exchange messages on the default port and obviously have a different origin then compared to the proxy.
 
 [docs-optionalconfig]: ../advanced/optional-config.md

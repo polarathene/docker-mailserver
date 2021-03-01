@@ -25,12 +25,12 @@ This is a list of all configuration files and directories which are optional or 
 - **postfix-receive-access.cf:** List of users denied receiving. Modify via [`setup.sh email restrict`][docs-setupsh].
 - **postfix-virtual.cf:** Alias configuration file. Modify via [`setup.sh alias`][docs-setupsh].
 - **postfix-sasl-password.cf:** listing of relayed domains with their respective `<username>:<password>`. Modify via `setup.sh relay add-auth <domain> <username> [<password>]`. (Docs: [Relay-Hosts Auth][docs-relayhosts-senderauth])
-- **postfix-relaymap.cf:** domain-specific relays and exclusions Modify via `setup.sh relay add-domain` and `setup.sh relay exclude-domain`. (Docs: [Relay-Hosts Senders][docs-relayhosts-senderhost])
+- **postfix-relaymap.cf:** domain-specific relays and exclusions. Modify via `setup.sh relay add-domain` and `setup.sh relay exclude-domain`. (Docs: [Relay-Hosts Senders][docs-relayhosts-senderhost])
 - **postfix-regexp.cf:** Regular expression alias file. (Docs: [Aliases][docs-aliases-regex])
-- **ldap-users.cf:** Configuration for the virtual user mapping (virtual_mailbox_maps). See the [`setup-stack.sh`][github-commit-setup-stack.sh-L411] script.
-- **ldap-groups.cf:** Configuration for the virtual alias mapping (virtual_alias_maps). See the [`setup-stack.sh`][github-commit-setup-stack.sh-L411] script.
-- **ldap-aliases.cf:** Configuration for the virtual alias mapping (virtual_alias_maps). See the [`setup-stack.sh`][github-commit-setup-stack.sh-L411] script.
-- **ldap-domains.cf:** Configuration for the virtual domain mapping (virtual_mailbox_domains). See the [`setup-stack.sh`][github-commit-setup-stack.sh-L411] script.
+- **ldap-users.cf:** Configuration for the virtual user mapping `virtual_mailbox_maps`. See the [`setup-stack.sh`][github-commit-setup-stack.sh-L411] script.
+- **ldap-groups.cf:** Configuration for the virtual alias mapping `virtual_alias_maps`. See the [`setup-stack.sh`][github-commit-setup-stack.sh-L411] script.
+- **ldap-aliases.cf:** Configuration for the virtual alias mapping `virtual_alias_maps`. See the [`setup-stack.sh`][github-commit-setup-stack.sh-L411] script.
+- **ldap-domains.cf:** Configuration for the virtual domain mapping `virtual_mailbox_domains`. See the [`setup-stack.sh`][github-commit-setup-stack.sh-L411] script.
 - **whitelist_clients.local:** Whitelisted domains, not considered by postgrey. Enter one host or domain per line.
 - **spamassassin-rules.cf:** Antispam rules for Spamassassin. (Docs: [FAQ - SpamAssassin Rules][docs-faq-spamrules])
 - **fail2ban-fail2ban.cf:** Additional config options for `fail2ban.cf`. (Docs: [Fail2Ban][docs-fail2ban])

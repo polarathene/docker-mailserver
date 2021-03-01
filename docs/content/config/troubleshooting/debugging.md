@@ -10,38 +10,32 @@ You may find it useful to enable the [`DMS_DEBUG`][github-file-env-dmsdebug] env
 
 ## Invalid Username or Password
 
-1. Login Container
+1. Shell into the container:
 
-```bash
-docker exec -it <mycontainer> bash
-```
+    ```sh
+    docker exec -it <my-container> bash
+    ```
 
-2. Check log files
+2. Check log files in `/var/log/mail` could not find any mention of incorrect logins here neither in the dovecot logs.
 
-`/var/log/mail`
-could not find any mention of incorrect logins here
-neither in the dovecot logs
+3. Check the supervisors logs in `/var/log/supervisor`. You can find the logs for startup of fetchmail, postfix and others here - they might indicate problems during startup.
 
-3. Check the supervisors logfiles
-`/var/log/supervisor`
-You can find the logs for startup of fetchmail, postfix and others here - they might indicate problems during startup
-
-4. Make sure you set your hostname to 'mail' or whatever you specified in your docker-compose.yml file or else your FQDN will be wrong
+4. Make sure you set your hostname to `mail` or whatever you specified in your `docker-compose.yml` file or else your FQDN will be wrong.
 
 ## Installation Errors
 
-1. During setup, if you get errors trying to edit files inside of the container, you likely need to install vi:
+During setup, if you get errors trying to edit files inside of the container, you likely need to install `vi`:
 
-``` bash
+```sh
 sudo su
-docker exec -it <mycontainer> apt-get install -y vim
+docker exec -it <my-container> apt-get install -y vim
 ```
 
 ## Testing Connection
 
-I spent HOURS trying to debug "Connection Refused" and "Connection closed by foreign host" errors when trying to use telnet to troubleshoot my connection. I was also trying to connect from my email client (macOS mail) around the same time. Telnet had also worked earlier, so I was extremely confused as to why it suddenly stopped working. I stumbled upon fail2ban.log in my container. In short, when trying to get my macOS client working, I exceeded the number of failed login attempts and fail2ban put dovecot and postfix in jail! I got around it by whitelisting my ipaddresses (my ec2 instance and my local computer)
+I spent HOURS trying to debug "Connection Refused" and "Connection closed by foreign host" errors when trying to use telnet to troubleshoot my connection. I was also trying to connect from my email client (macOS mail) around the same time. Telnet had also worked earlier, so I was extremely confused as to why it suddenly stopped working. I stumbled upon `fail2ban.log` in my container. In short, when trying to get my macOS client working, I exceeded the number of failed login attempts and fail2ban put dovecot and postfix in jail! I got around it by whitelisting my ipaddresses (my ec2 instance and my local computer)
 
-```bash
+```sh
 sudo su
 docker exec -ti mail bash
 cd /var/log

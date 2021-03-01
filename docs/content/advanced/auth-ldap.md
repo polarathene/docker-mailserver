@@ -107,7 +107,7 @@ volumes:
     driver: local
 ```
 
-If your directory has not the postfix-book schema installed, then you must change the internal attribute handling for dovecot. For this you have to change the `pass_attr` and the `user_attr` mapping, as shown in the example below: 
+If your directory has not the postfix-book schema installed, then you must change the internal attribute handling for dovecot. For this you have to change the `pass_attr` and the `user_attr` mapping, as shown in the example below:
 
 ```yaml
 - DOVECOT_PASS_ATTR=<YOUR_USER_IDENTIFYER_ATTRIBUTE>=user,<YOUR_USER_PASSWORD_ATTRIBUTE>=password
@@ -122,4 +122,3 @@ The following example illustrates this for a directory that has the qmail-schema
 - DOVECOT_PASS_FILTER=(&(objectClass=qmailUser)(uid=%u)(accountStatus=active))
 - DOVECOT_USER_FILTER=(&(objectClass=qmailUser)(uid=%u)(accountStatus=active))
 ```
-

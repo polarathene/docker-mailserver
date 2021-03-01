@@ -4,9 +4,9 @@ title: 'Mail Forwarding | AWS SES'
 
 Note: new configuration, see [Configure Relay Hosts][docs-relay]
 
-Instead of letting postfix deliver mail directly it is possible to configure it to deliver outgoing email via Amazon SES (Simple Email Service). (Receiving inbound email via SES is not implemented.) The configuration follows the guidelines provided by AWS in https://docs.aws.amazon.com/ses/latest/DeveloperGuide/postfix.html, specifically, the STARTTLS method.
+Instead of letting postfix deliver mail directly it is possible to configure it to deliver outgoing email via Amazon SES (Simple Email Service). (Receiving inbound email via SES is not implemented.) The configuration follows the guidelines provided by AWS in https://docs.aws.amazon.com/ses/latest/DeveloperGuide/postfix.html, specifically, the `STARTTLS` method.
 
-As described in the AWS Developer Guide you will have to generate SMTP credentials and define the following two environment variables in the docker-compose.yml with the appropriate values for your AWS SES subscription (the values for AWS_SES_USERPASS are the "SMTP username" and "SMTP password" provided when you create SMTP credentials for SES):
+As described in the AWS Developer Guide you will have to generate SMTP credentials and define the following two environment variables in the docker-compose.yml with the appropriate values for your AWS SES subscription (the values for `AWS_SES_USERPASS` are the "SMTP username" and "SMTP password" provided when you create SMTP credentials for SES):
 
 ```yaml
 environment:
@@ -14,17 +14,17 @@ environment:
   - AWS_SES_USERPASS=AKIAXXXXXXXXXXXXXXXX:kqXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 ```
 
-If necessary, you can also provide AWS_SES_PORT. If not provided, it defaults to 25.
+If necessary, you can also provide `AWS_SES_PORT`. If not provided, it defaults to 25.
 
 When you start the container you will see a log line as follows confirming the configuration:
 
-```console
+```log
 Setting up outgoing email via AWS SES host email-smtp.us-east-1.amazonaws.com
 ```
 
 To verify proper operation, send an email to some external account of yours and inspect the mail headers. You will also see the connection to SES in the mail logs. For example:
 
-```console
+```log
 May 23 07:09:36 mail postfix/smtp[692]: Trusted TLS connection established to email-smtp.us-east-1.amazonaws.com[107.20.142.169]:25:
 TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits)
 May 23 07:09:36 mail postfix/smtp[692]: 8C82A7E7: to=<someone@example.com>, relay=email-smtp.us-east-1.amazonaws.com[107.20.142.169]:25,

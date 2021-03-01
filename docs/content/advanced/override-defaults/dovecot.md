@@ -31,37 +31,26 @@ Another important option is the `default_process_limit` (defaults to `100`). If 
 For major configuration changes it’s best to override the dovecot configuration files. For each configuration file you want to override, add a list entry under the `volumes` key.
 
 ```yaml
-version: '2'
-
 services:
   mail:
-  ...
     volumes:
       - maildata:/var/mail
-      ...
       - ./config/dovecot/10-master.conf:/etc/dovecot/conf.d/10-master.conf
 ```
 
 ## Debugging
 
-To debug your dovecot configuration you can use this command:
+To debug your dovecot configuration you can use:
+
+- This command: `./setup.sh debug login doveconf | grep <some-keyword>`
+- Or: `docker exec -it <your-container-name> doveconf | grep <some-keyword>`
+
+Note: [`setup.sh`][github-file-setupsh] is included in the `docker-mailserver` repository.
+
+The `config/dovecot.cf` is copied internally to `/etc/dovecot/local.conf`. To check this file run:
 
 ```sh
-./setup.sh debug login doveconf | grep <some-keyword>
-```
-
-[setup.sh][github-file-setupsh] is included in the `docker-mailserver` repository.
-
-or
-
-```sh
-docker exec -ti <your-container-name> doveconf | grep <some-keyword>
-```
-
-The `config/dovecot.cf` is copied to `/etc/dovecot/local.conf`. To check this file run:
-
-```sh
-docker exec -ti <your-container-name> cat /etc/dovecot/local.conf
+docker exec -it <your-container-name> cat /etc/dovecot/local.conf
 ```
 
 [github-file-setupsh]: https://github.com/docker-mailserver/docker-mailserver/blob/master/setup.sh

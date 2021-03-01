@@ -19,13 +19,13 @@ Basic configuration is done via environment variables:
 
 Setting these environment variables will cause mail for all sender domains to be routed via the specified host, authenticating with the user/password combination.
 
-Note for users of the previous AWS_SES_* variables: please update your configuration to use these new variables, no other configuration is required.
+Note for users of the previous `AWS_SES_*` variables: please update your configuration to use these new variables, no other configuration is required.
 
 ## Advanced Configuration
 
 ### Sender-dependent Authentication
 
-Sender dependent authentication is done in `config/postfix-sasl-password.cf`. You can create this file manually, or use 
+Sender dependent authentication is done in `config/postfix-sasl-password.cf`. You can create this file manually, or use:
 
 ```sh
 setup.sh relay add-auth <domain> <username> [<password>]
@@ -38,13 +38,13 @@ An example configuration file looks like this:
 @domain2.com           relay_user_2:password_2
 ```
 
-If there is no other configuration, this will cause Postfix to deliver email throught the relay specified in `RELAY_HOST` env variable, authenticating as `relay_user_1` when sent from domain1.com and authenticating as `relay_user_2` when sending from domain2.com.
+If there is no other configuration, this will cause Postfix to deliver email throught the relay specified in `RELAY_HOST` env variable, authenticating as `relay_user_1` when sent from `domain1.com` and authenticating as `relay_user_2` when sending from domain2.com.
 
 **NOTE** to activate the configuration you must either restart the container, or you can also trigger an update by modifying a mail account.
 
 ### Sender-dependent Relay Host
 
-Sender dependent relay hosts are configured in `config/postfix-relaymap.cf`. You can create this file manually, or use
+Sender dependent relay hosts are configured in `config/postfix-relaymap.cf`. You can create this file manually, or use:
 
 ```sh
 setup.sh relay add-domain <domain> <host> [<port>]
@@ -62,7 +62,7 @@ Combined with the previous configuration in `config/postfix-sasl-password.cf`, t
 
 ### Excluding Sender Domains
 
-If you want mail sent from some domains to be delivered directly, you can exclude them from being delivered via the default relay by adding them to `config/postfix-relaymap.cf` with no destination. You can also do this via 
+If you want mail sent from some domains to be delivered directly, you can exclude them from being delivered via the default relay by adding them to `config/postfix-relaymap.cf` with no destination. You can also do this via:
 
 ```sh
 setup.sh relay exclude-domain <domain>

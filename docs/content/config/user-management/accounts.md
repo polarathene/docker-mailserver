@@ -6,20 +6,20 @@ hide:
 
 ## Adding a New Account
 
-Users (email accounts) are managed in `/tmp/docker-mailserver/postfix-accounts.cf`. **_The best way to manage accounts is to use the reliable [setup.sh](https://github.com/docker-mailserver/docker-mailserver/wiki/Setup-docker-mailserver-using-the-script-setup.sh) script_**. Or you may directly add the _full_ email address and its encrypted password, separated by a pipe:
+Users (email accounts) are managed in `/tmp/docker-mailserver/postfix-accounts.cf`. **_The best way to manage accounts is to use the reliable [`setup.sh`](https://github.com/docker-mailserver/docker-mailserver/wiki/Setup-docker-mailserver-using-the-script-setup.sh) script_**. Or you may directly add the _full_ email address and its encrypted password, separated by a pipe:
 
-``` INI
+```cf
 user1@domain.tld|{SHA512-CRYPT}$6$2YpW1nYtPBs2yLYS$z.5PGH1OEzsHHNhl3gJrc3D.YMZkvKw/vp.r5WIiwya6z7P/CQ9GDEJDr2G2V0cAfjDFeAQPUoopsuWPXLk3u1
 user2@otherdomain.tld|{SHA512-CRYPT}$6$2YpW1nYtPBs2yLYS$z.5PGH1OEzsHHNhl3gJrc3D.YMZkvKw/vp.r5WIiwya6z7P/CQ9GDEJDr2G2V0cAfjDFeAQPUoopsuWPXLk3u1
-````
+```
 
 In the example above, we've added 2 mail accounts for 2 different domains. Consequently, the mail server will automatically be configured for multi-domains. Therefore, to generate a new mail account data, directly from your docker host, you could for example run the following:
 
-``` BASH
+```sh
 docker run --rm \
   -e MAIL_USER=user1@domain.tld \
   -e MAIL_PASS=mypassword \
-  -ti mailserver/docker-mailserver:latest \
+  -it mailserver/docker-mailserver:latest \
   /bin/sh -c 'echo "$MAIL_USER|$(doveadm pw -s SHA512-CRYPT -u $MAIL_USER -p $MAIL_PASS)"' >> config/postfix-accounts.cf
 ```
 

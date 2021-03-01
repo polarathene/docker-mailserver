@@ -28,31 +28,31 @@ A detailed description of the configuration options can be found in the [online 
 
 ### Example IMAP Configuration
 
-```txt
+```fetchmailrc
 poll 'imap.example.com' proto imap
-	user 'username'
-	pass 'secret'
-	is 'user1@domain.tld'
-	ssl
+  user 'username'
+  pass 'secret'
+  is 'user1@domain.tld'
+  ssl
 ```
 
 ### Example POP3 Configuration
 
-```txt
+```fetchmailrc
 poll 'pop3.example.com' proto pop3
-	user 'username'
-	pass 'secret'
-	is 'user2@domain.tld'
-	ssl
+  user 'username'
+  pass 'secret'
+  is 'user2@domain.tld'
+  ssl
 ```
 
-__IMPORTANT__: Don’t forget the last line: e. g. `is 'user1@domain.tld'`. After `is` you have to specify one email address from the configuration file `config/postfix-accounts.cf`. 
+__IMPORTANT__: Don’t forget the last line: eg: `is 'user1@domain.tld'`. After `is` you have to specify one email address from the configuration file `config/postfix-accounts.cf`.
 
 More details how to configure fetchmail can be found in the [fetchmail man page in the chapter “The run control file”][fetchmail-docs-run].
 
 ### Polling Interval
 
-By default the fetchmail service searches every 5 minutes for new mails on your external mail accounts. You can override this default value by changing the ENV variable `FETCHMAIL_POLL`.
+By default the fetchmail service searches every 5 minutes for new mails on your external mail accounts. You can override this default value by changing the ENV variable `FETCHMAIL_POLL`:
 
 ```yaml
 environment:
@@ -73,7 +73,7 @@ For more informations about the configuration script `setup.sh` [read the corres
 
 Here a sample output of `./setup.sh debug fetchmail`:
 
-```console
+```log
 fetchmail: 6.3.26 querying outlook.office365.com (protocol POP3) at Mon Aug 29 22:11:09 2016: poll started
 Trying to connect to 132.245.48.18/995...connected.
 fetchmail: Server certificate:
