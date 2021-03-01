@@ -43,7 +43,7 @@ This is a list of all configuration files and directories which are optional or 
 [docs-aliases-regex]: ../../config/user-management/aliases.md#configuring-regexp-aliases
 [docs-dkim]: ../../config/best-practices/dkim.md
 [docs-fail2ban]: ../../config/security/fail2ban.md
-[docs-faq-spamrules]: ../../config/troubleshooting/faq.md#how-can-i-manage-my-custom-spamassassin-rules
+[docs-faq-spamrules]: ../../faq/faq.md#how-can-i-manage-my-custom-spamassassin-rules
 [docs-override-postfix]: ./override-defaults/postfix.md
 [docs-override-dovecot]: ./override-defaults/dovecot.md
 [docs-relayhosts-senderauth]: ./mail-forwarding/relay-hosts.md#sender-dependent-authentication

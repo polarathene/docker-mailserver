@@ -401,7 +401,7 @@ sed -i 's/rimap -r/rimap/' /etc/supervisor/conf.d/saslauth.conf
 supervisorctl update
 ```
 
-[docs-maintenance]: ../../advanced/maintenance/update-and-cleanup.md
+[docs-maintenance]: ../config/advanced/maintenance/update-and-cleanup.md
 [github-issue-95]: https://github.com/docker-mailserver/docker-mailserver/issues/95
 [github-issue-97]: https://github.com/docker-mailserver/docker-mailserver/issues/97
 [github-issue-1247]: https://github.com/docker-mailserver/docker-mailserver/issues/1247
