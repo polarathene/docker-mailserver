@@ -71,7 +71,7 @@ nav:
       - 'Fail2Ban': config/security/fail2ban.md
     - 'Troubleshooting':
       - 'Debugging': config/troubleshooting/debugging.md
-      - 'Mail Delivery with POP3': config/pop3.md
+    - 'Mail Delivery with POP3': config/pop3.md
     - 'Advanced Configuration':
         - 'Optional Configuration': config/advanced/optional-config.md
         - 'Maintenance':
