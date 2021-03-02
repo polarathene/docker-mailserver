@@ -2,12 +2,12 @@
 title: 'Contributing | Coding Style'
 ---
 
-##bash and Shell
+##Bash and Shell
 
-When refactoring, writing or altering scripts, that is Shell andbash scripts, in any way, adhere to these rules:
+When refactoring, writing or altering scripts, that is Shell and bash scripts, in any way, adhere to these rules:
 
 1. **Adjust your style of coding to the style that is already present**! Even if you do not like it, this is due to consistency. There was a lot of work involved in making all scripts consistent.
-2. **Use `shellcheck` to check your scripts**! Your contributions are checked by TravisCI too, so you will need to do this. You can **lint your work with `make lint`** to check against all targets.
+2. **Use `shellcheck` to check your scripts**! Your contributions are checked by GitHub Actions too, so you will need to do this. You can **lint your work with `make lint`** to check against all targets.
 3. **Use the provided `.editorconfig`** file.
 4. Use `/bin/bash` or `/usr/bin/envbash` instead of `/bin/sh`. Adjust the style accordingly.
 5. `setup.sh` provides a good starting point to look for.
@@ -40,7 +40,9 @@ fi
 
 ### Variables & Braces
 
-Variables are always uppercase. We always use braces.
+!!! attention 
+
+    Variables are always uppercase. We always use braces.
 
 If you forgot this and want to change it later, you can use [this link][regex]. The used regex is `\$([^{("\\'\/])([a-zA-Z0-9_]*)([^}\/ \t'"\n.\]:(=\\-]*)`, where you should in practice be able to replace all variable occurrences without braces with occurrences with braces.
 
