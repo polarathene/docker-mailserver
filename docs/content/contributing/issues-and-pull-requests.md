@@ -24,7 +24,9 @@ Maintainers take the time to improve on this project and help by solving issues 
 
 ### Submit a Pull-Request
 
-You want to add a feature? Feel free to start creating an issue explaining what you want to do and how you're thinking doing it. Other users may have the same need and collaboration may lead to better results.
+!!! question "Motivation"
+
+      You want to add a feature? Feel free to start creating an issue explaining what you want to do and how you're thinking doing it. Other users may have the same need and collaboration may lead to better results.
 
 The development workflow is the following:
 

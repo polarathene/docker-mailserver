@@ -18,7 +18,12 @@ This wiki provides you with advanced configuration, detailed examples, and hints
 !!! tip
     See the [FAQ][docs-faq] for some more tips!
 
+## Contributing
+
+We are always happy to welcome new contributors. For guidelines and entrypoints please have a look at the [Contributing section][docs-contributing].
+
 [docs-faq]: ./faq/faq.md
+[docs-contributing]: ./contributing/issues-and-pull-requests.md
 [docs-optionalconfig]: ./config/advanced/optional-config.md
 [docs-setupsh]: ./config/setup.sh.md
 [github-file-readme]: https://github.com/docker-mailserver/docker-mailserver/blob/master/README.md
