@@ -8,7 +8,7 @@ If you want to append instead, switch `::before` to `::after`.
 /* reference the icon font to use */
 @font-face {
   font-family: 'external-link';
-  src: url('/assets/fonts/external-link.woff') format('woff');
+  src: url('/docker-mailserver/assets/fonts/external-link.woff') format('woff');
 }
 
 /* Matches the two nav link classes that start with `http` `href` values, regular docs pages use relative URLs instead. */
