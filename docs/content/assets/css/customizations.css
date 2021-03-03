@@ -1,0 +1,21 @@
+/* This file adds our styling additions to maintain. */
+
+/* External Link icon feature. Rejected from upstreaming to `mkdocs-material`.
+Alternative solution using font icon here: https://github.com/squidfunk/mkdocs-material/issues/2318#issuecomment-789461149
+Tab or Nav sidebar with non-relative links will prepend an icon (embedded SVG)
+Uses `em` units instead of `rem` here so that the icon scales with the size of a font, much like when using font icons approach.
+If you want to append instead, switch `::before` to `::after` and the `-right` to `-left` for `padding-` and `margin-` properties.
+*/
+/* Matches the two nav link classes that start with `http` `href` values, regular docs pages use relative URLs instead. */
+.md-tabs__link[href^="http"]::before, .md-nav__link[href^="http"]::before {
+  content: ""; /* No actual content, but it's required for this trickery to work */
+  background-color: currentColor; /* inherit the relevant colour to match the text label */
+  padding-right: 0.8em; /* width for SVG to fit into, affects scaling */
+  margin-right: 0.2em; /* offset gap between icon and link label */
+  mask-position-y: 0.15em; /* adjust icon position vertically to better place it */
+  mask-repeat: no-repeat;
+  mask-size: contain;
+  /* Add the SVG below (this one is the font-awesome external-link SVG sourced from `mkdocs-material/material/.icons/fontawesome/solid/external-link-alt.svg`) */
+  /* Make sure it's encoded properly: https://yoksel.github.io/url-encoder/ */
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath d='M432 320h-32a16 16 0 0 0-16 16v112H64V128h144a16 16 0 0 0 16-16V80a16 16 0 0 0-16-16H48a48 48 0 0 0-48 48v352a48 48 0 0 0 48 48h352a48 48 0 0 0 48-48V336a16 16 0 0 0-16-16zM488 0H360c-21.37 0-32.05 25.91-17 41l35.73 35.73L135 320.37a24 24 0 0 0 0 34L157.67 377a24 24 0 0 0 34 0l243.61-243.68L471 169c15 15 41 4.5 41-17V24a24 24 0 0 0-24-24z'/%3E%3C/svg%3E");
+}

@@ -16,6 +16,8 @@ theme:
     - navigation.tabs
     - navigation.expand
 
+extra_css:
+  - assets/css/customizations.css
 # plugins:
 #   - search
 #   - redirects:
