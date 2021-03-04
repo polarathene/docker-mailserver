@@ -18,3 +18,19 @@ If you want to append instead, switch `::before` to `::after`.
   content:'\0041'; /* represents "A" which our font renders as an icon instead of the "A" glyph */
   font-size: 80%; /* icon is a little too big by default, scale it down */
 }
+
+
+
+/* Layout adjustments */
+/* Remove constraint on header bar and nav tabs so they can align to page edge */
+.md-tabs__inner.md-grid, .md-header__inner.md-grid { max-width: unset; }
+
+
+/* header bar (top of page) adjustments: align components to edges, increase scale of logo, adjust white-space. */
+.md-header__button.md-logo > img { transform: scale(180%); } /* Make the logo larger without impacting other header components */
+.md-header__title { margin-left: 0.3rem; } /* Reduce the white-space between the Logo and Title components */
+/* top-right of page repo component in header bar, handle better alignment to the right */
+.md-source__repository { max-width: unset; } /* Prevent component width reduction */
+.md-source { margin-right: 0.4rem; } /* Adds a little bit of  white space on the right */
+.md-header__source { width: unset; } /* Removes fixed width so we can remove whitespace on the right */
+.md-header__source { margin-left: unset; } /* Reduce gap between the github icon and search bar */
