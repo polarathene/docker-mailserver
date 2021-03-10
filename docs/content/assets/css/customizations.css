@@ -8,7 +8,7 @@ If you want to append instead, switch `::before` to `::after`.
 /* reference the icon font to use */
 @font-face {
   font-family: 'external-link';
-  src: url('/docker-mailserver/assets/fonts/external-link.woff') format('woff');
+  src: url('../fonts/external-link.woff') format('woff');
 }
 
 /* Matches the two nav link classes that start with `http` `href` values, regular docs pages use relative URLs instead. */
@@ -25,3 +25,10 @@ If you want to append instead, switch `::before` to `::after`.
 /* header bar (top of page) adjustments: increase scale of logo, adjust white-space. */
 .md-header__button.md-logo > img { transform: scale(180%); margin-left: 0.4rem; } /* Make the logo larger without impacting other header components */
 .md-header__title { margin-left: 0.3rem; } /* Reduce the white-space between the Logo and Title components */
+
+/* Light colour bg for the version selector with some rounded corners */
+.md-version__current {
+  background-color: rgb(255,255,255,0.18); /* white with 18% opacity */
+  padding: 5px;
+  border-radius: 3px;
+}
