@@ -39,3 +39,42 @@ If you want to append instead, switch `::before` to `::after`.
 }
 
 /* ============================================================================================================= */
+
+/*
+  UX Bugfix for permalink affecting typography in headings.
+  Upstream will not fix: https://github.com/squidfunk/mkdocs-material/issues/2369
+*/
+
+/* Increase the content gutters (side margins providing white-space in mobile/portrait view) */
+div.md-content article.md-content__inner {
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+/* Headings are configured to be links (instead of only the permalink symbol), removes the link colour */
+div.md-content article.md-content__inner a.toclink {
+  color: currentColor;
+}
+
+/* Positions the permalink symbol to the left of the heading for consistent placement */
+/* Due to position order of the anchor link element to the heading content, it was better to replace it */
+div.md-content article.md-content__inner a.toclink::before {
+  content: '#';
+  padding-right: 4px;
+  margin-left: -16px;
+
+  /* Original `.headerlink` styles from `mkdocs-material` theme: */
+  color: var(--md-default-fg-color--lighter);
+  opacity: 0;
+  transition: color .25s,opacity 125ms;
+}
+
+/* Original `.headerlink` styles from `mkdocs-material` theme: */
+div.md-content article.md-content__inner a.toclink:hover::before,
+div.md-content article.md-content__inner a.toclink:focus::before,
+div.md-content article.md-content__inner :target > a.toclink::before {
+  color: var(--md-accent-fg-color);
+  opacity: 1;
+  transition: color .25s,opacity 125ms;
+}
+
+/* ============================================================================================================= */

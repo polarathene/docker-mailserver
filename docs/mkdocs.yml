@@ -48,7 +48,7 @@ extra:
 # Various extensions for `mkdocs` are enabled and configured here to extend supported markdown syntax/features.
 markdown_extensions:
   - toc:
-      permalink: ⚓︎
+      anchorlink: true
   - abbr
   - attr_list
   - admonition
