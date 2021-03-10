@@ -21,37 +21,6 @@ env:
   GIT_EMAIL: '41898282+github-actions[bot]@users.noreply.github.com'
 
 jobs:
-  add-version-to-docs:
-    if: startsWith(github.ref, 'refs/tags/')
-    name: 'Handle `versions.json` in `gh-pages` branch'
-    runs-on: ubuntu-20.04
-    steps:
-      - name: 'Checkout the default branch (master)'
-        uses: actions/checkout@v2
-
-      - name: 'Checkout the docs branch to a subdirectory'
-        uses: actions/checkout@v2
-        with:
-          ref: gh-pages
-          path: gh-pages
-
-      # Updates `env.DOCS_VERSION` to the tag version; if invalid exits job early.
-      - name: 'Ensure `versions.json` has relevant `<major>.<minor>` tag version (truncates patch version)'
-        id: add-version
-        continue-on-error: true
-        working-directory: gh-pages
-        run: '../.github/workflows/scripts/docs/update-versions-json.sh'
-
-      # If an actual change was made to `versions.json`, commit and push it - otherwise the step is skipped instead of reporting job failure.
-      - name: 'Push update for `versions.json`'
-        if: ${{ steps.add-version.outcome == 'success' }}
-        working-directory: gh-pages
-        run: |
-          git config user.name ${{ env.GIT_USER }}
-          git config user.email ${{ env.GIT_EMAIL }}
-          git add versions.json
-          git commit -m "Make ${{ env.DOCS_VERSION }} available to the 'mike' version selector"
-          git push
   deploy:
     name: 'Deploy Docs'
     runs-on: ubuntu-20.04
@@ -100,3 +69,36 @@ jobs:
           destination_dir: ${{ env.DOCS_VERSION }}
           user_name: ${{ env.GIT_USER }}
           user_email: ${{ env.GIT_EMAIL }}
+  add-version-to-docs:
+    if: startsWith(github.ref, 'refs/tags/')
+    # Avoid race condition with pushing to `gh-pages` branch by waiting for `deploy` to complete first
+    needs: deploy
+    name: 'Handle `versions.json` in `gh-pages` branch'
+    runs-on: ubuntu-20.04
+    steps:
+      - name: 'Checkout the default branch (master)'
+        uses: actions/checkout@v2
+
+      - name: 'Checkout the docs branch to a subdirectory'
+        uses: actions/checkout@v2
+        with:
+          ref: gh-pages
+          path: gh-pages
+
+      # Updates `env.DOCS_VERSION` to the tag version; if invalid exits job early.
+      - name: 'Ensure `versions.json` has relevant `<major>.<minor>` tag version (truncates patch version)'
+        id: add-version
+        continue-on-error: true
+        working-directory: gh-pages
+        run: '../.github/workflows/scripts/docs/update-versions-json.sh'
+
+      # If an actual change was made to `versions.json`, commit and push it - otherwise the step is skipped instead of reporting job failure.
+      - name: 'Push update for `versions.json`'
+        if: ${{ steps.add-version.outcome == 'success' }}
+        working-directory: gh-pages
+        run: |
+          git config user.name ${{ env.GIT_USER }}
+          git config user.email ${{ env.GIT_EMAIL }}
+          git add versions.json
+          git commit -m "Make ${{ env.DOCS_VERSION }} available to the 'mike' version selector"
+          git push
