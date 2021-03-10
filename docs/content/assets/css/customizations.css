@@ -1,4 +1,6 @@
-/* This file adds our styling additions to maintain. */
+/* This file adds our styling additions / fixes to maintain. */
+
+/* ============================================================================================================= */
 
 /* External Link icon feature. Rejected from upstreaming to `mkdocs-material`.
 Alternative solution using SVG icon here (Broken on Chrome?): https://github.com/squidfunk/mkdocs-material/issues/2318#issuecomment-789461149
@@ -19,16 +21,21 @@ If you want to append instead, switch `::before` to `::after`.
   font-size: 80%; /* icon is a little too big by default, scale it down */
 }
 
+/* ============================================================================================================= */
 
+/* UI Improvement: Header bar (top of page) adjustments - Increase scale of logo and adjust white-space */
+/* Make the logo larger without impacting other header components */
+.md-header__button.md-logo > img { transform: scale(180%); margin-left: 0.4rem; }
+/* Reduce the white-space between the Logo and Title components */
+.md-header__title { margin-left: 0.3rem; }
 
-/* Layout adjustments */
-/* header bar (top of page) adjustments: increase scale of logo, adjust white-space. */
-.md-header__button.md-logo > img { transform: scale(180%); margin-left: 0.4rem; } /* Make the logo larger without impacting other header components */
-.md-header__title { margin-left: 0.3rem; } /* Reduce the white-space between the Logo and Title components */
+/* ============================================================================================================= */
 
-/* Light colour bg for the version selector with some rounded corners */
+/* UI Improvement: Add light colour bg for the version selector, with some rounded corners */
 .md-version__current {
   background-color: rgb(255,255,255,0.18); /* white with 18% opacity */
   padding: 5px;
   border-radius: 3px;
 }
+
+/* ============================================================================================================= */
