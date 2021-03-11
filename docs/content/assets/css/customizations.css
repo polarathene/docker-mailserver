@@ -45,11 +45,6 @@ If you want to append instead, switch `::before` to `::after`.
   Upstream will not fix: https://github.com/squidfunk/mkdocs-material/issues/2369
 */
 
-/* Increase the content gutters (side margins providing white-space in mobile/portrait view) */
-div.md-content article.md-content__inner {
-  margin-left: 1rem;
-  margin-right: 1rem;
-}
 /* Headings are configured to be links (instead of only the permalink symbol), removes the link colour */
 div.md-content article.md-content__inner a.toclink {
   color: currentColor;
@@ -57,24 +52,25 @@ div.md-content article.md-content__inner a.toclink {
 
 /* Positions the permalink symbol to the left of the heading for consistent placement */
 /* Due to position order of the anchor link element to the heading content, it was better to replace it */
+/* Changed from a symbol to a solid thin rectangle due to vertical alignment and scaling (clipping) issues */
 div.md-content article.md-content__inner a.toclink::before {
-  content: '#';
-  padding-right: 4px;
-  margin-left: -16px;
+  display: inline-block;
+  margin-right: 0.2rem;
+  margin-left: -0.6rem;
+  content: '-'; /* not visible, just used as filler to make background-color visible */
+  background-color: #73a4d7; /* light blue, could modify theme colour vars to match this? */
 
-  /* Original `.headerlink` styles from `mkdocs-material` theme: */
-  color: var(--md-default-fg-color--lighter);
+  /* Based on original `.headerlink` styles from `mkdocs-material` theme: */
+  color: transparent;
   opacity: 0;
-  transition: color .25s,opacity 125ms;
+  transition: opacity 125ms;
 }
 
-/* Original `.headerlink` styles from `mkdocs-material` theme: */
+/* Based on original `.headerlink` styles from `mkdocs-material` theme: */
 div.md-content article.md-content__inner a.toclink:hover::before,
-div.md-content article.md-content__inner a.toclink:focus::before,
 div.md-content article.md-content__inner :target > a.toclink::before {
-  color: var(--md-accent-fg-color);
   opacity: 1;
-  transition: color .25s,opacity 125ms;
+  transition: opacity 125ms;
 }
 
 /* ============================================================================================================= */
