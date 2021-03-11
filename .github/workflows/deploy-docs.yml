@@ -1,4 +1,4 @@
-name: 'Documentation (Push Event)'
+name: 'Documentation'
 
 on:
   workflow_dispatch:
@@ -8,13 +8,14 @@ on:
     paths:
       - '.github/workflows/deploy-docs.yml'
       - 'docs/**'
-    # For taking a snapshot of the docs state from the tagged commit (unaffected by branch or path restraints above),
-    # to a versioned subdirectory with dir name matching the git tag substring `v<MAJOR>.<MINOR>`:
+    # Responds to tags being pushed (branches and paths conditions above do not apply to tags).
+    # Takes a snapshot of the docs from the tag (unaffected by branch or path restraints above),
+    # Stores build in a subdirectory with name matching the git tag `v<MAJOR>.<MINOR>` substring:
     tags:
       - 'v[0-9]+.[0-9]+*'
 
 env:
-  # Default docs version to build and deploy
+  # Default docs version to build and deploy:
   DOCS_VERSION: edge
   # Assign commit authorship to official Github Actions bot when pushing to the `gh-pages` branch:
   GIT_USER: 'github-actions[bot]'
@@ -70,7 +71,7 @@ jobs:
           user_email: ${{ env.GIT_EMAIL }}
 
   add-version-to-docs:
-    name: 'Handle `versions.json` in the `gh-pages` branch'
+    name: 'Update `versions.json` if necessary'
     runs-on: ubuntu-20.04
     if: startsWith(github.ref, 'refs/tags/')
     # Avoid race condition with pushing to `gh-pages` branch by waiting for `deploy` to complete first
@@ -86,7 +87,7 @@ jobs:
           path: gh-pages
 
       # Updates `env.DOCS_VERSION` to the tag version; if invalid exits job early.
-      - name: 'Ensure `versions.json` has relevant `<major>.<minor>` tag version (truncates patch version)'
+      - name: 'Ensure `versions.json` has `v<major>.<minor>` substring from tag name'
         id: add-version
         continue-on-error: true
         working-directory: gh-pages
@@ -101,5 +102,5 @@ jobs:
           git config user.name ${{ env.GIT_USER }}
           git config user.email ${{ env.GIT_EMAIL }}
           git add versions.json
-          git commit -m "Make ${{ env.DOCS_VERSION }} available to the 'mike' version selector"
+          git commit -m "chore: Add ${{ env.DOCS_VERSION }} to version selector list"
           git push
