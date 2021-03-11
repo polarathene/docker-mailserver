@@ -71,7 +71,7 @@ Otherwise, `iptables` won't be able to ban IPs.
   - Optional: `SSL_ALT_CERT_PATH` and `SSL_ALT_KEY_PATH` allow providing a 2nd certificate as a fallback for dual (aka hybrid) certificate support. Useful for ECDSA with an RSA fallback. Presently only `manual` mode supports this feature.
 - self-signed => Enables self-signed certificates.
 
-Please read [the SSL page in the wiki](https://docker-mailserver.github.io/docker-mailserver/edge/config/security/ssl) for more information.
+Please read [the SSL page in the documentation](https://docker-mailserver.github.io/docker-mailserver/edge/config/security/ssl) for more information.
 
 ##### TLS_LEVEL
 
