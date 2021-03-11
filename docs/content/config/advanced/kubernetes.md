@@ -409,6 +409,7 @@ Then, configure both [Postfix][docs-postfix] and [Dovecot][docs-dovecot] to expe
       postfix-main.cf: |
         postscreen_upstream_proxy_protocol = haproxy
       postfix-master.cf: |
+        smtp/inet/postscreen_upstream_proxy_protocol=haproxy
         submission/inet/smtpd_upstream_proxy_protocol=haproxy
         smtps/inet/smtpd_upstream_proxy_protocol=haproxy
       dovecot.cf: |
