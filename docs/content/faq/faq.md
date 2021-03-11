@@ -309,7 +309,7 @@ Otherwise, it could work with 512M of RAM.
 
     Current figure is about 850M and growing. If you get errors about clamav or amavis failing to allocate memory you need more RAM or more swap and of course docker must be allowed to use swap (not always the case). If you can't use swap at all you may need 3G RAM.
 
-### Can `docker-mailserver` run in a [Rancher Environment](http://rancher.com/rancher/)?
+### Can `docker-mailserver` run in a Rancher Environment?
 
 Yes, by adding the environment variable `PERMIT_DOCKER: network`.
 
