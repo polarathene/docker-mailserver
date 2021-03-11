@@ -5,10 +5,11 @@
 # https://docs.github.com/en/actions/reference/environment-variables
 function _update-versions-json {
   # Extract the version tag, truncate `<PATCH>` version and any suffix beyond it.
-  local MAJOR_MINOR=$(egrep -o 'v[0-9]+\.[0-9]+' <<< "${GITHUB_REF}")
+  local MAJOR_MINOR
+  MAJOR_MINOR=$(grep -oE 'v[0-9]+\.[0-9]+' <<< "${GITHUB_REF}")
   # Github Actions CI method for exporting ENV vars to share across a jobs steps
   # https://docs.github.com/en/actions/reference/workflow-commands-for-github-actions#setting-an-environment-variable
-  echo "DOCS_VERSION=${MAJOR_MINOR}" >> $GITHUB_ENV
+  echo "DOCS_VERSION=${MAJOR_MINOR}" >> "${GITHUB_ENV}"
 
   if [[ -z "${MAJOR_MINOR}" ]]
   then
@@ -17,7 +18,8 @@ function _update-versions-json {
   fi
 
   local VERSIONS_JSON='versions.json'
-  local IS_VALID=$(jq '.' "${VERSIONS_JSON}")
+  local IS_VALID
+  IS_VALID=$(jq '.' "${VERSIONS_JSON}")
 
   if [[ ! -f "${VERSIONS_JSON}" ]] || [[ -z "${IS_VALID}" ]]
   then
@@ -27,7 +29,8 @@ function _update-versions-json {
 
 
   # Only add this tag version the first time it's encountered:
-  local VERSION_EXISTS=$(jq --arg version "${MAJOR_MINOR}" '[.[].version == $version] | any' "${VERSIONS_JSON}")
+  local VERSION_EXISTS
+  VERSION_EXISTS=$(jq --arg version "${MAJOR_MINOR}" '[.[].version == $version] | any' "${VERSIONS_JSON}")
 
   if [[ "${VERSION_EXISTS}" == "true" ]]
   then
@@ -36,12 +39,13 @@ function _update-versions-json {
   else
     echo "Added support for ${MAJOR_MINOR} docs."
     # Add any logic here if you want the version selector to have a different label (`title`) than the `version` URL/subdirectory.
-    local TITLE=${TITLE:-$MAJOR_MINOR}
+    local TITLE=${TITLE:-${MAJOR_MINOR}}
 
     # Assumes the first element is always the "latest" unreleased version (`edge` for us), and then newest version to oldest.
     # `jq` takes the first array element of array as slice, concats with new element, then takes the slice of remaining original elements to concat.
     # Thus assumes this script is always triggered by newer versions, no older major/minor releases as our build workflow isn't setup to support rebuilding older docs.
-    local UPDATED_JSON=$(jq --arg version "${MAJOR_MINOR}" --arg title "${TITLE}" \
+    local UPDATED_JSON
+    UPDATED_JSON=$(jq --arg version "${MAJOR_MINOR}" --arg title "${TITLE}" \
       '.[:1] + [{version: $version, title: $title, aliases: []}] + .[1:]' \
       "${VERSIONS_JSON}"
     )
