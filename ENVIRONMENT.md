@@ -144,7 +144,7 @@ Set the mailbox size limit for all users. If set to zero, the size will be unlim
 - **1** => Dovecot quota is enabled
 - 0 => Dovecot quota is disabled
 
-See [mailbox quota](https://docker-mailserver.github.io/docker-mailserver/edge/config/user-managemnt/accounts/#notes).
+See [mailbox quota](https://docker-mailserver.github.io/docker-mailserver/edge/config/user-management/accounts/#notes).
 
 ##### POSTFIX\_MESSAGE\_SIZE\_LIMIT
 

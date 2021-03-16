@@ -13,7 +13,7 @@ Possible answers to your issue
   https://github.com/docker-mailserver/docker-mailserver#requirements
 
 * Email seen as spam:
-  https://docker-mailserver.github.io/docker-mailserver/edge/config/best-practices/spd
+  https://docker-mailserver.github.io/docker-mailserver/edge/config/best-practices/spf
   https://docker-mailserver.github.io/docker-mailserver/edge/config/best-practices/dkim
 
 * Creating new domains and accounts
