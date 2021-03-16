@@ -18,13 +18,13 @@ To enable DKIM signature, **you must have created at least one email account**. 
 After generating DKIM keys, you should restart the mail server. DNS edits may take a few minutes to hours to propagate. The script assumes you're being in the directory where the `config/` directory is located. The default keysize when generating the signature is 4096 bits for now. If you need to change it (e.g. your DNS provider limits the size), then provide the size as the first parameter of the command:
 
 ```sh
-./setup.sh config dkim <keysize>
+./setup.sh config dkim keysize <keysize>
 ```
 
 For LDAP systems that do not have any directly created user account you can run the following command (since `8.0.0`) to generate the signature by additionally providing the desired domain name (if you have multiple domains use the command multiple times or provide a comma-separated list of domains): 
 
 ```sh
-./setup.sh config dkim <key-size> <domain.tld>[,<domain2.tld>]
+./setup.sh config dkim keysize <key-size> domain <domain.tld>[,<domain2.tld>]
 ```
 
 Now the keys are generated, you can configure your DNS server with DKIM signature, simply by adding a TXT record. If you have direct access to your DNS zone file, then it's only a matter of pasting the content of `config/opendkim/keys/domain.tld/mail.txt` in your `domain.tld.hosts` zone.

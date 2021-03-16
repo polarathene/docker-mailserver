@@ -416,6 +416,9 @@ Then, configure both [Postfix][docs-postfix] and [Dovecot][docs-dovecot] to expe
         # Assuming your ingress controller is bound to 10.0.0.0/8
         haproxy_trusted_networks = 10.0.0.0/8, 127.0.0.0/8
         service imap-login {
+          inet_listener imap {
+            haproxy = yes
+          }
           inet_listener imaps {
             haproxy = yes
           }
