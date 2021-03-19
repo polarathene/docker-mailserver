@@ -7,7 +7,6 @@ on:
       - master
     paths:
       - '.github/workflows/deploy-docs.yml'
-      - '.github/workflows/scripts/docs/update-versions-json.sh'
       - 'docs/**'
     # Responds to tags being pushed (branches and paths conditions above do not apply to tags).
     # Takes a snapshot of the docs from the tag (unaffected by branch or path restraints above),
@@ -23,19 +22,6 @@ env:
   GIT_EMAIL: '41898282+github-actions[bot]@users.noreply.github.com'
 
 jobs:
-  lint:
-    name: 'Linting'
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v2
-      - name: ShellCheck
-        run: |
-          sudo curl -S -L "https://github.com/koalaman/shellcheck/releases/download/v${SHELLCHECK_VERSION}/shellcheck-v${SHELLCHECK_VERSION}.linux.x86_64.tar.xz" | tar -xJ
-          sudo mv "shellcheck-v${SHELLCHECK_VERSION}/shellcheck" /usr/bin/
-          sudo rm -rf "shellcheck-v${SHELLCHECK_VERSION}"
-          shellcheck -x -S style -Cauto -o all -e SC2154 -W 50 .github/workflows/scripts/docs/update-versions-json.sh
-        env:
-          SHELLCHECK_VERSION: 0.7.1
   deploy:
     name: 'Deploy Docs'
     runs-on: ubuntu-20.04
