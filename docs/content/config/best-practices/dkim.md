@@ -78,6 +78,10 @@ SendReports             yes
 Mode                    v
 ```
 
+## Switch Off DKIM
+
+Simply remove the DKIM key by recreating (not just relaunching) the mailserver container.
+
 ## Debugging
 
 - [DKIM-verifer](https://addons.mozilla.org/en-US/thunderbird/addon/dkim-verifier): A add-on for the mail client Thunderbird.
@@ -106,6 +110,10 @@ mail._domainkey.domain.tld. 3600 IN TXT "v=DKIM1; k=rsa; p=MIGfMA0GCSqGSIb3DQEBA
 ;; MSG SIZE  rcvd: 310
 ```
 
-## Switch Off DKIM
+---
 
-Simply remove the DKIM key by recreating (not just relaunching) the mailserver container.
+!!! warning "Key sizes >=4096-bit"
+
+    Keys of 4096 bits could de denied by some mailservers. According to https://tools.ietf.org/html/rfc6376 keys are preferably between 512 and 2048 bits. See issue [#1854][github-issue-1854].
+
+[github-issue-1854]: https://github.com/docker-mailserver/docker-mailserver/issues/1854
