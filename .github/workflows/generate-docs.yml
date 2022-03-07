@@ -30,7 +30,7 @@ jobs:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Build with mkdocs-material via Docker
         run: docker run --rm -v ${PWD}:/docs squidfunk/mkdocs-material build --strict
@@ -39,7 +39,7 @@ jobs:
     if: github.event_name == 'push'
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Build with mkdocs-material via Docker
         run: docker run --rm -v ${PWD}:/docs squidfunk/mkdocs-material build --strict
